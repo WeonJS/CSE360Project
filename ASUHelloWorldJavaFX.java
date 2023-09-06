@@ -21,6 +21,7 @@ public class ASUHelloWorldJavaFX extends Application {
     	for (int i = 0; i < 20; i++) {
     		System.out.println("lmfao" + i);
     	}
+		System.out.println("yuh");
     	
         primaryStage.setTitle(name + ": Hello World");
         Button btn = new Button();
