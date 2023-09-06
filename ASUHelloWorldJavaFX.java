@@ -21,13 +21,12 @@ public class ASUHelloWorldJavaFX extends Application {
     	for (int i = 0; i < 20; i++) {
     		System.out.println("lmfao" + i);
     	}
-		System.out.println("yuh");
-		System.out.println("ljasdfas");
-		System.out.println("my addition - Keon");
 		
 		for (int j = 0; j < 30; j++) {
 			System.out.print("lmfao");
 		}
+		
+		System.out.println("more stuff");
     	
         primaryStage.setTitle(name + ": Hello World");
         Button btn = new Button();
