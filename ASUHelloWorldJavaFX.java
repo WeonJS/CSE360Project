@@ -21,6 +21,8 @@ public class ASUHelloWorldJavaFX extends Application {
     	for (int i = 0; i < 20; i++) {
     		System.out.println("lmfao" + i);
     	}
+    	
+    	System.out.println("testbranch");
 		
 		for (int j = 0; j < 30; j++) {
 			System.out.print("lmfao");
