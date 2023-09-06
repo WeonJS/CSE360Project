@@ -16,6 +16,7 @@ public class ASUHelloWorldJavaFX extends Application {
     
     public void start(Stage primaryStage) {
     	System.out.println(name + " Hello World!");
+    	System.out.println("frick leon");
     	System.out.println("It started!");
         primaryStage.setTitle(name + ": Hello World");
         Button btn = new Button();
