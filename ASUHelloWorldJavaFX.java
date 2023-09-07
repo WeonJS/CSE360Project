@@ -18,21 +18,8 @@ public class ASUHelloWorldJavaFX extends Application {
     	System.out.println(name + " Hello World!");
     	System.out.println("It started!");
     	
-    	for (int i = 0; i < 20; i++) {
-    		System.out.println("lmfao" + i);
-    	}
-    	
-    	System.out.println("testbranch");
-		
-		for (int j = 0; j < 30; j++) {
-			System.out.print("lmfao");
-		}
-		
-		System.out.println("more stuff");
-    	
         primaryStage.setTitle(name + ": Hello World");
         Button btn = new Button();
-        System.out.print("jastons change");
         btn.setText("Display: '"+name+" says: Hello World!'");
         btn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
