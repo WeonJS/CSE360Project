@@ -16,7 +16,7 @@
          <content>
             <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css">
                <children>
-                  <Button id="myBtn" layoutX="211.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#startEffort" prefHeight="45.0" prefWidth="182.0" text="Start Effort">
+                  <Button id="myBtn" layoutX="211.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#startEffort" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: lightgreen;" text="Start Effort">
                      <font>
                         <Font name="Arial" size="22.0" />
                      </font>
