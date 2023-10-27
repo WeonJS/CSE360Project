@@ -32,6 +32,8 @@ public class Controller implements Initializable{
 	
 	private boolean effortInProgress = false;
 	
+	private String loggedUser = "jmattoka";
+	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -97,22 +99,29 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void endEffort(Event e) {
-		if(effortInProgress && sanitizeCreateEffortData()) {
+		boolean cleanInput = sanitizeCreateEffortData();
+		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
 			LocalDateTime endTime = LocalDateTime.now();
+			errorLabel.setText("");
 			successLabel.setText("Effort ended at " + endTime);
+			//CREATE THE OBJECT
+			
+			
 		}
 		else {
-			successLabel.setText("");
-			errorLabel.setText("ERROR: No effort started");
+			if(cleanInput) {
+				successLabel.setText("");
+				errorLabel.setText("ERROR: No effort started");
+			}
 		}
 	}
 	
 	boolean sanitizeCreateEffortData(){
-		if(projectComboBox.getValue() == "Select..." || 
-		   effortCatComboBox.getValue() == "Select..." ||
-		   lifeCycleComboBox.getValue() == "Select..." || 
-		   deliverableComboBox.getValue() == "Select...") 
+		if(projectComboBox.getValue() == null || 
+		   effortCatComboBox.getValue() == null ||
+		   lifeCycleComboBox.getValue() == null || 
+		   deliverableComboBox.getValue() == null) 
 		{
 			errorLabel.setText("ERROR: One of the Fields is left blank");
 			return false;

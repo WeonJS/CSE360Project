@@ -14,7 +14,7 @@
    <tabs>
       <Tab text="Create Effort">
          <content>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css">
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
                <children>
                   <Button id="myBtn" layoutX="211.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#startEffort" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: lightgreen;" text="Start Effort">
                      <font>
@@ -35,8 +35,8 @@
                   <Label layoutX="243.0" layoutY="105.0" text="Deliverable" />
                   <ComboBox fx:id="effortCatComboBox" layoutX="243.0" layoutY="68.0" prefWidth="150.0" promptText="Select..." />
                   <ComboBox fx:id="deliverableComboBox" layoutX="243.0" layoutY="122.0" prefWidth="150.0" promptText="Select..." />
-                  <Label fx:id="errorLabel" layoutX="215.0" layoutY="310.0" prefHeight="31.0" prefWidth="171.0" />
-                  <Label fx:id="successLabel" layoutX="145.0" layoutY="341.0" prefHeight="31.0" prefWidth="278.0" />
+                  <Label fx:id="errorLabel" alignment="CENTER" layoutX="181.0" layoutY="310.0" prefHeight="31.0" prefWidth="238.0" textAlignment="CENTER" />
+                  <Label fx:id="successLabel" alignment="CENTER" layoutX="165.0" layoutY="341.0" prefHeight="31.0" prefWidth="278.0" textAlignment="CENTER" />
                </children>
             </Pane>
          </content>
