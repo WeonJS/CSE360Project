@@ -34,6 +34,9 @@ public class Controller implements Initializable{
 	
 	private String loggedUser = "jmattoka";
 	
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
+	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -90,7 +93,7 @@ public class Controller implements Initializable{
 	void startEffort(Event e) {
 		if(!effortInProgress) {
 			effortInProgress = true;
-			LocalDateTime startTime = LocalDateTime.now();
+			startTime = LocalDateTime.now();
 			successLabel.setText("Effort Started at " + startTime);
 		}
 		else
@@ -102,11 +105,14 @@ public class Controller implements Initializable{
 		boolean cleanInput = sanitizeCreateEffortData();
 		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
-			LocalDateTime endTime = LocalDateTime.now();
+			endTime = LocalDateTime.now();
 			errorLabel.setText("");
 			successLabel.setText("Effort ended at " + endTime);
 			//CREATE THE OBJECT
-			
+			Effort newEffort = new Effort(loggedUser, startTime, endTime, lifeCycleComboBox.getValue(), 
+										  projectComboBox.getValue(), effortCatComboBox.getValue(), 
+										  deliverableComboBox.getValue());
+			System.out.print(newEffort);
 			
 		}
 		else {

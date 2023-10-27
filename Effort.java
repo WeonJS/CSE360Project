@@ -7,13 +7,14 @@ public class Effort {
 	private String projectType;
 	private String effortCategory;
 	private String deliverableType;
+	private final String userID;
 	
-	// duration of shower in seconds
 	private int duration;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
-	public Effort(LocalDateTime _startTime, LocalDateTime _endTime, String _lifeCycleStep, String _projectType, String _effortCategory, String _deliverableType) {
+	public Effort(String username, LocalDateTime _startTime, LocalDateTime _endTime, String _lifeCycleStep, String _projectType, String _effortCategory, String _deliverableType) {
+		userID = username;
 		startTime = _startTime;
 		endTime = _endTime;
 		duration = endTime.getSecond() - startTime.getSecond();
@@ -79,5 +80,26 @@ public class Effort {
 	public void setDeliverableType(String value) {
 		deliverableType = value;
 	}
+	@Override 
+	public String toString() {
+		String result = "\nUsername " + userID
+						+ "\nStart Time: " + startTime
+						+ "\nEnd Time: " + endTime
+						+ "\nDuration: " + duration
+						+ "\nLifeCycleStep: " + lifeCycleStep
+						+ "\nProjectType: " + projectType
+						+ "\nEffortCategory: " + effortCategory
+						+ "\nDeliverableType: " + deliverableType;
+						
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
