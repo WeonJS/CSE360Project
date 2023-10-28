@@ -5,88 +5,112 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
-import java.util.Base64;
+import java.util.ArrayList;
 
 public class DataHandler {
 	
 	private Path directoryPath;
 	
+	// keeps track of efforts that have been altered/created by the user
+	private ArrayList<Effort> updatedEfforts = new ArrayList<>();
+	
+	// keeps track of all user efforts
+	private ArrayList<Effort> userEfforts = new ArrayList<>();
+	
 	public DataHandler(Path _directoryPath) {
 		directoryPath = _directoryPath;
+		userEfforts = retrieveEfforts();
 	}
 	
-	public void storeEffort(Effort effort) {
+	// returns an arraylist for each file in the current user's effort folder
+	public ArrayList<Effort> retrieveEfforts() {
+		ArrayList<Effort> efforts = new ArrayList<>();
 		// get hashed username
 		Login loginSession = EffortLogger.getInstance().getLogin();
 		String hashedUsername = loginSession.getHashedUsername();
 		
 		// navigate to directory for this user's effort logs
-		Path userDirectoryPath = Paths.get(directoryPath + hashedUsername + "\\");
+		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
-		// if user doesn't have a directory, make one
-		if (Files.notExists(userDirectoryPath)) {
-			userDirectoryPath.toFile().mkdir();
+		try {
+			// if the effortlogger data path does not exist, make it
+			if (Files.notExists(directoryPath)) {
+				Files.createDirectories(directoryPath);
+			}
+			
+			// if user doesn't have a directory, make one
+			if (Files.notExists(userDirectoryPath)) {
+				Files.createDirectories(userDirectoryPath);
+				return efforts;
+			}
+			
+			// populate array of user efforts
+			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
+			for (Path filePath : directoryStream) {
+				userEfforts.add(Effort.constructFromCSVFile(filePath));
+			}
+    		
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		return efforts;
+	}
+	
+	public void storeEfforts(ArrayList<Effort> efforts) {
+		// get hashed username
+		Login loginSession = EffortLogger.getInstance().getLogin();
+		String hashedUsername = loginSession.getHashedUsername();
+		
+		// navigate to directory for this user's effort logs
+		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
+		
+		for (Effort effort : efforts) {
+			String effortFileName = "E " + effort.getUUID().toString();
+			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
+			String effortCSV = effort.toCSVData();
+			
+			try {
+	            Files.write(file, effortCSV.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
 		}
 		
 		// calculate the new effort file's name based on how many efforts this user already has
-		String effortFileName = hashedUsername;
-		int effortCount = 0;
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath)) {
-			// for each file's respective path in the user's directory
-            for (Path filePath : directoryStream) {
-            	String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
-            	
-            	// get the section of the filename representing the username hash of its creator
-            	String fileHash = fileName.substring(0, fileName.indexOf('_'));
-            	
-            	// compare the effort's user to the user of the file's creator
-            	if (fileHash.equals(hashedUsername)) {
-            		// if match, incremenmt effort count of that user
-            		effortCount++;
-            	}
-            }
-            
-            // append file number to file name
-            effortFileName += "_" + effortCount + ".csv";
-            
-            // delete effort if already exists, like in the case of editing an effort.
-            File effortFile = new File(directoryPath.toString() + effortFileName);
-            Files.deleteIfExists(effortFile.toPath());
-            
-            // create file
-    		effortFile = Files.createFile(Paths.get(directoryPath.toString() + effortFileName)).toFile();
-    		
-    		// generate and encrypt effort's CSV data.
-    		String effortCSV = effort.toCSVData();
+		try {
+			// if user doesn't have a directory, make one
+			if (Files.notExists(userDirectoryPath)) {
+				Files.createDirectories(userDirectoryPath);
+			}
+			
+			// directory stream for the user's directory
+			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
+			
+			for (Path filePath : directoryStream) {
+				
+			}
     		
         } catch (IOException e) {
             e.printStackTrace();
         }
 	}
 	
-	public static SecretKey generateAESKey() throws Exception {
-        SecureRandom secureRandom = new SecureRandom();
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(256, secureRandom);
-        return keyGenerator.generateKey();
-    }
-
-    public static String encryptAES(String plainText, SecretKey secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-
-        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
-        return new String(encryptedBytes);
-    }
+	public void addToUpdatedEfforts(Effort e) {
+		updatedEfforts.add(e);
+	}
+	
+	public ArrayList<Effort> getUpdatedEfforts() {
+		return updatedEfforts;
+	}
 }
 
 

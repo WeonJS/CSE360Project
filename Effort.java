@@ -1,18 +1,25 @@
 package CSE360Project;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Effort {
 	private String lifeCycleStep;
 	private String projectType;
 	private String effortCategory;
 	private String deliverableType;
+	
+	// hashed username
 	private final String userID;
 	
 	private int duration;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
-	
+	private UUID effortID;
 	
 	public Effort(String username, LocalDateTime _startTime, LocalDateTime _endTime, String _lifeCycleStep, String _projectType, String _effortCategory, String _deliverableType) {
 		userID = username;
@@ -24,6 +31,7 @@ public class Effort {
 		projectType = _projectType;
 		effortCategory = _effortCategory;
 		deliverableType = _deliverableType;
+		effortID = UUID.randomUUID();
 	}
 	
 	public int getDuration() {
@@ -86,6 +94,20 @@ public class Effort {
 		return userID;
 	}
 	
+	public UUID getEffortID() {
+		return effortID;
+	}
+	
+	public void setUUID(UUID id) {
+		effortID = id;
+	}
+	
+	public UUID getUUID() {
+		return effortID;
+	}
+	
+	
+	
 	@Override 
 	public String toString() {
 		String result = "\nUsername " + userID
@@ -95,7 +117,8 @@ public class Effort {
 						+ "\nLifeCycleStep: " + lifeCycleStep
 						+ "\nProjectType: " + projectType
 						+ "\nEffortCategory: " + effortCategory
-						+ "\nDeliverableType: " + deliverableType;
+						+ "\nDeliverableType: " + deliverableType
+						+ "\nEffortID: " + effortID;
 						
 		return result;
 	}
@@ -112,8 +135,68 @@ public class Effort {
 		data += String.format("lifeCycleStep,%s\n", lifeCycleStep);
 		data += String.format("projectType,%s\n", projectType);
 		data += String.format("effortCategory,%s\n", effortCategory);
-		data += String.format("deliverableType,%s", deliverableType);
+		data += String.format("deliverableType,%s\n", deliverableType);
+		data += String.format("effortID,%s", effortID.toString());
 		
 		return data;
+	}
+	
+	// constructs an Effort object from a csv file
+	public static Effort constructFromCSVFile(Path csvPath) {
+		String username = null;
+		LocalDateTime start = null;
+		LocalDateTime end = null;
+		String lifeCycle = null;
+		String project = null;
+		String category = null;
+		String deliverable = null;
+		UUID id = null;
+		int dur = 0;
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(csvPath.toString()))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				int commaIndex = line.indexOf(",");
+				String field = line.substring(0, commaIndex);
+				String value = line.substring(commaIndex + 1, line.length());
+				switch (field) {
+					case "userID":
+						username = value;
+						break;
+					case "startTime":
+						start = LocalDateTime.parse(value);
+						break;
+					case "endTime":
+						end = LocalDateTime.parse(value);
+						break;
+					case "duration":
+						dur = Integer.parseInt(value);
+						break;
+					case "lifeCycleStep":
+						lifeCycle = value;
+						break;
+					case "projectType":
+						project = value;
+						break;
+					case "effortCategory":
+						category = value;
+						break;
+					case "deliverableType":
+						deliverable = value;
+						break;
+					case "effortID":
+						id = UUID.fromString(value);
+						break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Effort effort = new Effort(username, start, end, lifeCycle, project, category, deliverable);
+		effort.setUUID(id);
+		effort.setDuration(dur);
+		
+		return effort;
 	}
 }
