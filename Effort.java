@@ -13,6 +13,7 @@ public class Effort {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
+	
 	public Effort(String username, LocalDateTime _startTime, LocalDateTime _endTime, String _lifeCycleStep, String _projectType, String _effortCategory, String _deliverableType) {
 		userID = username;
 		startTime = _startTime;
@@ -80,6 +81,11 @@ public class Effort {
 	public void setDeliverableType(String value) {
 		deliverableType = value;
 	}
+	
+	public String getUserID() {
+		return userID;
+	}
+	
 	@Override 
 	public String toString() {
 		String result = "\nUsername " + userID
@@ -94,12 +100,20 @@ public class Effort {
 		return result;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	// returns data of this effort in CSV format
+	public String toCSVData() {
+		String data = "";
+		
+		// add all fields as CSV listings
+		data += String.format("userID,%s\n", userID);
+		data += String.format("startTime,%s\n", startTime);
+		data += String.format("endTime,%s\n", endTime);
+		data += String.format("duration,%d\n", duration);
+		data += String.format("lifeCycleStep,%s\n", lifeCycleStep);
+		data += String.format("projectType,%s\n", projectType);
+		data += String.format("effortCategory,%s\n", effortCategory);
+		data += String.format("deliverableType,%s", deliverableType);
+		
+		return data;
+	}
 }
