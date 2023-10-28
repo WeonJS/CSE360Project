@@ -112,8 +112,9 @@ public class Controller implements Initializable{
 			Effort newEffort = new Effort(loggedUser, startTime, endTime, lifeCycleComboBox.getValue(), 
 										  projectComboBox.getValue(), effortCatComboBox.getValue(), 
 										  deliverableComboBox.getValue());
-			System.out.print(newEffort);
 			
+			// add the new effort to the updated effort list
+			EffortLogger.getInstance().getDataHandler().addToUpdatedEfforts(newEffort);
 		}
 		else {
 			if(cleanInput) {

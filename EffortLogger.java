@@ -29,6 +29,7 @@ public class EffortLogger extends Application {
 		else
 			return;
 		
+		// these should run after the user logs in successfully
 		loginSession = new Login("lol nick do ur part", "abc123");
 		dataHandler = new DataHandler(Paths.get(documentsPath));
 		
@@ -60,4 +61,7 @@ public class EffortLogger extends Application {
 		return loginSession;
 	}
 	
+	public DataHandler getDataHandler() {
+		return dataHandler;
+	}
 }

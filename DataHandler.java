@@ -1,18 +1,11 @@
 package CSE360Project;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class DataHandler {
@@ -38,6 +31,7 @@ public class DataHandler {
 		String hashedUsername = loginSession.getHashedUsername();
 		
 		// navigate to directory for this user's effort logs
+		System.out.println(directoryPath.toString()+hashedUsername);
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
 		try {
@@ -57,6 +51,7 @@ public class DataHandler {
 			for (Path filePath : directoryStream) {
 				userEfforts.add(Effort.constructFromCSVFile(filePath));
 			}
+			System.out.println("Loaded " + userEfforts.size() + " efforts for this user.");
     		
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,24 +79,6 @@ public class DataHandler {
 	            e.printStackTrace();
 	        }
 		}
-		
-		// calculate the new effort file's name based on how many efforts this user already has
-		try {
-			// if user doesn't have a directory, make one
-			if (Files.notExists(userDirectoryPath)) {
-				Files.createDirectories(userDirectoryPath);
-			}
-			
-			// directory stream for the user's directory
-			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
-			
-			for (Path filePath : directoryStream) {
-				
-			}
-    		
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 	}
 	
 	public void addToUpdatedEfforts(Effort e) {
