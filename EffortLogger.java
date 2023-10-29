@@ -1,5 +1,6 @@
 package CSE360Project;
 	
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.swing.filechooser.FileSystemView;
@@ -19,7 +20,7 @@ public class EffortLogger extends Application {
 	private static EffortLogger instance;
 	
 	private Login loginSession;
-	private DataHandler dataHandler;
+	private EffortDataHandler effortDataHandler;
 	private String documentsPath;
 		
 	@Override
@@ -36,8 +37,10 @@ public class EffortLogger extends Application {
 			return;
 		
 		// these should run after the user logs in successfully
+		
 		loginSession = new Login("lol nick do ur part", "abc123");
-		dataHandler = new DataHandler(Paths.get(documentsPath));
+		effortDataHandler = new EffortDataHandler(Paths.get(documentsPath));
+		
 		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -47,7 +50,7 @@ public class EffortLogger extends Application {
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
 					// update/create the updated/created efforts in the file system
-					dataHandler.storeEfforts(dataHandler.getUpdatedEfforts());
+					effortDataHandler.storeEfforts(effortDataHandler.getUpdatedEfforts());
 	          	}
 			});
 		} catch(Exception e) {
@@ -67,7 +70,12 @@ public class EffortLogger extends Application {
 		return loginSession;
 	}
 	
-	public DataHandler getDataHandler() {
-		return dataHandler;
+	public EffortDataHandler getEffortDataHandler() {
+		System.out.println(effortDataHandler == null);
+		return effortDataHandler;
+	}
+	
+	public Path getRootDirectory() {
+		return Paths.get(documentsPath);
 	}
 }

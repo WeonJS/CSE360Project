@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-public class DataHandler {
+public class EffortDataHandler {
 	
 	private Path directoryPath;
 	
@@ -18,13 +18,13 @@ public class DataHandler {
 	// keeps track of all user efforts
 	private ArrayList<Effort> userEfforts = new ArrayList<>();
 	
-	public DataHandler(Path _directoryPath) {
-		directoryPath = _directoryPath;
+	public EffortDataHandler(Path _directoryPath) {
+		directoryPath = EffortLogger.getInstance().getRootDirectory();
 		userEfforts = retrieveEfforts();
 	}
 	
 	// returns an arraylist for each file in the current user's effort folder
-	public ArrayList<Effort> retrieveEfforts() {
+	private ArrayList<Effort> retrieveEfforts() {
 		ArrayList<Effort> efforts = new ArrayList<>();
 		// get hashed username
 		Login loginSession = EffortLogger.getInstance().getLogin();
@@ -97,6 +97,11 @@ public class DataHandler {
 		System.out.println("SIZE IS " + userEfforts.size());
 		return userEfforts;
 	}
+	
+	public Path getRootDirectory() {
+		return directoryPath;
+	}
+	
 }
 
 
