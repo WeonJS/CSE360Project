@@ -45,27 +45,27 @@ public class Controller implements Initializable{
 	@FXML
 	private Text projStatus; // to be used later cause i aint doin allat yet
 	@FXML
-	private Label successLabel = new Label();
+	private Label successLabel;
 	@FXML
-	private TextField defectEntry = new TextField();
+	private TextField defectEntry;
 	@FXML 
 	private Text defectNum;
 	@FXML
 	private Text saveStatus;
 	@FXML
-	private TextArea defectInfo = new TextArea();
+	private TextArea defectInfo;
 	@FXML
-	private Label editErrorLabel = new Label();
+	private Label editErrorLabel;
 	@FXML
 	private Label editSuccessLabel;
 	@FXML
-	private ListView<String> stepsInjected = new ListView<String>();
+	private ListView<String> stepsInjected;
 	@FXML
-	private ListView<String> stepsRemoved = new ListView<String>();
+	private ListView<String> stepsRemoved;
 	@FXML
-	private ListView<String> defectCat = new ListView<String>();
+	private ListView<String> defectCat;
 	@FXML
-	private TextField editDate = new TextField();
+	private TextField editDate;
 	@FXML
 	private TextField editStartTime;
 	@FXML
