@@ -168,7 +168,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void editEffort() {
+	void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
@@ -187,6 +187,28 @@ public class Controller implements Initializable{
 			editErrorLabel.setText("ERROR: One of the fields is left blank");
 			return false;
 		}
+		if(!sanitizeUserInput()) {
+			editSuccessLabel.setText("");
+			editErrorLabel.setText("ERROR: Invalid Input");
+		}
+		return true;
+	}
+	
+	boolean sanitizeUserInput() {
+		final int MAX_DATE_LENGTH = 10;
+		final int MAX_TIME_LENGTH = 8;
+		String dateValue = editDate.getText();
+		String startValue = editStartTime.getText();
+		String endValue = editEndTime.getText();
+		
+		if(dateValue.length() > MAX_DATE_LENGTH ||
+		   startValue.length() > MAX_TIME_LENGTH ||
+		   endValue.length() > MAX_TIME_LENGTH) 
+		{
+			return false;
+		}
+		
+		
 		return true;
 	}
 	
