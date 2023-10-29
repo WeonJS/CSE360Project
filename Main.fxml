@@ -49,14 +49,17 @@
                   <Label layoutX="14.0" layoutY="82.0" prefHeight="17.0" prefWidth="111.0" text="Date (yyyy-mm-dd)" />
                   <Label layoutX="239.0" layoutY="82.0" text="Start Time: (hh:mm:ss)" />
                   <Label layoutX="426.0" layoutY="82.0" text="End Time: (hh:mm:ss)" />
-                  <TextField layoutX="14.0" layoutY="108.0" />
-                  <TextField layoutX="220.0" layoutY="108.0" />
-                  <TextField layoutX="426.0" layoutY="108.0" />
+                  <TextField fx:id="editDate" layoutX="14.0" layoutY="108.0" />
+                  <TextField fx:id="editStartTime" layoutX="220.0" layoutY="108.0" />
+                  <TextField fx:id="editEndTime" layoutX="426.0" layoutY="108.0" />
                   <Label layoutX="14.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Life Cycle Step" />
                   <Label layoutX="244.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Effort Category" />
                   <ComboBox fx:id="lifeCycleComboBox2" layoutX="19.0" layoutY="200.0" prefWidth="150.0" />
                   <ComboBox fx:id="effortCatComboBox2" layoutX="220.0" layoutY="200.0" prefWidth="150.0" />
                   <ComboBox fx:id="editEffortComboBox" layoutX="19.0" layoutY="43.0" prefHeight="26.0" prefWidth="452.0" />
+                  <Button layoutX="184.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#editEffort" prefHeight="26.0" prefWidth="223.0" text="Edit" />
+                  <Label fx:id="editErrorLabel" alignment="CENTER" layoutX="191.0" layoutY="311.0" prefHeight="22.0" prefWidth="219.0" />
+                  <Label fx:id="editSuccessLabel" layoutX="191.0" layoutY="348.0" prefHeight="22.0" prefWidth="219.0" />
                </children></AnchorPane>
         </content>
       </Tab>

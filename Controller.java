@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class Controller implements Initializable{
 
@@ -32,6 +33,16 @@ public class Controller implements Initializable{
 	private Label errorLabel = new Label();
 	@FXML
 	private Label successLabel = new Label();
+	@FXML
+	private Label editErrorLabel = new Label();
+	@FXML
+	private Label editSuccessLabel = new Label();
+	@FXML
+	private TextField editDate = new TextField();
+	@FXML
+	private TextField editStartTime = new TextField();
+	@FXML
+	private TextField editEndTime = new TextField();
 	
 	private boolean effortInProgress = false;
 	
@@ -156,6 +167,28 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
+	@FXML
+	void editEffort() {
+		if(sanitizeEditEffort()) {
+			editSuccessLabel.setText("Effort successfully editted");
+			editErrorLabel.setText("");
+		}
+	}
+	
+	boolean sanitizeEditEffort() {
+		if(effortCatComboBox2.getValue() == null ||
+		   lifeCycleComboBox2.getValue() == null ||
+		   editEffortComboBox.getValue() == null ||
+		   editDate.getText() == null ||
+		   editStartTime.getText() == null ||
+		   editEndTime.getText() == null)   
+		{
+			editSuccessLabel.setText("");
+			editErrorLabel.setText("ERROR: One of the fields is left blank");
+			return false;
+		}
+		return true;
+	}
 	
 	
 }
