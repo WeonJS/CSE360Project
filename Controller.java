@@ -283,7 +283,7 @@ public class Controller implements Initializable{
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
 			
-			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			//EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 			
 			
 			
