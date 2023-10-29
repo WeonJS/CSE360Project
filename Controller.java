@@ -205,7 +205,10 @@ public class Controller implements Initializable{
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
-			
+			String startTime = editEffortComboBox.getValue();
+			System.out.print("Value: " + startTime + "\n");
+			LocalDateTime start = LocalDateTime.parse(startTime);
+			System.out.print(EffortLogger.getInstance().getEffortDataHandler().getEffort(start));
 		}
 	}
 	
