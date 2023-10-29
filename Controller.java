@@ -263,10 +263,31 @@ public class Controller implements Initializable{
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
-			String startTime = editEffortComboBox.getValue();
-			System.out.print("Value: " + startTime + "\n");
-			LocalDateTime start = LocalDateTime.parse(startTime);
-			System.out.print(EffortLogger.getInstance().getEffortDataHandler().getEffort(start));
+			String startTime = editEffortComboBox.getValue();				//find the effort object by its start time
+			LocalDateTime oldStartTime = LocalDateTime.parse(startTime);
+			Effort oldEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(oldStartTime);
+			//construct new start time and end time
+			String updatedStartTime = editDate.getText() + "T" + editStartTime.getText();
+			String updatedEndTime = editDate.getText() + "T" + editEndTime.getText();
+			LocalDateTime newStartTime = LocalDateTime.parse(updatedStartTime);
+			LocalDateTime newEndTime = LocalDateTime.parse(updatedEndTime);
+			//grab comboBox updated info
+			String updatedLifeCycleStep = lifeCycleComboBox2.getValue();
+			String updatedEffortCat = effortCatComboBox2.getValue();
+			
+			Effort editedEffort = new Effort(oldEffort.getUserID(), 
+											  newStartTime, 
+											  newEndTime, 
+											  updatedLifeCycleStep,
+											  oldEffort.getProjectType(),
+											  updatedEffortCat,
+											  oldEffort.getDeliverableType());
+			
+			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			
+			
+			
+			
 		}
 	}
 	
