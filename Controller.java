@@ -13,7 +13,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -41,13 +43,29 @@ public class Controller implements Initializable{
 	@FXML
 	private Label errorLabel;
 	@FXML
-	private Label successLabel;
+	private Text projStatus; // to be used later cause i aint doin allat yet
 	@FXML
-	private Label editErrorLabel;
+	private Label successLabel = new Label();
+	@FXML
+	private TextField defectEntry = new TextField();
+	@FXML 
+	private Text defectNum;
+	@FXML
+	private Text saveStatus;
+	@FXML
+	private TextArea defectInfo = new TextArea();
+	@FXML
+	private Label editErrorLabel = new Label();
 	@FXML
 	private Label editSuccessLabel;
 	@FXML
-	private TextField editDate;
+	private ListView<String> stepsInjected = new ListView<String>();
+	@FXML
+	private ListView<String> stepsRemoved = new ListView<String>();
+	@FXML
+	private ListView<String> defectCat = new ListView<String>();
+	@FXML
+	private TextField editDate = new TextField();
 	@FXML
 	private TextField editStartTime;
 	@FXML
@@ -64,6 +82,7 @@ public class Controller implements Initializable{
 	private Text loginMessage;
 	
 	private boolean effortInProgress = false;
+
 	
 	//private String loggedUser = "jmattoka"; 
 	
@@ -121,7 +140,46 @@ public class Controller implements Initializable{
 	    		"Reflection",
 	    		"Repository Update"));
 	    effortCatComboBox2.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
-	    
+	    stepsInjected.setItems(FXCollections.observableArrayList(
+	    		"Problem Understanding", 
+	    		"Conceptual Design Plan", 
+	    		"Requirements", 
+	    		"Conceptual Design",
+	    		"Conceptual Design Review",
+	    		"Conceptual Design Plan",
+	    		"Conceptual Design/Prototype",
+	    		"Detailed Design Review",
+	    		"Implementation Plan",
+	    		"Test Case Generation",
+	    		"Solution Specification",
+	    		"Solution Review",
+	    		"Solution Implementation"));
+	    stepsRemoved.setItems(FXCollections.observableArrayList(
+	    		"Problem Understanding", 
+	    		"Conceptual Design Plan", 
+	    		"Requirements", 
+	    		"Conceptual Design",
+	    		"Conceptual Design Review",
+	    		"Conceptual Design Plan",
+	    		"Conceptual Design/Prototype",
+	    		"Detailed Design Review",
+	    		"Implementation Plan",
+	    		"Test Case Generation",
+	    		"Solution Specification",
+	    		"Solution Review",
+	    		"Solution Implementation"));
+	    defectCat.setItems(FXCollections.observableArrayList(
+	    		"Not Specified",
+	    		"10 Documentation",
+	    		"20 Syntax",
+	    		"30 Build, Package",
+	    		"40 Assignment",
+	    		"50 something idk",
+	    		"60 Checking",
+	    		"70 Data",
+	    		"80 Function",
+	    		"90 System",
+	    		"100 Environment"));
 	    loggedInView.setVisible(false);
 	    loginView.setVisible(true);
 	    

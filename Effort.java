@@ -180,3 +180,4 @@ public class Effort {
 		return effort;
 	}
 }
+
