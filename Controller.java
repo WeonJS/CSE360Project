@@ -30,6 +30,10 @@ public class Controller implements Initializable{
 	@FXML
 	private ComboBox<String> editEffortComboBox = new ComboBox<String>();
 	@FXML
+	private ComboBox<String> dropDown_Defects = new ComboBox<String>();
+	@FXML
+	private Label projDefectsLabel = new Label();
+	@FXML
 	private Label errorLabel = new Label();
 	@FXML
 	private Label successLabel = new Label();
@@ -83,6 +87,7 @@ public class Controller implements Initializable{
 	    		"Draft Report",
 	    		"User Defined",
 	    		"Other"));
+	    dropDown_Defects.setItems(FXCollections.observableArrayList("Development Project", "Business Project"));
 	    lifeCycleComboBox2.setItems(FXCollections.observableArrayList(
 	    		"Problem Understanding",
 	    		"Conceptual Design Plan",
