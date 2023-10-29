@@ -78,7 +78,7 @@ public class EffortDataHandler {
 			
 			// write data to path
 			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
-			FileDirectory.writeToPath(file, effortCSV);
+			FileDirectory.writeToFile(file, effortCSV);
 		}
 		
 		return true;
@@ -113,6 +113,7 @@ public class EffortDataHandler {
 		
 		return null;
 	}
+	
 	
 }
 

@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FileDirectory {
@@ -27,6 +28,13 @@ public class FileDirectory {
     	return false;
     }
     
+    public static boolean fileExists(Path p) {
+    	if (Files.exists(p)) {
+			return true;
+		}
+    	return false;
+    }
+    
     public static boolean deleteFolder(Path p) {
     	try {
     		if (Files.exists(p)) {
@@ -39,7 +47,8 @@ public class FileDirectory {
     	return false;
     }
     
-    public static boolean writeToPath(Path p, String data) {
+    // overrides the content of the file with the given string data.
+    public static boolean writeToFile(Path p, String data) {
     	try {
             Files.write(p, data.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             return true;
@@ -47,6 +56,16 @@ public class FileDirectory {
             e.printStackTrace();
         }
     	return false;
+    }
+    
+    public static List<String> getFileLines(Path p) {
+    	try {
+    		return Files.readAllLines(p);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    	
     }
 
 }

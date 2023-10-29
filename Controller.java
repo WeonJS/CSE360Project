@@ -270,7 +270,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	private boolean sanitizeCreateEffortData(){
+	private boolean sanitizeCreateEffortData() {
 		if(projectComboBox.getValue() == null || 
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 
