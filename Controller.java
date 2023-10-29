@@ -23,53 +23,53 @@ import javafx.scene.text.Text;
 public class Controller implements Initializable{
 
 	@FXML
-	private ComboBox<String> projectComboBox = new ComboBox<String>();
+	private ComboBox<String> projectComboBox;
 	@FXML
-	private ComboBox<String> lifeCycleComboBox = new ComboBox<String>();
+	private ComboBox<String> lifeCycleComboBox;
 	@FXML
-	private ComboBox<String> effortCatComboBox = new ComboBox<String>();
+	private ComboBox<String> effortCatComboBox;
 	@FXML
-	private ComboBox<String> deliverableComboBox = new ComboBox<String>();
+	private ComboBox<String> deliverableComboBox;
 	@FXML
-	private ComboBox<String> lifeCycleComboBox2 = new ComboBox<String>();
+	private ComboBox<String> lifeCycleComboBox2;
 	@FXML
-	private ComboBox<String> effortCatComboBox2 = new ComboBox<String>();
+	private ComboBox<String> effortCatComboBox2;
 	@FXML
-	private ComboBox<String> editEffortComboBox = new ComboBox<String>();
+	private ComboBox<String> editEffortComboBox;
 	@FXML
-	private ComboBox<String> dropDown_Defects = new ComboBox<String>();
+	private ComboBox<String> dropDown_Defects;
 	@FXML
-	private Label projDefectsLabel = new Label();
+	private Label projDefectsLabel;
 	@FXML
-	private Label errorLabel = new Label();
+	private Label errorLabel;
 	@FXML
 	private Text projStatus; // to be used later cause i aint doin allat yet
 	@FXML
-	private Label successLabel = new Label();
+	private Label successLabel;
 	@FXML
-	private TextField defectEntry = new TextField();
+	private TextField defectEntry;
 	@FXML 
 	private Text defectNum;
 	@FXML
 	private Text saveStatus;
 	@FXML
-	private TextArea defectInfo = new TextArea();
+	private TextArea defectInfo;
 	@FXML
-	private Label editErrorLabel = new Label();
+	private Label editErrorLabel;
 	@FXML
-	private Label editSuccessLabel = new Label();
+	private Label editSuccessLabel;
 	@FXML
-	private ListView<String> stepsInjected = new ListView<String>();
+	private ListView<String> stepsInjected;
 	@FXML
-	private ListView<String> stepsRemoved = new ListView<String>();
+	private ListView<String> stepsRemoved;
 	@FXML
-	private ListView<String> defectCat = new ListView<String>();
+	private ListView<String> defectCat;
 	@FXML
-	private TextField editDate = new TextField();
+	private TextField editDate;
 	@FXML
-	private TextField editStartTime = new TextField();
+	private TextField editStartTime;
 	@FXML
-	private TextField editEndTime = new TextField();
+	private TextField editEndTime;
 	@FXML
 	private TabPane loggedInView;
 	@FXML
@@ -266,14 +266,35 @@ public class Controller implements Initializable{
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
-			String startTime = editEffortComboBox.getValue();
-			System.out.print("Value: " + startTime + "\n");
-			LocalDateTime start = LocalDateTime.parse(startTime);
-			System.out.print(EffortLogger.getInstance().getEffortDataHandler().getEffort(start));
+			String startTime = editEffortComboBox.getValue();				//find the effort object by its start time
+			LocalDateTime oldStartTime = LocalDateTime.parse(startTime);
+			Effort oldEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(oldStartTime);
+			//construct new start time and end time
+			String updatedStartTime = editDate.getText() + "T" + editStartTime.getText();
+			String updatedEndTime = editDate.getText() + "T" + editEndTime.getText();
+			LocalDateTime newStartTime = LocalDateTime.parse(updatedStartTime);
+			LocalDateTime newEndTime = LocalDateTime.parse(updatedEndTime);
+			//grab comboBox updated info
+			String updatedLifeCycleStep = lifeCycleComboBox2.getValue();
+			String updatedEffortCat = effortCatComboBox2.getValue();
+			
+			Effort editedEffort = new Effort(oldEffort.getUserID(), 
+											  newStartTime, 
+											  newEndTime, 
+											  updatedLifeCycleStep,
+											  oldEffort.getProjectType(),
+											  updatedEffortCat,
+											  oldEffort.getDeliverableType());
+			
+			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			
+			
+			
+			
 		}
 	}
 	
-	private boolean sanitizeCreateEffortData(){
+	private boolean sanitizeCreateEffortData() {
 		if(projectComboBox.getValue() == null || 
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 

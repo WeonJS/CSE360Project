@@ -23,26 +23,21 @@ public class EffortDataHandler {
 		directoryPath = EffortLogger.getInstance().getDataPathDirectory();
 	}
 	
-	// returns an arraylist for each file in the current user's effort folder
-	public void retrieveEfforts() {
+	// retrieves and decrypts all the user's efforts and stores them into userEfforts arraylist.
+	public boolean retrieveEfforts() {
 		// get hashed username
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		String hashedUsername = loginSession.getHashedUser();
 		
 		// navigate to directory for this user's effort logs
-		System.out.println(directoryPath.toString()+hashedUsername);
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
 		try {
 			// if the effortlogger data path does not exist, make it
-			if (Files.notExists(directoryPath)) {
-				Files.createDirectories(directoryPath);
-			}
+			FileDirectory.createFolder(directoryPath);
 			
 			// if user doesn't have a directory, make one
-			if (Files.notExists(userDirectoryPath)) {
-				Files.createDirectories(userDirectoryPath);
-			}
+			FileDirectory.createFolder(userDirectoryPath);
 			
 			// populate array of user efforts
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
@@ -50,18 +45,21 @@ public class EffortDataHandler {
 				userEfforts.add(Effort.constructFromCSVFile(filePath));
 			}
 			System.out.println("Loaded " + userEfforts.size() + " efforts for this user.");
-    		
+    		return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+		
+		return false;
 	}
 	
-	public void storeEfforts(ArrayList<Effort> efforts) {
+	// stores runtime efforts of user which have been altered/created.
+	public boolean storeEfforts(ArrayList<Effort> efforts) {
 		// get hashed username
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		
 		if (loginSession == null)
-			return;
+			return false;
 		
 		String hashedUsername = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
 		
@@ -69,17 +67,21 @@ public class EffortDataHandler {
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
 		for (Effort effort : efforts) {
+			// uses the effort start date to uniquely identify each effort file name
 			String effortIdentifier = effort.getStartTime().toString().replaceAll(":", "_");
+			
+			// "E" flag identifies that it is an effort
 			String effortFileName = "E " + effortIdentifier;
-			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
+			
+			// convert class data to CSV string
 			String effortCSV = effort.toCSVData();
 			
-			try {
-	            Files.write(file, effortCSV.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+			// write data to path
+			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
+			FileDirectory.writeToFile(file, effortCSV);
 		}
+		
+		return true;
 	}
 	
 	public void addToUpdatedEfforts(Effort e) {
@@ -111,6 +113,7 @@ public class EffortDataHandler {
 		
 		return null;
 	}
+	
 	
 }
 
