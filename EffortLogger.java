@@ -20,10 +20,16 @@ public class EffortLogger extends Application {
 	
 	private Login loginSession;
 	private DataHandler dataHandler;
-	private final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\EffortLogger\\data\\";
-	
+	private String documentsPath;
+		
 	@Override
 	public void start(Stage primaryStage) {
+		if(System.getProperty("os.name").equals("Mac OS X")) {
+			documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/Documents/EffortLogger/data/";
+		}
+		else 
+			documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\EffortLogger\\data\\";
+		
 		if (instance == null)
 			instance = this;
 		else

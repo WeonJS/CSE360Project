@@ -2,6 +2,7 @@ package CSE360Project;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -25,6 +26,8 @@ public class Controller implements Initializable{
 	private ComboBox<String> lifeCycleComboBox2 = new ComboBox<String>();
 	@FXML
 	private ComboBox<String> effortCatComboBox2 = new ComboBox<String>();
+	@FXML
+	private ComboBox<String> editEffortComboBox = new ComboBox<String>();
 	@FXML
 	private Label errorLabel = new Label();
 	@FXML
@@ -88,6 +91,13 @@ public class Controller implements Initializable{
 	    		"Repository Update"));
 	    effortCatComboBox2.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
 	    
+	    ArrayList<Effort> userEffort = EffortLogger.getInstance().getDataHandler().getUserEffortArray();
+	    System.out.print(userEffort.size());
+	    ArrayList<String> displayData = new ArrayList<String>();
+	    for(Effort i: userEffort) {
+	    	displayData.add(i.getStartTime().toString());
+	    }
+	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
 	}
 	@FXML
 	void startEffort(Event e) {
@@ -115,6 +125,14 @@ public class Controller implements Initializable{
 			
 			// add the new effort to the updated effort list
 			EffortLogger.getInstance().getDataHandler().addToUpdatedEfforts(newEffort);
+			EffortLogger.getInstance().getDataHandler().addToUserEfforts(newEffort);
+			
+		    ArrayList<Effort> userEffort = EffortLogger.getInstance().getDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
 		}
 		else {
 			if(cleanInput) {
@@ -136,6 +154,7 @@ public class Controller implements Initializable{
 		
 		return true;
 	}
+	
 	
 	
 }
