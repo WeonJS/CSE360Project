@@ -34,16 +34,8 @@ public class LoginDataHandler {
 		else 
 			loginDataPath = Paths.get(EffortLogger.getInstance().getRootDirectory() + "\\logins\\");
     	
-    	try {
-			// if the login data path does not exist, make it
-    		System.out.println(loginDataPath);
-    		if (Files.notExists(loginDataPath)) {
-				Files.createDirectories(loginDataPath);
-				
-			}
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	// create logins folder if it doesnt exist
+    	FileDirectory.createFolder(loginDataPath);
     	
         // username requirements: 
         // between 8 and 16 characters long; 
@@ -94,43 +86,30 @@ public class LoginDataHandler {
     
     public boolean existingUsername(String username) {
     	Path loginFilePath = Paths.get(loginDataPath.toString(), hash(username));
-		if (Files.exists(loginFilePath)) {
-			return true;
-		}
-		return false;
+		return FileDirectory.fileExists(loginFilePath);
     }
     
     public boolean addUser(String username, String password) {
     	String hashedUser = hash(username);
     	String hashedPass = hash(password);
-    	try {
-    		Path loginFilePath = Paths.get(loginDataPath.toString(), hashedUser);
-    		System.out.println("WROTE " + username);
-    		Files.write(loginFilePath, hashedPass.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-    		return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+    	Path loginFilePath = Paths.get(loginDataPath.toString(), hashedUser);
+		
+		return FileDirectory.writeToFile(loginFilePath, hashedPass);
     }
     
     public boolean validateLogin(String username, String password) {
     	String hashedUsername = hash(username);
     	String hashedPassword = hash(password);
     	Path userLoginPath = Paths.get(loginDataPath.toString(), hashedUsername);
-    	try {
+    	
+    	// match the login details to the file
+    	if (FileDirectory.fileExists(userLoginPath)) {
     		String storedPassword;
-    		if (Files.exists(userLoginPath)) {
-    			List<String> loginFileLines = Files.readAllLines(userLoginPath);
-        		if (loginFileLines.size() > 0) {
-            		storedPassword = loginFileLines.get(0);
-            		if (storedPassword.equals(hashedPassword)) {
-            			return true;
-            		}
-            	}
-    		}
-    	} catch (IOException e) {
-    		e.printStackTrace();
+    		List<String> loginFileLines = FileDirectory.getFileLines(userLoginPath);
+    		if (loginFileLines.size() > 0) {
+        		storedPassword = loginFileLines.get(0);
+        		return storedPassword.equals(hashedPassword);
+        	}
     	}
     	return false;
     }

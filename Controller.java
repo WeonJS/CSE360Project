@@ -80,6 +80,8 @@ public class Controller implements Initializable{
 	private TextField passwordField;
 	@FXML
 	private Text loginMessage;
+	@FXML
+	private ComboBox<String> selectDefectCombo = new ComboBox<String>();
 	
 	private boolean effortInProgress = false;
 
@@ -88,6 +90,7 @@ public class Controller implements Initializable{
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	private String newDefect;
 	
 	
 	@Override
@@ -291,7 +294,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	private boolean sanitizeCreateEffortData(){
+	private boolean sanitizeCreateEffortData() {
 		if(projectComboBox.getValue() == null || 
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 
@@ -368,6 +371,13 @@ public class Controller implements Initializable{
 	    	displayData.add(i.getStartTime().toString());
 	    }
 	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+	}
+	
+	@FXML
+	boolean createDefect(Event e) {
+		newDefect = "-new defect-";
+		selectDefectCombo.getItems().add(newDefect);
+		return true;
 	}
 	
 }

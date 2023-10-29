@@ -93,8 +93,6 @@ public class Effort {
 	}
 	
 	
-	
-	
 	@Override 
 	public String toString() {
 		String result = "\nUsername " + userID
