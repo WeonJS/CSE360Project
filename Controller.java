@@ -132,6 +132,7 @@ public class Controller implements Initializable{
 		    for(Effort i: userEffort) {
 		    	displayData.add(i.getStartTime().toString());
 		    }
+		    
 		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
 		}
 		else {
