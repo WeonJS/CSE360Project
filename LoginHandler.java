@@ -1,4 +1,4 @@
-package LoginHandler;
+package CSE360Project;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -68,7 +68,6 @@ public class LoginHandler extends Application {
         passwordField.setPromptText("Password");
         Button loginButton = new Button("Login");
         loginButton.getStyleClass().add("login-button");
-        
         
         createLabel.setOnMouseClicked(event -> {
         	this.tabPane = (TabPane) createLabel.getScene().getRoot();
