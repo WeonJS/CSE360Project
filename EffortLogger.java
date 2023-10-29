@@ -1,5 +1,6 @@
 package CSE360Project;
 	
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.swing.filechooser.FileSystemView;
@@ -36,8 +37,10 @@ public class EffortLogger extends Application {
 			return;
 		
 		// these should run after the user logs in successfully
+		
 		loginSession = new Login("lol nick do ur part", "abc123");
 		effortDataHandler = new EffortDataHandler(Paths.get(documentsPath));
+		
 		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -68,6 +71,11 @@ public class EffortLogger extends Application {
 	}
 	
 	public EffortDataHandler getEffortDataHandler() {
+		System.out.println(effortDataHandler == null);
 		return effortDataHandler;
+	}
+	
+	public Path getRootDirectory() {
+		return Paths.get(documentsPath);
 	}
 }

@@ -102,7 +102,7 @@ public class Controller implements Initializable{
 	    		"Repository Update"));
 	    effortCatComboBox2.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
 	    
-	    ArrayList<Effort> userEffort = EffortLogger.getInstance().getDataHandler().retrieveEfforts();
+	    ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 	    System.out.print(userEffort.size());
 	    ArrayList<String> displayData = new ArrayList<String>();
 	    for(Effort i: userEffort) {
@@ -135,10 +135,10 @@ public class Controller implements Initializable{
 										  deliverableComboBox.getValue());
 			
 			// add the new effort to the updated effort list
-			EffortLogger.getInstance().getDataHandler().addToUpdatedEfforts(newEffort);
-			EffortLogger.getInstance().getDataHandler().addToUserEfforts(newEffort);
+			EffortLogger.getInstance().getEffortDataHandler().addToUpdatedEfforts(newEffort);
+			EffortLogger.getInstance().getEffortDataHandler().addToUserEfforts(newEffort);
 			
-		    ArrayList<Effort> userEffort = EffortLogger.getInstance().getDataHandler().getUserEffortArray();
+		    ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		    ArrayList<String> displayData = new ArrayList<String>();
 		    for(Effort i: userEffort) {
 		    	displayData.add(i.getStartTime().toString());
