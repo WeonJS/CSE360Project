@@ -91,7 +91,7 @@ public class Controller implements Initializable{
 	    		"Repository Update"));
 	    effortCatComboBox2.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
 	    
-	    ArrayList<Effort> userEffort = EffortLogger.getInstance().getDataHandler().getUserEffortArray();
+	    ArrayList<Effort> userEffort = EffortLogger.getInstance().getDataHandler().retrieveEfforts();
 	    System.out.print(userEffort.size());
 	    ArrayList<String> displayData = new ArrayList<String>();
 	    for(Effort i: userEffort) {
