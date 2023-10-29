@@ -4,6 +4,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -63,7 +65,7 @@ public class Controller implements Initializable{
 	
 	private boolean effortInProgress = false;
 	
-	private String loggedUser = "jmattoka";
+	//private String loggedUser = "jmattoka"; 
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
@@ -145,6 +147,8 @@ public class Controller implements Initializable{
 			errorLabel.setText("");
 			successLabel.setText("Effort ended at " + endTime);
 			//CREATE THE OBJECT
+			String loggedUser = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser(); //identifier of effort creator
+			System.out.print(loggedUser);
 			Effort newEffort = new Effort(loggedUser, startTime, endTime, lifeCycleComboBox.getValue(), 
 										  projectComboBox.getValue(), effortCatComboBox.getValue(), 
 										  deliverableComboBox.getValue());
@@ -166,14 +170,6 @@ public class Controller implements Initializable{
 				successLabel.setText("");
 				errorLabel.setText("ERROR: No effort started");
 			}
-		}
-	}
-	
-	@FXML
-	void editEffort(Event e) {
-		if(sanitizeEditEffort()) {
-			editSuccessLabel.setText("Effort successfully editted");
-			editErrorLabel.setText("");
 		}
 	}
 	
@@ -202,6 +198,15 @@ public class Controller implements Initializable{
 		Login login = EffortLogger.getInstance().getLogin();
 		String msg = login.attemptCreateAccount(username, password);
 		loginMessage.setText(msg);
+	}
+	
+	@FXML
+	void editEffort(Event e) {
+		if(sanitizeEditEffort()) {
+			editSuccessLabel.setText("Effort successfully editted");
+			editErrorLabel.setText("");
+			
+		}
 	}
 	
 	private boolean sanitizeCreateEffortData(){
@@ -233,6 +238,7 @@ public class Controller implements Initializable{
 		if(!sanitizeUserInput()) {
 			editSuccessLabel.setText("");
 			editErrorLabel.setText("ERROR: Invalid Input");
+			return false;
 		}
 		return true;
 	}
@@ -251,6 +257,23 @@ public class Controller implements Initializable{
 			return false;
 		}
 		
+		//gonna cook this rn
+		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
+		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
+		Pattern datePattern = Pattern.compile(datePatternRegex);
+		Pattern timePattern = Pattern.compile(timePatternRegex);
+		Matcher matcher = datePattern.matcher(dateValue);
+		if(!matcher.matches()) {			//authenticate data
+			System.out.print("FAIL HERE");
+			return false;
+		}
+		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+		if(!matcher.matches())
+			return false;
+		
+		matcher = timePattern.matcher(endValue);
+		if(!matcher.matches())
+			return false;
 		
 		return true;
 	}
