@@ -59,7 +59,7 @@ public class LoginDataHandler {
         passwordPattern = Pattern.compile("^(?=.*[a-zA-Z0-9])(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#\\$%^&*()_+\\-=\\[\\]\\{}|;:'\",.<>/?]).{8,16}$");
     }
     
-    public static String hash(String rawUser) {
+    public static String hash(String rawUser) { //i NEED THE HASHED USERNAME ohion got the user 
     	
     	// hash username
     	String hashedString = "";
