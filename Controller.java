@@ -21,37 +21,37 @@ import javafx.scene.text.Text;
 public class Controller implements Initializable{
 
 	@FXML
-	private ComboBox<String> projectComboBox = new ComboBox<String>();
+	private ComboBox<String> projectComboBox;
 	@FXML
-	private ComboBox<String> lifeCycleComboBox = new ComboBox<String>();
+	private ComboBox<String> lifeCycleComboBox;
 	@FXML
-	private ComboBox<String> effortCatComboBox = new ComboBox<String>();
+	private ComboBox<String> effortCatComboBox;
 	@FXML
-	private ComboBox<String> deliverableComboBox = new ComboBox<String>();
+	private ComboBox<String> deliverableComboBox;
 	@FXML
-	private ComboBox<String> lifeCycleComboBox2 = new ComboBox<String>();
+	private ComboBox<String> lifeCycleComboBox2;
 	@FXML
-	private ComboBox<String> effortCatComboBox2 = new ComboBox<String>();
+	private ComboBox<String> effortCatComboBox2;
 	@FXML
-	private ComboBox<String> editEffortComboBox = new ComboBox<String>();
+	private ComboBox<String> editEffortComboBox;
 	@FXML
-	private ComboBox<String> dropDown_Defects = new ComboBox<String>();
+	private ComboBox<String> dropDown_Defects;
 	@FXML
-	private Label projDefectsLabel = new Label();
+	private Label projDefectsLabel;
 	@FXML
-	private Label errorLabel = new Label();
+	private Label errorLabel;
 	@FXML
-	private Label successLabel = new Label();
+	private Label successLabel;
 	@FXML
-	private Label editErrorLabel = new Label();
+	private Label editErrorLabel;
 	@FXML
-	private Label editSuccessLabel = new Label();
+	private Label editSuccessLabel;
 	@FXML
-	private TextField editDate = new TextField();
+	private TextField editDate;
 	@FXML
-	private TextField editStartTime = new TextField();
+	private TextField editStartTime;
 	@FXML
-	private TextField editEndTime = new TextField();
+	private TextField editEndTime;
 	@FXML
 	private TabPane loggedInView;
 	@FXML
