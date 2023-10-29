@@ -286,7 +286,7 @@ public class Controller implements Initializable{
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
 			
-			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			// EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 			
 			
 			
@@ -378,6 +378,7 @@ public class Controller implements Initializable{
 	boolean createDefect(Event e) {
 		newDefect = "-new defect-";
 		selectDefectCombo.getItems().add(newDefect);
+		defectEntry.setText(newDefect);
 		return true;
 	}
 	
