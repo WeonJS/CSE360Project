@@ -91,8 +91,8 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="28.0" layoutY="103.0" prefWidth="150.0" promptText="Select Defect" />
-                        <Button layoutX="401.0" layoutY="103.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="126.0" text="Create Defect" />
+                        <ComboBox fx:id="selectDefectCombo" layoutX="28.0" layoutY="103.0" prefWidth="150.0" promptText="Select Defect" />
+                        <Button layoutX="401.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#createDefect" prefHeight="25.0" prefWidth="126.0" text="Create Defect" />
                         <Label layoutX="14.0" layoutY="135.0" text="3. Define or update the Current Defect attributes">
                            <font>
                               <Font size="14.0" />
@@ -107,7 +107,7 @@
                         <Text fx:id="defectNum" layoutX="46.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-alignment: center;" wrappingWidth="21.0" />
                         <TextField fx:id="defectEntry" layoutX="80.0" layoutY="177.0" />
                         <Label layoutX="401.0" layoutY="156.0" text="Status:" />
-                        <Text layoutX="441.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Text fx:id="saveStatus" layoutX="444.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="40.0" />
                         <Button layoutX="354.0" layoutY="177.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Close" />
                         <Button layoutX="441.0" layoutY="177.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Reopen" />
                         <Label layoutX="36.0" layoutY="212.0" text="Defect Symptoms or Cause/Resolution">
