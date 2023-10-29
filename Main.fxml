@@ -9,64 +9,85 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<TabPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
-   <tabs>
-      <Tab text="Create Effort">
-         <content>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-               <children>
-                  <Button id="myBtn" layoutX="211.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#startEffort" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: lightgreen;" text="Start Effort">
-                     <font>
-                        <Font name="Arial" size="22.0" />
-                     </font>
-                  </Button>
-                  <Button id="myBtn" layoutX="211.0" layoutY="246.0" mnemonicParsing="false" onMouseClicked="#endEffort" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: pink;" text="Stop Effort">
-                     <font>
-                        <Font name="Arial" size="22.0" />
-                     </font>
-                  </Button>
-                  <Label layoutX="458.0" layoutY="-1.0" prefHeight="30.0" prefWidth="215.0" text="EffortLogger v. Prototype" />
-                  <Label layoutX="21.0" layoutY="44.0" text="Project" />
-                  <Label layoutX="21.0" layoutY="105.0" text="Life Cycle Step" />
-                  <ComboBox fx:id="projectComboBox" layoutX="21.0" layoutY="68.0" prefWidth="150.0" promptText="Select..." />
-                  <ComboBox fx:id="lifeCycleComboBox" layoutX="21.0" layoutY="122.0" prefWidth="150.0" promptText="Select..." />
-                  <Label layoutX="243.0" layoutY="44.0" text="Effort Category" />
-                  <Label layoutX="243.0" layoutY="105.0" text="Deliverable" />
-                  <ComboBox fx:id="effortCatComboBox" layoutX="243.0" layoutY="68.0" prefWidth="150.0" promptText="Select..." />
-                  <ComboBox fx:id="deliverableComboBox" layoutX="243.0" layoutY="122.0" prefWidth="150.0" promptText="Select..." />
-                  <Label fx:id="errorLabel" alignment="CENTER" layoutX="181.0" layoutY="310.0" prefHeight="31.0" prefWidth="238.0" textAlignment="CENTER" />
-                  <Label fx:id="successLabel" alignment="CENTER" layoutX="165.0" layoutY="341.0" prefHeight="31.0" prefWidth="278.0" textAlignment="CENTER" />
-               </children>
-            </Pane>
-         </content>
-      </Tab>
-      <Tab text="Edit Effort">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Label layoutX="14.0" layoutY="26.0" text="Modify Information of Selected Effort" />
-                  <Label layoutX="14.0" layoutY="82.0" prefHeight="17.0" prefWidth="111.0" text="Date (yyyy-mm-dd)" />
-                  <Label layoutX="239.0" layoutY="82.0" text="Start Time: (hh:mm:ss)" />
-                  <Label layoutX="426.0" layoutY="82.0" text="End Time: (hh:mm:ss)" />
-                  <TextField fx:id="editDate" layoutX="14.0" layoutY="108.0" />
-                  <TextField fx:id="editStartTime" layoutX="220.0" layoutY="108.0" />
-                  <TextField fx:id="editEndTime" layoutX="426.0" layoutY="108.0" />
-                  <Label layoutX="14.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Life Cycle Step" />
-                  <Label layoutX="244.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Effort Category" />
-                  <ComboBox fx:id="lifeCycleComboBox2" layoutX="19.0" layoutY="200.0" prefWidth="150.0" />
-                  <ComboBox fx:id="effortCatComboBox2" layoutX="220.0" layoutY="200.0" prefWidth="150.0" />
-                  <ComboBox fx:id="editEffortComboBox" layoutX="19.0" layoutY="43.0" prefHeight="26.0" prefWidth="452.0" />
-                  <Button layoutX="184.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#editEffort" prefHeight="26.0" prefWidth="223.0" text="Edit" />
-                  <Label fx:id="editErrorLabel" alignment="CENTER" layoutX="191.0" layoutY="311.0" prefHeight="22.0" prefWidth="219.0" />
-                  <Label fx:id="editSuccessLabel" layoutX="191.0" layoutY="348.0" prefHeight="22.0" prefWidth="219.0" />
-               </children></AnchorPane>
-        </content>
-      </Tab>
-      <Tab text="Defect Console">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-        </content>
-      </Tab>
-   </tabs>
-</TabPane>
+
+<Pane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
+   <children>
+      <TabPane fx:id="loggedInView">
+         <tabs>
+            <Tab text="Create Effort">
+               <content>
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+                     <children>
+                        <Button id="myBtn" layoutX="211.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#startEffort" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: lightgreen;" text="Start Effort">
+                           <font>
+                              <Font name="Arial" size="22.0" />
+                           </font>
+                        </Button>
+                        <Button id="myBtn" layoutX="211.0" layoutY="246.0" mnemonicParsing="false" onMouseClicked="#endEffort" prefHeight="45.0" prefWidth="182.0" style="-fx-background-color: pink;" text="Stop Effort">
+                           <font>
+                              <Font name="Arial" size="22.0" />
+                           </font>
+                        </Button>
+                        <Label layoutX="458.0" layoutY="-1.0" prefHeight="30.0" prefWidth="215.0" text="EffortLogger v. Prototype" />
+                        <Label layoutX="21.0" layoutY="44.0" text="Project" />
+                        <Label layoutX="21.0" layoutY="105.0" text="Life Cycle Step" />
+                        <ComboBox fx:id="projectComboBox" layoutX="21.0" layoutY="68.0" prefWidth="150.0" promptText="Select..." />
+                        <ComboBox fx:id="lifeCycleComboBox" layoutX="21.0" layoutY="122.0" prefWidth="150.0" promptText="Select..." />
+                        <Label layoutX="243.0" layoutY="44.0" text="Effort Category" />
+                        <Label layoutX="243.0" layoutY="105.0" text="Deliverable" />
+                        <ComboBox fx:id="effortCatComboBox" layoutX="243.0" layoutY="68.0" prefWidth="150.0" promptText="Select..." />
+                        <ComboBox fx:id="deliverableComboBox" layoutX="243.0" layoutY="122.0" prefWidth="150.0" promptText="Select..." />
+                        <Label fx:id="errorLabel" alignment="CENTER" layoutX="181.0" layoutY="310.0" prefHeight="31.0" prefWidth="238.0" textAlignment="CENTER" />
+                        <Label fx:id="successLabel" alignment="CENTER" layoutX="165.0" layoutY="341.0" prefHeight="31.0" prefWidth="278.0" textAlignment="CENTER" />
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+            <Tab text="Edit Effort">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="26.0" text="Modify Information of Selected Effort" />
+                        <Label layoutX="14.0" layoutY="82.0" prefHeight="17.0" prefWidth="111.0" text="Date (yyyy-mm-dd)" />
+                        <Label layoutX="239.0" layoutY="82.0" text="Start Time: (hh:mm:ss)" />
+                        <Label layoutX="426.0" layoutY="82.0" text="End Time: (hh:mm:ss)" />
+                        <TextField fx:id="editDate" layoutX="14.0" layoutY="108.0" />
+                        <TextField fx:id="editStartTime" layoutX="220.0" layoutY="108.0" />
+                        <TextField fx:id="editEndTime" layoutX="426.0" layoutY="108.0" />
+                        <Label layoutX="14.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Life Cycle Step" />
+                        <Label layoutX="244.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Effort Category" />
+                        <ComboBox fx:id="lifeCycleComboBox2" layoutX="19.0" layoutY="200.0" prefWidth="150.0" />
+                        <ComboBox fx:id="effortCatComboBox2" layoutX="220.0" layoutY="200.0" prefWidth="150.0" />
+                        <ComboBox fx:id="editEffortComboBox" layoutX="19.0" layoutY="43.0" prefHeight="26.0" prefWidth="452.0" />
+                        <Button layoutX="184.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#editEffort" prefHeight="26.0" prefWidth="223.0" text="Edit" />
+                        <Label fx:id="editErrorLabel" alignment="CENTER" layoutX="191.0" layoutY="311.0" prefHeight="22.0" prefWidth="219.0" />
+                        <Label fx:id="editSuccessLabel" layoutX="191.0" layoutY="348.0" prefHeight="22.0" prefWidth="219.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Defect Console">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <Pane fx:id="loginView" prefHeight="429.0" prefWidth="600.0" visible="false">
+         <children>
+            <TextField fx:id="usernameField" layoutX="226.0" layoutY="166.0" promptText="Username..." />
+            <TextField fx:id="passwordField" layoutX="226.0" layoutY="215.0" promptText="Password..." />
+            <Button layoutX="274.0" layoutY="259.0" mnemonicParsing="false" onMouseClicked="#attemptLogin" text="Log In" />
+            <Button layoutX="251.0" layoutY="294.0" mnemonicParsing="false" onMouseClicked="#createLogin" text="Create Account" textAlignment="CENTER" />
+            <Text layoutX="186.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EffortLogger">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Text>
+            <Text fx:id="loginMessage" layoutX="299.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please log in or create an account." textAlignment="CENTER" textOrigin="CENTER" />
+         </children>
+      </Pane>
+   </children>
+</Pane>

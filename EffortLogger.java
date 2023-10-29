@@ -22,14 +22,21 @@ public class EffortLogger extends Application {
 	private Login loginSession;
 	private EffortDataHandler effortDataHandler;
 	private String documentsPath;
+	private String effortLoggerRootDirectory;
+	private String effortDataPath;
 		
 	@Override
 	public void start(Stage primaryStage) {
 		if(System.getProperty("os.name").equals("Mac OS X")) {
-			documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/Documents/EffortLogger/data/";
+			documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "/Documents/";
+			effortLoggerRootDirectory = documentsPath + "EffortLogger/";
+			effortDataPath = effortLoggerRootDirectory + "data/";
 		}
-		else 
-			documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\EffortLogger\\data\\";
+		else {
+			documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+			effortLoggerRootDirectory = documentsPath + "\\EffortLogger\\";
+			effortDataPath = effortLoggerRootDirectory + "data\\";
+		}
 		
 		if (instance == null)
 			instance = this;
@@ -38,9 +45,8 @@ public class EffortLogger extends Application {
 		
 		// these should run after the user logs in successfully
 		
-		loginSession = new Login("lol nick do ur part", "abc123");
-		effortDataHandler = new EffortDataHandler(Paths.get(documentsPath));
-		
+		loginSession = new Login();
+		effortDataHandler = new EffortDataHandler();
 		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -76,6 +82,10 @@ public class EffortLogger extends Application {
 	}
 	
 	public Path getRootDirectory() {
-		return Paths.get(documentsPath);
+		return Paths.get(effortLoggerRootDirectory);
+	}
+	
+	public Path getDataPathDirectory() {
+		return Paths.get(effortDataPath);
 	}
 }

@@ -18,17 +18,15 @@ public class EffortDataHandler {
 	// keeps track of all user efforts
 	private ArrayList<Effort> userEfforts = new ArrayList<>();
 	
-	public EffortDataHandler(Path _directoryPath) {
-		directoryPath = EffortLogger.getInstance().getRootDirectory();
-		userEfforts = retrieveEfforts();
+	public EffortDataHandler() {
+		directoryPath = EffortLogger.getInstance().getDataPathDirectory();
 	}
 	
 	// returns an arraylist for each file in the current user's effort folder
-	private ArrayList<Effort> retrieveEfforts() {
-		ArrayList<Effort> efforts = new ArrayList<>();
+	public void retrieveEfforts() {
 		// get hashed username
-		Login loginSession = EffortLogger.getInstance().getLogin();
-		String hashedUsername = loginSession.getHashedUsername();
+		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
+		String hashedUsername = loginSession.getHashedUser();
 		
 		// navigate to directory for this user's effort logs
 		System.out.println(directoryPath.toString()+hashedUsername);
@@ -43,27 +41,28 @@ public class EffortDataHandler {
 			// if user doesn't have a directory, make one
 			if (Files.notExists(userDirectoryPath)) {
 				Files.createDirectories(userDirectoryPath);
-				return efforts;
 			}
 			
 			// populate array of user efforts
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
-				efforts.add(Effort.constructFromCSVFile(filePath));
+				userEfforts.add(Effort.constructFromCSVFile(filePath));
 			}
 			System.out.println("Loaded " + userEfforts.size() + " efforts for this user.");
     		
         } catch (IOException e) {
             e.printStackTrace();
         }
-		
-		return efforts;
 	}
 	
 	public void storeEfforts(ArrayList<Effort> efforts) {
 		// get hashed username
-		Login loginSession = EffortLogger.getInstance().getLogin();
-		String hashedUsername = loginSession.getHashedUsername();
+		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
+		
+		if (loginSession == null)
+			return;
+		
+		String hashedUsername = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
 		
 		// navigate to directory for this user's effort logs
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);

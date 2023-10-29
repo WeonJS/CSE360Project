@@ -11,7 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 public class Controller implements Initializable{
 
@@ -43,6 +46,16 @@ public class Controller implements Initializable{
 	private TextField editStartTime = new TextField();
 	@FXML
 	private TextField editEndTime = new TextField();
+	@FXML
+	private TabPane loggedInView;
+	@FXML
+	private Pane loginView;
+	@FXML
+	private TextField usernameField;
+	@FXML
+	private TextField passwordField;
+	@FXML
+	private Text loginMessage;
 	
 	private boolean effortInProgress = false;
 	
@@ -102,13 +115,10 @@ public class Controller implements Initializable{
 	    		"Repository Update"));
 	    effortCatComboBox2.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
 	    
-	    ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
-	    System.out.print(userEffort.size());
-	    ArrayList<String> displayData = new ArrayList<String>();
-	    for(Effort i: userEffort) {
-	    	displayData.add(i.getStartTime().toString());
-	    }
-	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+	    loggedInView.setVisible(false);
+	    loginView.setVisible(true);
+	    
+	    
 	}
 	@FXML
 	void startEffort(Event e) {
@@ -154,7 +164,42 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	boolean sanitizeCreateEffortData(){
+	@FXML
+	private void editEffort() {
+		if(sanitizeEditEffort()) {
+			editSuccessLabel.setText("Effort successfully editted");
+			editErrorLabel.setText("");
+		}
+	}
+	
+	@FXML
+	private void attemptLogin() {
+		String username = usernameField.getText();
+		String password = passwordField.getText();
+		Login login = EffortLogger.getInstance().getLogin();
+		boolean success = login.handleLoginAttempt(username, password);
+		int loginAttempts = EffortLogger.getInstance().getLogin().getAttempts();
+		if (success) {
+			successfulLogin();
+			loginView.setVisible(false);
+			loggedInView.setVisible(true);
+		} else if (loginAttempts < Login.MAX_ATTEMPTS) {
+			loginMessage.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
+		} else {
+			loginMessage.setText("Run out of attempts. Please try again later.");
+		}
+	}
+	
+	@FXML
+	private void createLogin() {
+		String username = usernameField.getText();
+		String password = passwordField.getText();
+		Login login = EffortLogger.getInstance().getLogin();
+		String msg = login.attemptCreateAccount(username, password);
+		loginMessage.setText(msg);
+	}
+	
+	private boolean sanitizeCreateEffortData(){
 		if(projectComboBox.getValue() == null || 
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 
@@ -167,13 +212,7 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	@FXML
-	void editEffort() {
-		if(sanitizeEditEffort()) {
-			editSuccessLabel.setText("Effort successfully editted");
-			editErrorLabel.setText("");
-		}
-	}
+	
 	
 	boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
@@ -190,5 +229,16 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
+	
+	
+	private void successfulLogin() {
+		ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+	    System.out.print(userEffort.size());
+	    ArrayList<String> displayData = new ArrayList<String>();
+	    for(Effort i: userEffort) {
+	    	displayData.add(i.getStartTime().toString());
+	    }
+	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+	}
 	
 }
