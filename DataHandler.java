@@ -49,7 +49,7 @@ public class DataHandler {
 			// populate array of user efforts
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
-				userEfforts.add(Effort.constructFromCSVFile(filePath));
+				efforts.add(Effort.constructFromCSVFile(filePath));
 			}
 			System.out.println("Loaded " + userEfforts.size() + " efforts for this user.");
     		
@@ -94,6 +94,7 @@ public class DataHandler {
 	}
 	
 	public ArrayList<Effort> getUserEffortArray(){
+		System.out.println("SIZE IS " + userEfforts.size());
 		return userEfforts;
 	}
 }
