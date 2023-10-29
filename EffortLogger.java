@@ -77,7 +77,6 @@ public class EffortLogger extends Application {
 	}
 	
 	public EffortDataHandler getEffortDataHandler() {
-		System.out.println(effortDataHandler == null);
 		return effortDataHandler;
 	}
 	

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class EffortDataHandler {
@@ -68,7 +69,8 @@ public class EffortDataHandler {
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
 		for (Effort effort : efforts) {
-			String effortFileName = "E " + effort.getUUID().toString();
+			String effortIdentifier = effort.getStartTime().toString().replaceAll(":", "_");
+			String effortFileName = "E " + effortIdentifier;
 			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
 			String effortCSV = effort.toCSVData();
 			
@@ -93,12 +95,21 @@ public class EffortDataHandler {
 	}
 	
 	public ArrayList<Effort> getUserEffortArray(){
-		System.out.println("SIZE IS " + userEfforts.size());
 		return userEfforts;
 	}
 	
 	public Path getRootDirectory() {
 		return directoryPath;
+	}
+	
+	public Effort getEffort(LocalDateTime start) {
+		for (Effort e : userEfforts) {
+			if (e.getStartTime().equals(start)) {
+				return e;
+			}
+		}
+		
+		return null;
 	}
 	
 }

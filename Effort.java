@@ -19,7 +19,6 @@ public class Effort {
 	private int duration;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
-	private UUID effortID;
 	
 	public Effort(String username, LocalDateTime _startTime, LocalDateTime _endTime, String _lifeCycleStep, String _projectType, String _effortCategory, String _deliverableType) {
 		userID = username;
@@ -31,7 +30,6 @@ public class Effort {
 		projectType = _projectType;
 		effortCategory = _effortCategory;
 		deliverableType = _deliverableType;
-		effortID = UUID.randomUUID();
 	}
 	
 	public int getDuration() {
@@ -94,17 +92,6 @@ public class Effort {
 		return userID;
 	}
 	
-	public UUID getEffortID() {
-		return effortID;
-	}
-	
-	public void setUUID(UUID id) {
-		effortID = id;
-	}
-	
-	public UUID getUUID() {
-		return effortID;
-	}
 	
 	
 	
@@ -117,8 +104,7 @@ public class Effort {
 						+ "\nLifeCycleStep: " + lifeCycleStep
 						+ "\nProjectType: " + projectType
 						+ "\nEffortCategory: " + effortCategory
-						+ "\nDeliverableType: " + deliverableType
-						+ "\nEffortID: " + effortID;
+						+ "\nDeliverableType: " + deliverableType;
 						
 		return result;
 	}
@@ -135,8 +121,7 @@ public class Effort {
 		data += String.format("lifeCycleStep,%s\n", lifeCycleStep);
 		data += String.format("projectType,%s\n", projectType);
 		data += String.format("effortCategory,%s\n", effortCategory);
-		data += String.format("deliverableType,%s\n", deliverableType);
-		data += String.format("effortID,%s", effortID.toString());
+		data += String.format("deliverableType,%s", deliverableType);
 		
 		return data;
 	}
@@ -150,7 +135,6 @@ public class Effort {
 		String project = null;
 		String category = null;
 		String deliverable = null;
-		UUID id = null;
 		int dur = 0;
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(csvPath.toString()))) {
@@ -184,9 +168,6 @@ public class Effort {
 					case "deliverableType":
 						deliverable = value;
 						break;
-					case "effortID":
-						id = UUID.fromString(value);
-						break;
 				}
 			}
 		} catch (IOException e) {
@@ -194,7 +175,6 @@ public class Effort {
 		}
 		
 		Effort effort = new Effort(username, start, end, lifeCycle, project, category, deliverable);
-		effort.setUUID(id);
 		effort.setDuration(dur);
 		
 		return effort;

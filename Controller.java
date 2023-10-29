@@ -259,7 +259,6 @@ public class Controller implements Initializable{
 	
 	private void successfulLogin() {
 		ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
-	    System.out.print(userEffort.size());
 	    ArrayList<String> displayData = new ArrayList<String>();
 	    for(Effort i: userEffort) {
 	    	displayData.add(i.getStartTime().toString());
