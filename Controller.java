@@ -33,6 +33,10 @@ public class Controller implements Initializable{
 	@FXML
 	private ComboBox<String> editEffortComboBox = new ComboBox<String>();
 	@FXML
+	private ComboBox<String> dropDown_Defects = new ComboBox<String>();
+	@FXML
+	private Label projDefectsLabel = new Label();
+	@FXML
 	private Label errorLabel = new Label();
 	@FXML
 	private Label successLabel = new Label();
@@ -96,6 +100,7 @@ public class Controller implements Initializable{
 	    		"Draft Report",
 	    		"User Defined",
 	    		"Other"));
+	    dropDown_Defects.setItems(FXCollections.observableArrayList("Development Project", "Business Project"));
 	    lifeCycleComboBox2.setItems(FXCollections.observableArrayList(
 	    		"Problem Understanding",
 	    		"Conceptual Design Plan",
@@ -165,7 +170,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	private void editEffort() {
+	void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
@@ -213,7 +218,6 @@ public class Controller implements Initializable{
 	}
 	
 	
-	
 	boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
 		   lifeCycleComboBox2.getValue() == null ||
@@ -226,6 +230,28 @@ public class Controller implements Initializable{
 			editErrorLabel.setText("ERROR: One of the fields is left blank");
 			return false;
 		}
+		if(!sanitizeUserInput()) {
+			editSuccessLabel.setText("");
+			editErrorLabel.setText("ERROR: Invalid Input");
+		}
+		return true;
+	}
+	
+	boolean sanitizeUserInput() {
+		final int MAX_DATE_LENGTH = 10;
+		final int MAX_TIME_LENGTH = 8;
+		String dateValue = editDate.getText();
+		String startValue = editStartTime.getText();
+		String endValue = editEndTime.getText();
+		
+		if(dateValue.length() > MAX_DATE_LENGTH ||
+		   startValue.length() > MAX_TIME_LENGTH ||
+		   endValue.length() > MAX_TIME_LENGTH) 
+		{
+			return false;
+		}
+		
+		
 		return true;
 	}
 	
