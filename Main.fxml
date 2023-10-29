@@ -56,6 +56,7 @@
                   <Label layoutX="244.0" layoutY="177.0" prefHeight="17.0" prefWidth="111.0" text="Effort Category" />
                   <ComboBox fx:id="lifeCycleComboBox2" layoutX="19.0" layoutY="200.0" prefWidth="150.0" />
                   <ComboBox fx:id="effortCatComboBox2" layoutX="220.0" layoutY="200.0" prefWidth="150.0" />
+                  <ComboBox fx:id="editEffortComboBox" layoutX="19.0" layoutY="43.0" prefHeight="26.0" prefWidth="452.0" />
                </children></AnchorPane>
         </content>
       </Tab>

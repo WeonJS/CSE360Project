@@ -85,8 +85,16 @@ public class DataHandler {
 		updatedEfforts.add(e);
 	}
 	
+	public void addToUserEfforts(Effort e) {
+		userEfforts.add(e);
+	}
+	
 	public ArrayList<Effort> getUpdatedEfforts() {
 		return updatedEfforts;
+	}
+	
+	public ArrayList<Effort> getUserEffortArray(){
+		return userEfforts;
 	}
 }
 
@@ -108,15 +116,15 @@ Given that the effort files all exist in an encrypted state in the same director
 files that are not theirs given the close proximity of all the effort files.
 
 Storage of efforts within the directory which is mapped to the user who created it. Each effort in the directory must contain details so that when a user 
-logs in, their client will retrieve all of the efforts which they own, as specified in the effort files themselves using the user’s hashed login password
+logs in, their client will retrieve all of the efforts which they own, as specified in the effort files themselves using the userï¿½s hashed login password
 which is associated with the user who created the effort, and that hashed login password lies within the effort file.
 
 Who will be responsible for this prototype? Keon Davoudi is responsible for this prototype.
 Explain what the prototype will do. The prototype will demonstrate the DataHandler operations while taking into account the risks associated with it. It will 
-be able to encrypt and store an effort file with the creator’s login password hashed within the file, and also decrypt and retrieve an effort file only if the 
-user who created that file requests to retrieve it by comparing the current user’s hashed password and the hashed password in any given file.
+be able to encrypt and store an effort file with the creatorï¿½s login password hashed within the file, and also decrypt and retrieve an effort file only if the 
+user who created that file requests to retrieve it by comparing the current userï¿½s hashed password and the hashed password in any given file.
 
 How will the prototype mitigate the risk? The prototype will mitigate the risk by implementing checks that the user requesting to retrieve and decrypt a file 
 is indeed the owner of that file, and otherwise will deny the request. Additionally, it will encrypt and store effort files, and it will include the user who 
-created the effort’s password in the file as a hashed line within the file.
+created the effortï¿½s password in the file as a hashed line within the file.
 */
