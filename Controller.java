@@ -286,9 +286,14 @@ public class Controller implements Initializable{
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
 			
-			//EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 			
-			
+			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
 			
 			
 		}
