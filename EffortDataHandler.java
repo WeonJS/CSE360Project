@@ -72,7 +72,7 @@ public class EffortDataHandler {
 		for (Effort effort : updatedEfforts) {
 			// uses the effort start date to uniquely identify each effort file name
 			String effortIdentifier = effort.getStartTime().toString().replaceAll(":", "_");
-			
+			System.out.println(effort.getDuration());
 			// "E" flag identifies that it is an effort
 			String effortFileName = "E " + effortIdentifier;
 			
@@ -95,9 +95,11 @@ public class EffortDataHandler {
 			directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
 				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
-				
+				System.out.println(fileName);
+				System.out.println(filePath.toString());
 				if (deletedStartTimes.contains(fileName)) {
 					FileDirectory.deleteFile(userDirectoryPath);
+					System.out.println("FOUND");
 				}
 			}
 		} catch (IOException e) {
