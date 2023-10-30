@@ -428,39 +428,41 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void updateDefect(Event e) {
-		if (defectEntry.getText() != null) {
-			String injected;
-			String removed;
-			String category;
-			Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDef(selectDefectCombo.getValue());
-			if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
-				injected = "";
+		if (sanitizeUpdateDefect()) {
+			if (defectEntry.getText() != null) {
+				String injected;
+				String removed;
+				String category;
+				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDef(selectDefectCombo.getValue());
+				if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
+					injected = "";
+				}
+				else {
+					injected = stepsInjected.getSelectionModel().getSelectedItem();
+				}
+				if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
+					removed = "";
+				}
+				else {
+					removed = stepsRemoved.getSelectionModel().getSelectedItem();
+				}
+				if (defectCat.getSelectionModel().getSelectedItem() == null) {
+					category = "";
+				}
+				else {
+					category = defectCat.getSelectionModel().getSelectedItem();
+				}
+				
+				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category);
+				
+				EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
+				ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+				ArrayList<String> defectStrings = new ArrayList<String>();
+				for (Defect d : defectArr) {
+					defectStrings.add(d.getDefectString());
+				}
+				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 			}
-			else {
-				injected = stepsInjected.getSelectionModel().getSelectedItem();
-			}
-			if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
-				removed = "";
-			}
-			else {
-				removed = stepsRemoved.getSelectionModel().getSelectedItem();
-			}
-			if (defectCat.getSelectionModel().getSelectedItem() == null) {
-				category = "";
-			}
-			else {
-				category = defectCat.getSelectionModel().getSelectedItem();
-			}
-			
-			Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category);
-			
-			EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
-			ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-			ArrayList<String> defectStrings = new ArrayList<String>();
-			for (Defect d : defectArr) {
-				defectStrings.add(d.getDefectString());
-			}
-			selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 		}
 	}
 	
@@ -468,6 +470,15 @@ public class Controller implements Initializable{
 	void displayMessage(Event e) {
 		saveStatus.setText("");
 		saveStatus.setText("Changes Unsaved");
+	}
+	
+	boolean sanitizeUpdateDefect() {
+		if (defectEntry.getText().isEmpty() && defectInfo.getText().isEmpty() && stepsInjected.getSelectionModel().getSelectedItem() == null && stepsRemoved.getSelectionModel().getSelectedItem() == null && defectCat.getSelectionModel().getSelectedItem() == null) {
+			saveStatus.setText("");
+			saveStatus.setText("Fields empty");
+			return false;
+		}
+		return true;
 	}
 }	
 	
