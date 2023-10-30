@@ -288,7 +288,12 @@ public class Controller implements Initializable{
 			
 			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 			
-			
+			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
 			
 			
 		}
@@ -343,13 +348,12 @@ public class Controller implements Initializable{
 		}
 		
 		//gonna cook this rn
-		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
-		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
+		String datePatternRegex = "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+		String timePatternRegex = "^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
-			System.out.print("FAIL HERE");
 			return false;
 		}
 		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
