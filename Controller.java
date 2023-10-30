@@ -285,9 +285,9 @@ public class Controller implements Initializable{
 											  oldEffort.getProjectType(),
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
-			
+			//edit effort in file directory
 			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
-			
+			//repopulate combobox with updated information
 			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		    ArrayList<String> displayData = new ArrayList<String>();
 		    for(Effort i: userEffort) {
