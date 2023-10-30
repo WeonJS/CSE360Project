@@ -83,7 +83,18 @@ public class Controller implements Initializable{
 	@FXML
 	private Text loginMessage;
 	@FXML
-	private ComboBox<String> selectDefectCombo = new ComboBox<String>();
+	private Text loginMessage1;
+	@FXML
+	private Pane createAccountView;
+	@FXML
+	private TextField usernameField2;
+	@FXML
+	private TextField passwordField2;
+	
+	
+	@FXML
+	private ComboBox<String> selectDefectCombo;
+
 	
 	private boolean effortInProgress = false;
 
@@ -187,11 +198,12 @@ public class Controller implements Initializable{
 	    		"100 Environment"));
 	    loggedInView.setVisible(false);
 	    loginView.setVisible(true);
+	    createAccountView.setVisible(false);
 	    
 	    
 	}
 	@FXML
-	void startEffort(Event e) {
+	private void startEffort(Event e) {
 		if(!effortInProgress) {
 			effortInProgress = true;
 			startTime = LocalDateTime.now();
@@ -202,7 +214,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void endEffort(Event e) {
+	private void endEffort(Event e) {
 		boolean cleanInput = sanitizeCreateEffortData();
 		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
@@ -238,8 +250,8 @@ public class Controller implements Initializable{
 	
 	@FXML
 	private void attemptLogin() {
-		String username = usernameField.getText();
-		String password = passwordField.getText();
+		String username = usernameField2.getText();
+		String password = passwordField2.getText();
 		Login login = EffortLogger.getInstance().getLogin();
 		boolean success = login.handleLoginAttempt(username, password);
 		int loginAttempts = EffortLogger.getInstance().getLogin().getAttempts();
@@ -248,11 +260,31 @@ public class Controller implements Initializable{
 			loginView.setVisible(false);
 			loggedInView.setVisible(true);
 		} else if (loginAttempts < Login.MAX_ATTEMPTS) {
-			loginMessage.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
+			loginMessage1.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
 		} else {
-			loginMessage.setText("Run out of attempts. Please try again later.");
+			loginMessage1.setText("Run out of attempts. Please try again later.");
 		}
 	}
+	
+	
+	@FXML
+	private void changeToCreateView() {
+		
+			loginView.setVisible(false);
+			createAccountView.setVisible(true);
+		
+	}
+	
+	@FXML
+	private void changeToLoginView() {
+		
+		loginView.setVisible(true);
+		createAccountView.setVisible(false);
+	
+    }
+	
+	
+	
 	
 	@FXML
 	private void createLogin() {
@@ -264,7 +296,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void editEffort(Event e) {
+	private void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
@@ -287,10 +319,16 @@ public class Controller implements Initializable{
 											  oldEffort.getProjectType(),
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
-			
-			//EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
-			
-			
+			//edit effort in file directory
+			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+
+			//repopulate combobox with updated information
+			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
 			
 			
 		}
@@ -310,7 +348,7 @@ public class Controller implements Initializable{
 	}
 	
 	
-	boolean sanitizeEditEffort() {
+	private boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
@@ -330,7 +368,7 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	boolean sanitizeUserInput() {
+	private boolean sanitizeUserInput() {
 		final int MAX_DATE_LENGTH = 10;
 		final int MAX_TIME_LENGTH = 8;
 		String dateValue = editDate.getText();
@@ -345,13 +383,12 @@ public class Controller implements Initializable{
 		}
 		
 		//gonna cook this rn
-		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
-		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
+		String datePatternRegex = "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+		String timePatternRegex = "^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
-			System.out.print("FAIL HERE");
 			return false;
 		}
 		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -387,8 +424,7 @@ public class Controller implements Initializable{
 		}
 		selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 		defectStatus.setText(def.getDefectStatus());
-		
-	}
+	}	
 	
 	@FXML
 	void updateDefect(Event e) {

@@ -27,7 +27,7 @@ public class LoginDataHandler {
     
     // Prototype Database for show-case purposes
     public LoginDataHandler() {
-    	// calculate path based on os
+    	// calculate path based on OS
     	if(System.getProperty("os.name").equals("Mac OS X")) {
 			loginDataPath = Paths.get(EffortLogger.getInstance().getRootDirectory() + "/logins/");
 		}
