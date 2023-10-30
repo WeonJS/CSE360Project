@@ -19,30 +19,27 @@ public class EffortDataHandler {
 	// keeps track of all user efforts
 	private ArrayList<Effort> userEfforts = new ArrayList<>();
 	
+	private ArrayList<Effort> toDeleteOnClose = new ArrayList<>();
+	
 	public EffortDataHandler() {
 		directoryPath = EffortLogger.getInstance().getDataPathDirectory();
 	}
 	
-	// returns an arraylist for each file in the current user's effort folder
-	public void retrieveEfforts() {
+	// retrieves and decrypts all the user's efforts and stores them into userEfforts arraylist.
+	public boolean retrieveEfforts() {
 		// get hashed username
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		String hashedUsername = loginSession.getHashedUser();
 		
 		// navigate to directory for this user's effort logs
-		System.out.println(directoryPath.toString()+hashedUsername);
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
 		try {
 			// if the effortlogger data path does not exist, make it
-			if (Files.notExists(directoryPath)) {
-				Files.createDirectories(directoryPath);
-			}
+			FileDirectory.createFolder(directoryPath);
 			
 			// if user doesn't have a directory, make one
-			if (Files.notExists(userDirectoryPath)) {
-				Files.createDirectories(userDirectoryPath);
-			}
+			FileDirectory.createFolder(userDirectoryPath);
 			
 			// populate array of user efforts
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
@@ -50,36 +47,67 @@ public class EffortDataHandler {
 				userEfforts.add(Effort.constructFromCSVFile(filePath));
 			}
 			System.out.println("Loaded " + userEfforts.size() + " efforts for this user.");
-    		
+    		return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+		
+		return false;
 	}
 	
-	public void storeEfforts(ArrayList<Effort> efforts) {
+	// stores runtime efforts of user which have been altered/created.
+	public boolean storeEfforts() {
 		// get hashed username
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		
 		if (loginSession == null)
-			return;
+			return false;
 		
 		String hashedUsername = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
 		
 		// navigate to directory for this user's effort logs
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
-		for (Effort effort : efforts) {
+		// store changed/created efforts
+		for (Effort effort : updatedEfforts) {
+			// uses the effort start date to uniquely identify each effort file name
 			String effortIdentifier = effort.getStartTime().toString().replaceAll(":", "_");
+			System.out.println(effort.getDuration());
+			// "E" flag identifies that it is an effort
 			String effortFileName = "E " + effortIdentifier;
-			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
+			
+			// convert class data to CSV string
 			String effortCSV = effort.toCSVData();
 			
-			try {
-	            Files.write(file, effortCSV.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+			// write data to path
+			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
+			FileDirectory.writeToFile(file, effortCSV);
 		}
+		
+		// delete the efforts to be deleted on close
+		DirectoryStream<Path> directoryStream;
+		ArrayList<String> deletedStartTimes = new ArrayList<>();
+		for (Effort ef : toDeleteOnClose) {
+			deletedStartTimes.add("E " + ef.getStartTime().toString().replaceAll(":", "_"));
+			System.out.println("ADDED TO BE DELETED: " + ef);
+		}
+		
+		try {
+			directoryStream = Files.newDirectoryStream(userDirectoryPath);
+			for (Path filePath : directoryStream) {
+				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
+
+				if (deletedStartTimes.contains(fileName)) {
+					
+					FileDirectory.deleteFile(userDirectoryPath);
+
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return true;
 	}
 	
 	public void addToUpdatedEfforts(Effort e) {
@@ -102,6 +130,18 @@ public class EffortDataHandler {
 		return directoryPath;
 	}
 	
+	public boolean removeEffort(Effort e) {
+		for (Effort effort : userEfforts) {
+			if (e.equals(effort)) {
+				System.out.println("QUEUED TO BE DELETED " + e);
+				toDeleteOnClose.add(effort);
+				userEfforts.remove(effort);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Effort getEffort(LocalDateTime start) {
 		for (Effort e : userEfforts) {
 			if (e.getStartTime().equals(start)) {
@@ -112,6 +152,19 @@ public class EffortDataHandler {
 		return null;
 	}
 	
+	public void updateEffort(Effort oldEffort, Effort newEffort) {
+		
+		if (updatedEfforts.contains(oldEffort)) {
+			updatedEfforts.remove(oldEffort);
+			updatedEfforts.add(newEffort);
+		} else {
+			updatedEfforts.add(newEffort);
+		}
+		
+		removeEffort(oldEffort);
+		userEfforts.add(newEffort);
+		
+	}
 }
 
 

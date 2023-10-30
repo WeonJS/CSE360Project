@@ -23,53 +23,53 @@ import javafx.scene.text.Text;
 public class Controller implements Initializable{
 
 	@FXML
-	private ComboBox<String> projectComboBox = new ComboBox<String>();
+	private ComboBox<String> projectComboBox;
 	@FXML
-	private ComboBox<String> lifeCycleComboBox = new ComboBox<String>();
+	private ComboBox<String> lifeCycleComboBox;
 	@FXML
-	private ComboBox<String> effortCatComboBox = new ComboBox<String>();
+	private ComboBox<String> effortCatComboBox;
 	@FXML
-	private ComboBox<String> deliverableComboBox = new ComboBox<String>();
+	private ComboBox<String> deliverableComboBox;
 	@FXML
-	private ComboBox<String> lifeCycleComboBox2 = new ComboBox<String>();
+	private ComboBox<String> lifeCycleComboBox2;
 	@FXML
-	private ComboBox<String> effortCatComboBox2 = new ComboBox<String>();
+	private ComboBox<String> effortCatComboBox2;
 	@FXML
-	private ComboBox<String> editEffortComboBox = new ComboBox<String>();
+	private ComboBox<String> editEffortComboBox;
 	@FXML
-	private ComboBox<String> dropDown_Defects = new ComboBox<String>();
+	private ComboBox<String> dropDown_Defects;
 	@FXML
-	private Label projDefectsLabel = new Label();
+	private Label projDefectsLabel;
 	@FXML
-	private Label errorLabel = new Label();
+	private Label errorLabel;
 	@FXML
 	private Text projStatus; // to be used later cause i aint doin allat yet
 	@FXML
-	private Label successLabel = new Label();
+	private Label successLabel;
 	@FXML
-	private TextField defectEntry = new TextField();
+	private TextField defectEntry;
 	@FXML 
 	private Text defectNum;
 	@FXML
 	private Text saveStatus;
 	@FXML
-	private TextArea defectInfo = new TextArea();
+	private TextArea defectInfo;
 	@FXML
-	private Label editErrorLabel = new Label();
+	private Label editErrorLabel;
 	@FXML
-	private Label editSuccessLabel = new Label();
+	private Label editSuccessLabel;
 	@FXML
-	private ListView<String> stepsInjected = new ListView<String>();
+	private ListView<String> stepsInjected;
 	@FXML
-	private ListView<String> stepsRemoved = new ListView<String>();
+	private ListView<String> stepsRemoved;
 	@FXML
-	private ListView<String> defectCat = new ListView<String>();
+	private ListView<String> defectCat;
 	@FXML
-	private TextField editDate = new TextField();
+	private TextField editDate;
 	@FXML
-	private TextField editStartTime = new TextField();
+	private TextField editStartTime;
 	@FXML
-	private TextField editEndTime = new TextField();
+	private TextField editEndTime;
 	@FXML
 	private TabPane loggedInView;
 	@FXML
@@ -90,6 +90,9 @@ public class Controller implements Initializable{
 	private TextField passwordField2;
 	
 	
+	@FXML
+	private ComboBox<String> selectDefectCombo;
+
 	
 	private boolean effortInProgress = false;
 
@@ -98,6 +101,7 @@ public class Controller implements Initializable{
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	private String newDefect;
 	
 	
 	@Override
@@ -197,7 +201,7 @@ public class Controller implements Initializable{
 	    
 	}
 	@FXML
-	void startEffort(Event e) {
+	private void startEffort(Event e) {
 		if(!effortInProgress) {
 			effortInProgress = true;
 			startTime = LocalDateTime.now();
@@ -208,7 +212,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void endEffort(Event e) {
+	private void endEffort(Event e) {
 		boolean cleanInput = sanitizeCreateEffortData();
 		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
@@ -290,18 +294,45 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void editEffort(Event e) {
+	private void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
-			String startTime = editEffortComboBox.getValue();
-			System.out.print("Value: " + startTime + "\n");
-			LocalDateTime start = LocalDateTime.parse(startTime);
-			System.out.print(EffortLogger.getInstance().getEffortDataHandler().getEffort(start));
+			String startTime = editEffortComboBox.getValue();				//find the effort object by its start time
+			LocalDateTime oldStartTime = LocalDateTime.parse(startTime);
+			Effort oldEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(oldStartTime);
+			//construct new start time and end time
+			String updatedStartTime = editDate.getText() + "T" + editStartTime.getText();
+			String updatedEndTime = editDate.getText() + "T" + editEndTime.getText();
+			LocalDateTime newStartTime = LocalDateTime.parse(updatedStartTime);
+			LocalDateTime newEndTime = LocalDateTime.parse(updatedEndTime);
+			//grab comboBox updated info
+			String updatedLifeCycleStep = lifeCycleComboBox2.getValue();
+			String updatedEffortCat = effortCatComboBox2.getValue();
+			
+			Effort editedEffort = new Effort(oldEffort.getUserID(), 
+											  newStartTime, 
+											  newEndTime, 
+											  updatedLifeCycleStep,
+											  oldEffort.getProjectType(),
+											  updatedEffortCat,
+											  oldEffort.getDeliverableType());
+			//edit effort in file directory
+			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+
+			//repopulate combobox with updated information
+			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+			
+			
 		}
 	}
 	
-	private boolean sanitizeCreateEffortData(){
+	private boolean sanitizeCreateEffortData() {
 		if(projectComboBox.getValue() == null || 
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 
@@ -315,7 +346,7 @@ public class Controller implements Initializable{
 	}
 	
 	
-	boolean sanitizeEditEffort() {
+	private boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
@@ -335,7 +366,7 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	boolean sanitizeUserInput() {
+	private boolean sanitizeUserInput() {
 		final int MAX_DATE_LENGTH = 10;
 		final int MAX_TIME_LENGTH = 8;
 		String dateValue = editDate.getText();
@@ -350,13 +381,12 @@ public class Controller implements Initializable{
 		}
 		
 		//gonna cook this rn
-		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
-		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
+		String datePatternRegex = "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+		String timePatternRegex = "^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
-			System.out.print("FAIL HERE");
 			return false;
 		}
 		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -379,6 +409,13 @@ public class Controller implements Initializable{
 	    	displayData.add(i.getStartTime().toString());
 	    }
 	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+	}
+	
+	@FXML
+	private boolean createDefect(Event e) {
+		newDefect = "-new defect-";
+		selectDefectCombo.getItems().add(newDefect);
+		return true;
 	}
 	
 }

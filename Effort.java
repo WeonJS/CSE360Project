@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class Effort {
@@ -24,7 +25,7 @@ public class Effort {
 		userID = username;
 		startTime = _startTime;
 		endTime = _endTime;
-		duration = endTime.getSecond() - startTime.getSecond();
+		duration = (int) startTime.until(endTime, ChronoUnit.SECONDS);
 		
 		lifeCycleStep = _lifeCycleStep;
 		projectType = _projectType;
@@ -91,8 +92,6 @@ public class Effort {
 	public String getUserID() {
 		return userID;
 	}
-	
-	
 	
 	
 	@Override 
