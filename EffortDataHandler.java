@@ -88,7 +88,8 @@ public class EffortDataHandler {
 		DirectoryStream<Path> directoryStream;
 		ArrayList<String> deletedStartTimes = new ArrayList<>();
 		for (Effort ef : toDeleteOnClose) {
-			deletedStartTimes.add(ef.getStartTime().toString().replaceAll(":", "_"));
+			deletedStartTimes.add("E " + ef.getStartTime().toString().replaceAll(":", "_"));
+			System.out.println("ADDED TO BE DELETED: " + ef);
 		}
 		
 		try {
@@ -96,8 +97,11 @@ public class EffortDataHandler {
 			for (Path filePath : directoryStream) {
 				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
 				
+				System.out.println(""+deletedStartTimes+" contains " + fileName + "? : " + (deletedStartTimes.contains(fileName)));
 				if (deletedStartTimes.contains(fileName)) {
-					FileDirectory.deleteFile(userDirectoryPath);
+					
+					FileDirectory.deleteFile(Paths.get(userDirectoryPath.toString(), fileName));
+					System.out.println("deleted " + fileName + " from " + userDirectoryPath);
 				}
 			}
 		} catch (IOException e) {
@@ -130,6 +134,7 @@ public class EffortDataHandler {
 	public boolean removeEffort(Effort e) {
 		for (Effort effort : userEfforts) {
 			if (e.equals(effort)) {
+				System.out.println("QUEUED TO BE DELETED " + e);
 				toDeleteOnClose.add(effort);
 				userEfforts.remove(effort);
 				return true;
@@ -153,14 +158,14 @@ public class EffortDataHandler {
 		if (updatedEfforts.contains(oldEffort)) {
 			updatedEfforts.remove(oldEffort);
 			updatedEfforts.add(newEffort);
+		} else {
+			updatedEfforts.add(newEffort);
 		}
 		
 		removeEffort(oldEffort);
 		userEfforts.add(newEffort);
 		
 	}
-	
-	
 }
 
 

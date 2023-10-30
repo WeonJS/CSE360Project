@@ -287,6 +287,8 @@ public class Controller implements Initializable{
 											  oldEffort.getDeliverableType());
 			
 			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			System.out.println("REPLACING EFFORT " + oldEffort);
+			System.out.println("WITH NEW EFFORT " + editedEffort);
 			
 			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		    ArrayList<String> displayData = new ArrayList<String>();
