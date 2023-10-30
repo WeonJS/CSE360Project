@@ -19,6 +19,8 @@ public class EffortDataHandler {
 	// keeps track of all user efforts
 	private ArrayList<Effort> userEfforts = new ArrayList<>();
 	
+	private ArrayList<Effort> toDeleteOnClose = new ArrayList<>();
+	
 	public EffortDataHandler() {
 		directoryPath = EffortLogger.getInstance().getDataPathDirectory();
 	}
@@ -54,7 +56,7 @@ public class EffortDataHandler {
 	}
 	
 	// stores runtime efforts of user which have been altered/created.
-	public boolean storeEfforts(ArrayList<Effort> efforts) {
+	public boolean storeEfforts() {
 		// get hashed username
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		
@@ -66,7 +68,8 @@ public class EffortDataHandler {
 		// navigate to directory for this user's effort logs
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
-		for (Effort effort : efforts) {
+		// store changed/created efforts
+		for (Effort effort : updatedEfforts) {
 			// uses the effort start date to uniquely identify each effort file name
 			String effortIdentifier = effort.getStartTime().toString().replaceAll(":", "_");
 			
@@ -79,6 +82,26 @@ public class EffortDataHandler {
 			// write data to path
 			Path file = Paths.get(userDirectoryPath.toString(), effortFileName);
 			FileDirectory.writeToFile(file, effortCSV);
+		}
+		
+		// delete the efforts to be deleted on close
+		DirectoryStream<Path> directoryStream;
+		ArrayList<String> deletedStartTimes = new ArrayList<>();
+		for (Effort ef : toDeleteOnClose) {
+			deletedStartTimes.add(ef.getStartTime().toString().replaceAll(":", "_"));
+		}
+		
+		try {
+			directoryStream = Files.newDirectoryStream(userDirectoryPath);
+			for (Path filePath : directoryStream) {
+				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
+				
+				if (deletedStartTimes.contains(fileName)) {
+					FileDirectory.deleteFile(userDirectoryPath);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		return true;
@@ -104,6 +127,17 @@ public class EffortDataHandler {
 		return directoryPath;
 	}
 	
+	public boolean removeEffort(Effort e) {
+		for (Effort effort : userEfforts) {
+			if (e.equals(effort)) {
+				toDeleteOnClose.add(effort);
+				userEfforts.remove(effort);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Effort getEffort(LocalDateTime start) {
 		for (Effort e : userEfforts) {
 			if (e.getStartTime().equals(start)) {
@@ -112,6 +146,18 @@ public class EffortDataHandler {
 		}
 		
 		return null;
+	}
+	
+	public void updateEffort(Effort oldEffort, Effort newEffort) {
+		
+		if (updatedEfforts.contains(oldEffort)) {
+			updatedEfforts.remove(oldEffort);
+			updatedEfforts.add(newEffort);
+		}
+		
+		removeEffort(oldEffort);
+		userEfforts.add(newEffort);
+		
 	}
 	
 	

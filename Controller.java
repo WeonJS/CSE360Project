@@ -189,7 +189,7 @@ public class Controller implements Initializable{
 	    
 	}
 	@FXML
-	void startEffort(Event e) {
+	private void startEffort(Event e) {
 		if(!effortInProgress) {
 			effortInProgress = true;
 			startTime = LocalDateTime.now();
@@ -200,7 +200,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void endEffort(Event e) {
+	private void endEffort(Event e) {
 		boolean cleanInput = sanitizeCreateEffortData();
 		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
@@ -262,7 +262,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void editEffort(Event e) {
+	private void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
@@ -286,7 +286,7 @@ public class Controller implements Initializable{
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
 			
-			//EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
+			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 			
 			
 			
@@ -308,7 +308,7 @@ public class Controller implements Initializable{
 	}
 	
 	
-	boolean sanitizeEditEffort() {
+	private boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
@@ -328,7 +328,7 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	boolean sanitizeUserInput() {
+	private boolean sanitizeUserInput() {
 		final int MAX_DATE_LENGTH = 10;
 		final int MAX_TIME_LENGTH = 8;
 		String dateValue = editDate.getText();
@@ -375,7 +375,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	boolean createDefect(Event e) {
+	private boolean createDefect(Event e) {
 		newDefect = "-new defect-";
 		selectDefectCombo.getItems().add(newDefect);
 		return true;

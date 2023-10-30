@@ -36,6 +36,27 @@ public class FileDirectory {
     }
     
     public static boolean deleteFolder(Path p) {
+    	if (!Files.isDirectory(p)) {
+    		return false;
+    	}
+    	
+    	try {
+    		if (Files.exists(p)) {
+    			Files.delete(p);
+    		}
+    		return true;
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return false;
+    }
+    
+    public static boolean deleteFile(Path p) {
+    	
+    	if (Files.isDirectory(p)) {
+    		return false;
+    	}
+    	
     	try {
     		if (Files.exists(p)) {
     			Files.delete(p);
