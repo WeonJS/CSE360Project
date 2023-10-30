@@ -80,6 +80,16 @@ public class Controller implements Initializable{
 	private TextField passwordField;
 	@FXML
 	private Text loginMessage;
+	@FXML
+	private Text loginMessage1;
+	@FXML
+	private Pane createAccountView;
+	@FXML
+	private TextField usernameField2;
+	@FXML
+	private TextField passwordField2;
+	
+	
 	
 	private boolean effortInProgress = false;
 
@@ -182,6 +192,7 @@ public class Controller implements Initializable{
 	    		"100 Environment"));
 	    loggedInView.setVisible(false);
 	    loginView.setVisible(true);
+	    createAccountView.setVisible(false);
 	    
 	    
 	}
@@ -233,8 +244,8 @@ public class Controller implements Initializable{
 	
 	@FXML
 	private void attemptLogin() {
-		String username = usernameField.getText();
-		String password = passwordField.getText();
+		String username = usernameField2.getText();
+		String password = passwordField2.getText();
 		Login login = EffortLogger.getInstance().getLogin();
 		boolean success = login.handleLoginAttempt(username, password);
 		int loginAttempts = EffortLogger.getInstance().getLogin().getAttempts();
@@ -243,11 +254,31 @@ public class Controller implements Initializable{
 			loginView.setVisible(false);
 			loggedInView.setVisible(true);
 		} else if (loginAttempts < Login.MAX_ATTEMPTS) {
-			loginMessage.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
+			loginMessage1.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
 		} else {
-			loginMessage.setText("Run out of attempts. Please try again later.");
+			loginMessage1.setText("Run out of attempts. Please try again later.");
 		}
 	}
+	
+	
+	@FXML
+	private void changeToCreateView() {
+		
+			loginView.setVisible(false);
+			createAccountView.setVisible(true);
+		
+	}
+	
+	@FXML
+	private void changeToLoginView() {
+		
+		loginView.setVisible(true);
+		createAccountView.setVisible(false);
+	
+    }
+	
+	
+	
 	
 	@FXML
 	private void createLogin() {
