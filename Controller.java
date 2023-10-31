@@ -19,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.control.PasswordField;
 
 public class Controller implements Initializable{
 
@@ -87,7 +88,7 @@ public class Controller implements Initializable{
 	@FXML
 	private TextField usernameField2;
 	@FXML
-	private TextField passwordField2;
+	private PasswordField passwordField2;
 	
 	
 	@FXML
