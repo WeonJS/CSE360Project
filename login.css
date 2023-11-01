@@ -49,4 +49,45 @@
     -fx-font-weight: bold;
 }
 
+.bigbox {
+	-fx-alignment: top-left; 
+}
+
+.button2 {
+    -fx-background-color: #FFA500; /* Green background color */
+    -fx-border-color: #D18700; /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.button2:hover {
+    -fx-background-color: #FFB52E; /* Green background color on hover */
+    -fx-border-color: #FFA500; /* Dark green border color on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

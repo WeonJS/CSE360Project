@@ -91,7 +91,26 @@ public class Controller implements Initializable{
 	private TextField usernameField2;
 	@FXML
 	private PasswordField passwordField2;
-	
+	@FXML
+	private Pane pokerFirstView;
+	@FXML
+	private Pane pokerSecondView;
+	@FXML
+	private TextField IDField;
+	@FXML
+	private TextField passwordSessionField;
+	@FXML
+	private TextField IDField2;
+	@FXML
+	private TextField passwordSessionField2;
+	@FXML
+	private TextField topicsField;
+	@FXML
+	private ComboBox<String> activeSessions; 
+	@FXML
+	private Text createMessage;
+	@FXML
+	private Text createMessage2;
 	
 	@FXML
 	private ComboBox<String> selectDefectCombo;
@@ -200,6 +219,8 @@ public class Controller implements Initializable{
 	    loggedInView.setVisible(false);
 	    loginView.setVisible(true);
 	    createAccountView.setVisible(false);
+	    pokerSecondView.setVisible(false);
+	    pokerFirstView.setVisible(true);
 	    
 	    
 	}
@@ -269,6 +290,22 @@ public class Controller implements Initializable{
 	
 	
 	@FXML
+	private void attemptJoin() {
+		String ID = activeSessions.getValue();
+		String name = IDField2.getText();
+		String password = passwordSessionField2.getText();
+		PlanningPoker planningPoker = new PlanningPoker();
+		boolean success = planningPoker.handleJoinAttempt(ID, password);
+		if (success) {
+			//DO THINGS FOR PLANNING POKER
+			createMessage2.setText("SUCCESS");
+		} else {
+			createMessage2.setText("Invlid Combination");
+		}
+	}
+	
+	
+	@FXML
 	private void changeToCreateView() {
 		
 			loginView.setVisible(false);
@@ -284,6 +321,35 @@ public class Controller implements Initializable{
 	
     }
 	
+	
+	@FXML
+	private void changePokerCreate() {
+		
+			pokerFirstView.setVisible(false);
+			pokerSecondView.setVisible(true);
+		
+	}
+	
+	@FXML
+	private void changePokerJoin() {
+		
+		pokerFirstView.setVisible(true);
+		pokerSecondView.setVisible(false);
+	
+    }
+	
+	
+	
+	@FXML
+	private void createSession() {
+		String ID = IDField.getText();
+		String password = passwordSessionField.getText();
+		String topics = topicsField.getText();
+		PlanningPoker planningPoker = new PlanningPoker();
+		String msg = planningPoker.attemptCreateSession(ID, password, topics);
+		activeSessions.getItems().add(ID);
+		createMessage.setText(msg);
+	}
 	
 	
 	

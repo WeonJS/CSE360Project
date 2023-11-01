@@ -14,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
+<Pane prefHeight="498.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
    <children>
-      <TabPane fx:id="loggedInView" visible="false">
+      <TabPane fx:id="loggedInView" prefHeight="487.0" prefWidth="600.0">
          <tabs>
-            <Tab text="Create Effort">
+            <Tab closable="false" style="-fx-border-color: #29910B;" text="Create Effort">
                <content>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
                      <children>
@@ -47,7 +47,7 @@
                   </Pane>
                </content>
             </Tab>
-            <Tab text="Edit Effort">
+            <Tab closable="false" style="-fx-border-color: #1B37A6;" text="Edit Effort">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -70,7 +70,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Defect Console">
+            <Tab closable="false" style="-fx-border-color: #6B1BA6;" text="Defect Console">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -133,6 +133,91 @@
                      </children></AnchorPane>
               </content>
             </Tab>
+            <Tab closable="false" style="-fx-border-color: #B46F07;" text="Planning Poker">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="428.0" prefWidth="600.0">
+                     <children>
+                        <Pane fx:id="pokerFirstView" layoutY="1.0" prefHeight="457.0" prefWidth="601.0" visible="false">
+                           <children>
+                              <Text layoutX="180.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Join a Session" wrappingWidth="205.0">
+                                 <font>
+                                    <Font size="33.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="180.0" layoutY="91.0" prefHeight="17.0" prefWidth="137.0" text="Choose Session:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="activeSessions" layoutX="180.0" layoutY="120.0" prefHeight="25.0" prefWidth="200.0" promptText="Active Sessions" />
+                              <Label layoutX="180.0" layoutY="153.0" prefHeight="17.0" prefWidth="137.0" text="Display Name:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="IDField2" layoutX="180.0" layoutY="180.0" prefHeight="25.0" prefWidth="202.0" promptText="Name..." />
+                              <Label layoutX="181.0" layoutY="217.0" prefHeight="19.0" prefWidth="149.0" text="Session Password:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="passwordSessionField2" layoutX="181.0" layoutY="243.0" prefHeight="25.0" prefWidth="203.0" promptText="Password..." />
+                              <Button layoutX="180.0" layoutY="293.0" mnemonicParsing="false" onMouseClicked="#attemptJoin" prefHeight="25.0" prefWidth="202.0" styleClass="button2" stylesheets="@login.css" text="Join" />
+                              <Text layoutX="181.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin?" />
+                              <Button layoutX="221.0" layoutY="334.0" mnemonicParsing="false" onMouseClicked="#changePokerCreate" prefHeight="27.0" prefWidth="110.0" styleClass="createButton" stylesheets="@login.css" text="Create Session" />
+                              <Text fx:id="createMessage2" layoutX="181.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status Message..." wrappingWidth="203.13671875" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="pokerSecondView" prefHeight="467.0" prefWidth="600.0">
+                           <children>
+                              <Text layoutX="205.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Session" wrappingWidth="169.0">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="153.0" layoutY="49.0" prefHeight="19.0" prefWidth="199.0" text="Session ID:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="IDField" layoutX="153.0" layoutY="75.0" prefHeight="25.0" prefWidth="270.0" promptText="Enter ID..." />
+                              <Label layoutX="155.0" layoutY="168.0" prefHeight="19.0" prefWidth="201.0" text="Topics of Disscussion:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="155.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter each new topic seperated by a &quot;,&quot;" wrappingWidth="203.13671875">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="topicsField" layoutX="153.0" layoutY="213.0" prefHeight="149.0" prefWidth="271.0" promptText="List all topics..." styleClass="bigbox" stylesheets="@login.css" />
+                              <Label layoutX="155.0" layoutY="109.0" prefHeight="19.0" prefWidth="199.0" text="Session Password:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="passwordSessionField" layoutX="153.0" layoutY="137.0" prefHeight="25.0" prefWidth="271.0" promptText="Enter ID..." />
+                              <Button layoutX="154.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#createSession" prefHeight="25.0" prefWidth="270.0" styleClass="cButton" stylesheets="@login.css" text="Create Session" />
+                              <Text fx:id="createMessage" layoutX="154.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stutus Message..." wrappingWidth="269.13671875" />
+                              <Text layoutX="154.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Finished?" wrappingWidth="74.13671875" />
+                              <Button layoutX="205.0" layoutY="406.0" mnemonicParsing="false" onMouseClicked="#changePokerJoin" styleClass="createButton" stylesheets="@login.css" text="Go Back" />
+                              <Text layoutX="229.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8-16 characters, Letters/Num only" wrappingWidth="181.0">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="268.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8-16 characters, Letters/Num only" wrappingWidth="181.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
          </tabs>
       </TabPane>
       <Pane fx:id="createAccountView" layoutX="-11.0" layoutY="4.0" prefHeight="429.0" prefWidth="600.0" visible="false">
@@ -149,7 +234,7 @@
             </Text>
             <Text layoutX="252.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Done?" textAlignment="CENTER" textOrigin="CENTER" />
             <Label layoutX="204.0" layoutY="117.0" prefHeight="17.0" prefWidth="181.0" styleClass="userlabel" stylesheets="@login.css" text="New Username:" />
-            <Label layoutX="205.0" layoutY="134.0" prefHeight="17.0" prefWidth="219.0" text="Between 8-16 chracters, Letters, Numbers, &quot;-&quot;, &quot;_&quot; ">
+            <Label layoutX="205.0" layoutY="134.0" prefHeight="17.0" prefWidth="226.0" text="Between 8-16 chracters, Letters, Numbers, &quot;-&quot;, &quot;_&quot; ">
                <font>
                   <Font size="10.0" />
                </font>
@@ -162,7 +247,7 @@
             <Text fx:id="loginMessage" layoutX="147.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="336.91015625" />
          </children>
       </Pane>
-      <Pane fx:id="loginView" layoutY="-11.0" prefHeight="429.0" prefWidth="600.0">
+      <Pane fx:id="loginView" layoutY="-11.0" prefHeight="429.0" prefWidth="600.0" visible="false">
          <children>
             <Label layoutX="204.0" layoutY="206.0" prefHeight="17.0" prefWidth="192.0" styleClass="userlabel" stylesheets="@login.css" text="Password" />
             <TextField fx:id="usernameField2" layoutX="197.0" layoutY="169.0" prefHeight="25.0" prefWidth="226.0" promptText="Username..." />
