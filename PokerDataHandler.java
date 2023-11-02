@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,6 +24,9 @@ public class PokerDataHandler {
     private Pattern IDPattern;
     private Pattern passwordPattern;
     private Path PokerDataPath;
+    private List<String> secondLines = new ArrayList<>();
+  
+    
     
     // Prototype Database for show-case purposes
     public PokerDataHandler() {
@@ -45,8 +48,11 @@ public class PokerDataHandler {
         // username requirements: 
         // between 8 and 16 characters long; 
         // Alphanumeric, numbers, "-", "_" allowed
-        passwordPattern = Pattern.compile("^[a-zA-Z0-9-_]{8,16}$");
+        passwordPattern = Pattern.compile("^[a-zA-Z0-9-_]{4,16}$");
     }
+    
+ 
+    
     
 public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got the user 
     	
@@ -87,12 +93,76 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     }
     
     //called when creating new acc...
-    public boolean addSession(String ID, String password) {
+    public boolean addSession(String ID, String password, String Topics, String members) {
     	String hashedID = hash(ID);
     	String hashedPass = hash(password);
     	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
-		
-		return FileDirectory.writeToFile(PokerFilePath, hashedPass);
+    	try {
+            String data = String.format("%s\nsessionID, %s\nsessionTopics, %s\nsessionMembers, %s\n",
+                    hashedPass, ID, Topics, members);
+            Files.write(PokerFilePath, data.getBytes());
+            System.out.print("Wrote: " + data);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    	
+    }
+    
+    public String getPokerInfo(String ID) {
+    	String hashedID = hash(ID);
+    	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
+    	 if (FileDirectory.fileExists(PokerFilePath)) {
+             try {
+                 List<String> pokerFileLines = Files.readAllLines(PokerFilePath);
+                 
+                 if (!pokerFileLines.isEmpty()) {
+                     String sessionID = pokerFileLines.get(1).substring("sessionID, ".length());
+                     String sessionTopics = pokerFileLines.get(2).substring("sessionTopics, ".length());
+                     String sessionMembers = pokerFileLines.get(3).substring("sessionMembers, ".length());
+                     return sessionID + "-" + sessionTopics + "-" + sessionMembers;
+                 }
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
+    	
+         return null;
+    }
+    
+    public void retrieveSessions() {
+		// get hashed username
+    	Path folderPath = Paths.get(PokerDataPath.toString());
+
+        try {
+            
+
+            // List all files in the folder using a DirectoryStream
+            try (DirectoryStream<Path> files = Files.newDirectoryStream(folderPath)) {
+                for (Path filePath : files) {
+                    // Read the second line of each file
+                    List<String> lines = Files.readAllLines(filePath);
+                    if (lines.size() >= 2) {
+                        secondLines.add(lines.get(1).substring("sessionID, ".length()));
+                    }
+                }
+            }
+
+            // Now, the second lines are stored in the secondLines list
+            for (String secondLine : secondLines) {
+                System.out.println(secondLine);
+            }
+
+            // If you want to store the second lines in an array
+           
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+    
+    public List<String> returnSessions(){
+    	return secondLines;
     }
     
     //function called on login... validates information
@@ -105,7 +175,11 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     	if (FileDirectory.fileExists(userPokerPath)) {
     		String storedPassword;
     		List<String> pokerFileLines = FileDirectory.getFileLines(userPokerPath);
-    		if (pokerFileLines.size() > 0) {
+
+    		for (String item: pokerFileLines) {
+    			System.out.println(item);
+    		}
+    		if (!pokerFileLines.isEmpty()) {
         		storedPassword = pokerFileLines.get(0);
         		return storedPassword.equals(hashedPassword);
         	}
@@ -114,3 +188,12 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     }
     
 }
+
+
+
+
+
+
+
+
+

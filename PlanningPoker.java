@@ -1,22 +1,14 @@
 package CSE360Project;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
-import java.util.List;
-import CSE360Project.Login.LoginSession;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import java.util.Arrays;
+
 
 
 // Nicholas Lorenzini 
+
+
 
 public class PlanningPoker {
 	
@@ -38,13 +30,41 @@ public class PlanningPoker {
 	}
 	
 	
-	
+
+	private ArrayList<String> info = new ArrayList<>();
+	String[] temp2 = new String[5];
 	private PokerSession pokerSession = null;
 	private PokerDataHandler dh = new PokerDataHandler();
 	private ArrayList<String> newTopics = new ArrayList<>();
+	private ArrayList<String> members = new ArrayList<>();
 	
-	public PlanningPoker() {
+	public void getInfo(String ID) {
+		String temp = dh.getPokerInfo(ID);
+		temp2 = temp.split("-\\s*");
+		
 	}
+
+	public String getID() {
+		return temp2[0];
+	}
+	public String getTopics() {
+		
+		return temp2[1];
+	}
+	public String getMembers() {
+		return temp2[2];
+	}
+	
+	public void addMember(String concat) {
+		if(temp2[2] == "temp") {
+			temp2[2] = concat;
+		}
+		else {
+		String temp = temp2[2] + ", " + concat;
+		temp2[2] = temp;
+		}
+	}
+	
 	
 	 public boolean handleJoinAttempt(String ID, String password) {
 	        // Check the login credentials with the UsernameDatabase
@@ -59,7 +79,7 @@ public class PlanningPoker {
 	        
 	    }
 	    
-	    public String attemptCreateSession(String newID, String newPassword, String topics) {
+	    public String attemptCreateSession(String newID, String newPassword, String topics, String Members) {
 	  
 	        // Check if the new username already exists
 	        if (dh.existingUsername(newID) ) {
@@ -76,18 +96,15 @@ public class PlanningPoker {
 	        }
 	        else {
 	            // Add the new ID, Password and populate Topics List
-	        	newTopics.clear();
-	        	String[] parts = topics.split(",");
-	        	for (String part : parts) {
-	                newTopics.add(part.trim()); // Use trim to remove leading/trailing spaces
-	            }
-	        	dh.addSession(newID, newPassword);
+	        	String addMem = "temp";
+	        	dh.addSession(newID, newPassword, topics, addMem);
 	        	return "Session created";
 	        }
 	    }
 	    
-	    public ArrayList<String> getTopics() {
-	    	return newTopics;
+	    
+	    public void setMembers(String toAdd) {
+	    	members.add(toAdd);
 	    }
 	    
 	    public PokerSession getPokerSession() {

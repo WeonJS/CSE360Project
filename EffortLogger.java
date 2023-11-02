@@ -21,6 +21,7 @@ public class EffortLogger extends Application {
 	
 	private Login loginSession;
 	private EffortDataHandler effortDataHandler;
+	private PokerDataHandler pokerDataHandler;
 	private String documentsPath;
 	private String effortLoggerRootDirectory;
 	private String effortDataPath;
@@ -47,6 +48,7 @@ public class EffortLogger extends Application {
 		
 		loginSession = new Login();
 		effortDataHandler = new EffortDataHandler();
+		pokerDataHandler = new PokerDataHandler();
 		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
@@ -74,6 +76,10 @@ public class EffortLogger extends Application {
 	
 	public Login getLogin() {
 		return loginSession;
+	}
+	
+	public PokerDataHandler getPokerDataHandler() {
+		return pokerDataHandler;
 	}
 	
 	public EffortDataHandler getEffortDataHandler() {

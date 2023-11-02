@@ -8,9 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -20,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.PasswordField;
+import java.util.List;
 
 public class Controller implements Initializable{
 
@@ -111,9 +114,65 @@ public class Controller implements Initializable{
 	private Text createMessage;
 	@FXML
 	private Text createMessage2;
-	
 	@FXML
 	private ComboBox<String> selectDefectCombo;
+	@FXML
+	private Pane pokerViewPane;
+	@FXML
+	private Text currentTopicText;
+    @FXML
+    private Text yourVoteText;
+    @FXML
+    private Text sessionAvgText;
+    @FXML
+    private Text name1;
+    @FXML
+    private Text name2;
+    @FXML
+    private Text name3;
+    @FXML
+    private Text name4;
+    @FXML
+    private Text name5;
+    @FXML
+    private Text name6;
+    @FXML
+    private Text name7;
+    @FXML
+    private Text name1left;
+    @FXML
+    private Text name2left;
+    @FXML
+    private Text name3left;
+    @FXML
+    private Text name4left;
+    @FXML
+    private Text name5left;
+    @FXML
+    private Text name6left;
+    @FXML
+    private Text name7left;
+    @FXML
+    private Button button1;
+    @FXML
+    private Button button2;
+    @FXML
+    private Button button3;
+    @FXML
+    private Button button4;
+    @FXML
+    private Button button5;
+    @FXML
+    private Button button6;
+    @FXML
+    private Button button7;
+    @FXML
+    private Button button8;
+    @FXML
+    private Button button9;
+    @FXML
+    private Button button10;
+    
 
 	
 	private boolean effortInProgress = false;
@@ -221,6 +280,7 @@ public class Controller implements Initializable{
 	    createAccountView.setVisible(false);
 	    pokerSecondView.setVisible(false);
 	    pokerFirstView.setVisible(true);
+	    pokerViewPane.setVisible(false);
 	    
 	    
 	}
@@ -298,12 +358,67 @@ public class Controller implements Initializable{
 		boolean success = planningPoker.handleJoinAttempt(ID, password);
 		if (success) {
 			//DO THINGS FOR PLANNING POKER
-			createMessage2.setText("SUCCESS");
+			planningPoker.getInfo(ID);
+			planningPoker.addMember(name);
+			pokerFirstView.setVisible(false);
+			pokerViewPane.setVisible(true);
+			String topics = planningPoker.getTopics();
+			String[] topicsArr = topics.split(",\\s*");
+			String memberList = planningPoker.getMembers();
+			String[] memberArr = memberList.split(",\\s*");
+			
+			for (int i = 0; i < memberArr.length && i < 7; i++) {
+			   
+			    if (i == 0) {
+			    	name1left.setText(memberArr[i]);
+			    	name1.setText(memberArr[i]);
+			    }
+			    if (i== 1) {
+			    	name2left.setText(memberArr[i]);
+			    	name2.setText(memberArr[i]);
+			    }
+			    if (i== 2) {
+			    	name3left.setText(memberArr[i]);
+			    	name3.setText(memberArr[i]);
+			    }
+			    if (i== 3) {
+			    	name4left.setText(memberArr[i]);
+			    	name4.setText(memberArr[i]);
+			    }
+			    if (i== 4) {
+			    	name5left.setText(memberArr[i]);
+			    	name5.setText(memberArr[i]);
+			    }
+			    if (i== 5) {
+			    	name6left.setText(memberArr[i]);
+			    	name6.setText(memberArr[i]);
+			    }
+			    if (i== 6) {
+			    	name7left.setText(memberArr[i]);
+			    	name7.setText(memberArr[i]);
+			    }
+			}
+			
+			currentTopicText.setText(topicsArr[0]);
+			
+			
+			
 		} else {
-			createMessage2.setText("Invlid Combination");
+			createMessage2.setText("Invalid Combination");
 		}
 	}
 	
+	
+	@FXML
+	private void createSession() {
+		String ID = IDField.getText();
+		String password = passwordSessionField.getText();
+		String topics = topicsField.getText();
+		PlanningPoker planningPoker = new PlanningPoker();
+		String msg = planningPoker.attemptCreateSession(ID, password, topics, "temp");
+		activeSessions.getItems().add(ID);
+		createMessage.setText(msg);
+	}
 	
 	@FXML
 	private void changeToCreateView() {
@@ -318,6 +433,14 @@ public class Controller implements Initializable{
 		
 		loginView.setVisible(true);
 		createAccountView.setVisible(false);
+	
+    }
+	
+	@FXML
+	private void switchBackToLoginView() {
+		
+		pokerFirstView.setVisible(true);
+		pokerViewPane.setVisible(false);
 	
     }
 	
@@ -339,18 +462,46 @@ public class Controller implements Initializable{
     }
 	
 	
-	
 	@FXML
-	private void createSession() {
-		String ID = IDField.getText();
-		String password = passwordSessionField.getText();
-		String topics = topicsField.getText();
-		PlanningPoker planningPoker = new PlanningPoker();
-		String msg = planningPoker.attemptCreateSession(ID, password, topics);
-		activeSessions.getItems().add(ID);
-		createMessage.setText(msg);
+	private void handleCard1() {
+		yourVoteText.setText("0");
 	}
-	
+	@FXML
+	private void handleCard2() {
+		yourVoteText.setText("1");
+	}
+	@FXML
+	private void handleCard3() {
+		yourVoteText.setText("2");
+	}
+	@FXML
+	private void handleCard4() {
+		yourVoteText.setText("3");
+	}
+	@FXML
+	private void handleCard5() {
+		yourVoteText.setText("5");
+	}
+	@FXML
+	private void handleCard6() {
+		yourVoteText.setText("8");
+	}
+	@FXML
+	private void handleCard7() {
+		yourVoteText.setText("13");
+	}
+	@FXML
+	private void handleCard8() {
+		yourVoteText.setText("20");
+	}
+	@FXML
+	private void handleCard9() {
+		yourVoteText.setText("40");
+	}
+	@FXML
+	private void handleCard10() {
+		yourVoteText.setText("100");
+	}
 	
 	
 	@FXML
@@ -478,6 +629,8 @@ public class Controller implements Initializable{
 	    	displayData.add(i.getStartTime().toString());
 	    }
 	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+	    List<String> loggerSessions = EffortLogger.getInstance().getPokerDataHandler().returnSessions();
+	    activeSessions.setItems(FXCollections.observableList(loggerSessions));
 	}
 	
 	@FXML
