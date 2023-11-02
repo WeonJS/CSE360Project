@@ -8,9 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,6 +21,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.control.PasswordField;
+import java.util.List;
 
 public class Controller implements Initializable{
 
@@ -53,6 +57,8 @@ public class Controller implements Initializable{
 	@FXML
 	private Text saveStatus;
 	@FXML
+	private Text defectStatus;
+	@FXML
 	private TextArea defectInfo;
 	@FXML
 	private Label editErrorLabel;
@@ -81,7 +87,93 @@ public class Controller implements Initializable{
 	@FXML
 	private Text loginMessage;
 	@FXML
-	private ComboBox<String> selectDefectCombo = new ComboBox<String>();
+	private Text loginMessage1;
+	@FXML
+	private Pane createAccountView;
+	@FXML
+	private TextField usernameField2;
+	@FXML
+	private PasswordField passwordField2;
+	@FXML
+	private Pane pokerFirstView;
+	@FXML
+	private Pane pokerSecondView;
+	@FXML
+	private TextField IDField;
+	@FXML
+	private TextField passwordSessionField;
+	@FXML
+	private TextField IDField2;
+	@FXML
+	private TextField passwordSessionField2;
+	@FXML
+	private TextField topicsField;
+	@FXML
+	private ComboBox<String> activeSessions; 
+	@FXML
+	private Text createMessage;
+	@FXML
+	private Text createMessage2;
+	@FXML
+	private ComboBox<String> selectDefectCombo;
+	@FXML
+	private Pane pokerViewPane;
+	@FXML
+	private Text currentTopicText;
+    @FXML
+    private Text yourVoteText;
+    @FXML
+    private Text sessionAvgText;
+    @FXML
+    private Text name1;
+    @FXML
+    private Text name2;
+    @FXML
+    private Text name3;
+    @FXML
+    private Text name4;
+    @FXML
+    private Text name5;
+    @FXML
+    private Text name6;
+    @FXML
+    private Text name7;
+    @FXML
+    private Text name1left;
+    @FXML
+    private Text name2left;
+    @FXML
+    private Text name3left;
+    @FXML
+    private Text name4left;
+    @FXML
+    private Text name5left;
+    @FXML
+    private Text name6left;
+    @FXML
+    private Text name7left;
+    @FXML
+    private Button button1;
+    @FXML
+    private Button button2;
+    @FXML
+    private Button button3;
+    @FXML
+    private Button button4;
+    @FXML
+    private Button button5;
+    @FXML
+    private Button button6;
+    @FXML
+    private Button button7;
+    @FXML
+    private Button button8;
+    @FXML
+    private Button button9;
+    @FXML
+    private Button button10;
+    
+
 	
 	private boolean effortInProgress = false;
 
@@ -185,6 +277,10 @@ public class Controller implements Initializable{
 	    		"100 Environment"));
 	    loggedInView.setVisible(false);
 	    loginView.setVisible(true);
+	    createAccountView.setVisible(false);
+	    pokerSecondView.setVisible(false);
+	    pokerFirstView.setVisible(true);
+	    pokerViewPane.setVisible(false);
 	    
 	    
 	}
@@ -236,8 +332,8 @@ public class Controller implements Initializable{
 	
 	@FXML
 	private void attemptLogin() {
-		String username = usernameField.getText();
-		String password = passwordField.getText();
+		String username = usernameField2.getText();
+		String password = passwordField2.getText();
 		Login login = EffortLogger.getInstance().getLogin();
 		boolean success = login.handleLoginAttempt(username, password);
 		int loginAttempts = EffortLogger.getInstance().getLogin().getAttempts();
@@ -246,11 +342,167 @@ public class Controller implements Initializable{
 			loginView.setVisible(false);
 			loggedInView.setVisible(true);
 		} else if (loginAttempts < Login.MAX_ATTEMPTS) {
-			loginMessage.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
+			loginMessage1.setText("Login attempt failed. "+(Login.MAX_ATTEMPTS - loginAttempts)+" left.");
 		} else {
-			loginMessage.setText("Run out of attempts. Please try again later.");
+			loginMessage1.setText("Run out of attempts. Please try again later.");
 		}
 	}
+	
+	
+	@FXML
+	private void attemptJoin() {
+		String ID = activeSessions.getValue();
+		String name = IDField2.getText();
+		String password = passwordSessionField2.getText();
+		PlanningPoker planningPoker = new PlanningPoker();
+		boolean success = planningPoker.handleJoinAttempt(ID, password);
+		if (success) {
+			//DO THINGS FOR PLANNING POKER
+			planningPoker.getInfo(ID);
+			planningPoker.addMember(name);
+			pokerFirstView.setVisible(false);
+			pokerViewPane.setVisible(true);
+			String topics = planningPoker.getTopics();
+			String[] topicsArr = topics.split(",\\s*");
+			String memberList = planningPoker.getMembers();
+			String[] memberArr = memberList.split(",\\s*");
+			
+			for (int i = 0; i < memberArr.length && i < 7; i++) {
+			   
+			    if (i == 0) {
+			    	name1left.setText(memberArr[i]);
+			    	name1.setText(memberArr[i]);
+			    }
+			    if (i== 1) {
+			    	name2left.setText(memberArr[i]);
+			    	name2.setText(memberArr[i]);
+			    }
+			    if (i== 2) {
+			    	name3left.setText(memberArr[i]);
+			    	name3.setText(memberArr[i]);
+			    }
+			    if (i== 3) {
+			    	name4left.setText(memberArr[i]);
+			    	name4.setText(memberArr[i]);
+			    }
+			    if (i== 4) {
+			    	name5left.setText(memberArr[i]);
+			    	name5.setText(memberArr[i]);
+			    }
+			    if (i== 5) {
+			    	name6left.setText(memberArr[i]);
+			    	name6.setText(memberArr[i]);
+			    }
+			    if (i== 6) {
+			    	name7left.setText(memberArr[i]);
+			    	name7.setText(memberArr[i]);
+			    }
+			}
+			
+			currentTopicText.setText(topicsArr[0]);
+			
+			
+			
+		} else {
+			createMessage2.setText("Invalid Combination");
+		}
+	}
+	
+	
+	@FXML
+	private void createSession() {
+		String ID = IDField.getText();
+		String password = passwordSessionField.getText();
+		String topics = topicsField.getText();
+		PlanningPoker planningPoker = new PlanningPoker();
+		String msg = planningPoker.attemptCreateSession(ID, password, topics, "temp");
+		activeSessions.getItems().add(ID);
+		createMessage.setText(msg);
+	}
+	
+	@FXML
+	private void changeToCreateView() {
+		
+			loginView.setVisible(false);
+			createAccountView.setVisible(true);
+		
+	}
+	
+	@FXML
+	private void changeToLoginView() {
+		
+		loginView.setVisible(true);
+		createAccountView.setVisible(false);
+	
+    }
+	
+	@FXML
+	private void switchBackToLoginView() {
+		
+		pokerFirstView.setVisible(true);
+		pokerViewPane.setVisible(false);
+	
+    }
+	
+	
+	@FXML
+	private void changePokerCreate() {
+		
+			pokerFirstView.setVisible(false);
+			pokerSecondView.setVisible(true);
+		
+	}
+	
+	@FXML
+	private void changePokerJoin() {
+		
+		pokerFirstView.setVisible(true);
+		pokerSecondView.setVisible(false);
+	
+    }
+	
+	
+	@FXML
+	private void handleCard1() {
+		yourVoteText.setText("0");
+	}
+	@FXML
+	private void handleCard2() {
+		yourVoteText.setText("1");
+	}
+	@FXML
+	private void handleCard3() {
+		yourVoteText.setText("2");
+	}
+	@FXML
+	private void handleCard4() {
+		yourVoteText.setText("3");
+	}
+	@FXML
+	private void handleCard5() {
+		yourVoteText.setText("5");
+	}
+	@FXML
+	private void handleCard6() {
+		yourVoteText.setText("8");
+	}
+	@FXML
+	private void handleCard7() {
+		yourVoteText.setText("13");
+	}
+	@FXML
+	private void handleCard8() {
+		yourVoteText.setText("20");
+	}
+	@FXML
+	private void handleCard9() {
+		yourVoteText.setText("40");
+	}
+	@FXML
+	private void handleCard10() {
+		yourVoteText.setText("100");
+	}
+	
 	
 	@FXML
 	private void createLogin() {
@@ -285,10 +537,18 @@ public class Controller implements Initializable{
 											  oldEffort.getProjectType(),
 											  updatedEffortCat,
 											  oldEffort.getDeliverableType());
-			
+			//edit effort in file directory
 			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
-			
-			
+
+
+			//repopulate combobox with updated information
+			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+
 			
 			
 		}
@@ -372,13 +632,78 @@ public class Controller implements Initializable{
 	    	displayData.add(i.getStartTime().toString());
 	    }
 	    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+	    List<String> loggerSessions = EffortLogger.getInstance().getPokerDataHandler().returnSessions();
+	    activeSessions.setItems(FXCollections.observableList(loggerSessions));
 	}
 	
 	@FXML
-	boolean createDefect(Event e) {
-		newDefect = "-new defect-";
-		selectDefectCombo.getItems().add(newDefect);
-		return true;
+
+	void createDefect(Event e) {
+		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
+		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
+		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		ArrayList<String> defectStrings = new ArrayList<String>();
+		for (Defect d : defectArr) {
+			defectStrings.add(d.getDefectString());
+		}
+		selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+		defectStatus.setText(def.getDefectStatus());
+	}	
+	
+	@FXML
+	void updateDefect(Event e) {
+		if (sanitizeUpdateDefect()) {
+			if (defectEntry.getText() != null) {
+				String injected;
+				String removed;
+				String category;
+				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDef(selectDefectCombo.getValue());
+				if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
+					injected = "";
+				}
+				else {
+					injected = stepsInjected.getSelectionModel().getSelectedItem();
+				}
+				if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
+					removed = "";
+				}
+				else {
+					removed = stepsRemoved.getSelectionModel().getSelectedItem();
+				}
+				if (defectCat.getSelectionModel().getSelectedItem() == null) {
+					category = "";
+				}
+				else {
+					category = defectCat.getSelectionModel().getSelectedItem();
+				}
+				
+				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category);
+				
+				EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
+				ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+				ArrayList<String> defectStrings = new ArrayList<String>();
+				for (Defect d : defectArr) {
+					defectStrings.add(d.getDefectString());
+				}
+				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+			}
+		}
+
 	}
 	
-}
+	@FXML
+	void displayMessage(Event e) {
+		saveStatus.setText("");
+		saveStatus.setText("Changes Unsaved");
+	}
+	
+	boolean sanitizeUpdateDefect() {
+		if (defectEntry.getText().isEmpty() && defectInfo.getText().isEmpty() && stepsInjected.getSelectionModel().getSelectedItem() == null && stepsRemoved.getSelectionModel().getSelectedItem() == null && defectCat.getSelectionModel().getSelectedItem() == null) {
+			saveStatus.setText("");
+			saveStatus.setText("Fields empty");
+			return false;
+		}
+		return true;
+	}
+}	
+	

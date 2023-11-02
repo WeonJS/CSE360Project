@@ -1,5 +1,7 @@
 package CSE360Project;
 
+import java.util.ArrayList;
+
 public class Defect {
 	private String logUser;
 	private String _project;
@@ -9,7 +11,7 @@ public class Defect {
 	private String _inject;
 	private String _removed;
 	private String _category;
-	public Defect(String user, String project, String defectName, String dInfo, String status, String inject, String removed, String category) {
+	public Defect(String project, String defectName, String dInfo, String status, String inject, String removed, String category) {
 		_project = project;
 		_defectName = defectName;
 		_defectInfor = dInfo;
@@ -23,7 +25,7 @@ public class Defect {
 		return _project;
 	}
 	
-	public String getDefect() {
+	public String getDefectString() {
 		return _defectName;
 	}
 	
@@ -74,4 +76,5 @@ public class Defect {
 	public void set_category(String category) {
 		_category = category;
 	}
+	
 }

@@ -52,7 +52,6 @@ public class FileDirectory {
     }
     
     public static boolean deleteFile(Path p) {
-    	
     	if (Files.isDirectory(p)) {
     		return false;
     	}

@@ -55,6 +55,7 @@ public class Login {
         if (isValidLogin) {
             loginSession = new LoginSession(username, password);
             EffortLogger.getInstance().getEffortDataHandler().retrieveEfforts();
+            EffortLogger.getInstance().getPokerDataHandler().retrieveSessions();
             return true;
         } else {
             passwordAttempts++;
@@ -63,10 +64,12 @@ public class Login {
     }
     
     public String attemptCreateAccount(String newUsername, String newPassword) {
+  
         // Check if the new username already exists
-        if (dh.existingUsername(newUsername)) {
-            return "Username already exists. Please login instead.";
+        if (dh.existingUsername(newUsername) ) {
+            return "Username exists. Login Enabled";
         }
+        
         //check to see if username is valid input
         else if (!dh.isValidUsername(newUsername)) {
             return "Account Creation Failed\", \"Invalid Username. Please refer to username requirements";
@@ -78,7 +81,7 @@ public class Login {
         else {
             // Add the new username and password to the database
         	dh.addUser(newUsername, newPassword);
-        	return "Account created!";
+        	return "Account created";
         }
     }
     

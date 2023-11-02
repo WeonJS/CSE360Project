@@ -1,0 +1,154 @@
+
+.button1 {
+    -fx-background-color: rgb(0, 187, 0); /* Green background color */
+    -fx-border-color: rgb(0, 128, 64); /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.button1:hover {
+    -fx-background-color: rgb(0, 215, 0); /* Green background color on hover */
+    -fx-border-color: rgb(0,128, 64); /* Dark green border color on hover */
+}
+
+
+.createButton {
+    -fx-background-color: transparent; /* Make the background transparent */
+    -fx-border-color: transparent; /* Make the border transparent */
+    -fx-text-fill: rgb(0, 128, 255); /* Set the text color to green */
+    -fx-font-weight: bold; /* Make the text bold */
+}
+
+.createButton:hover {
+    -fx-background-color: transparent; /* Make the background transparent */
+    -fx-border-color: transparent; /* Make the border transparent */
+    -fx-text-fill: rgb(0, 191, 191); /* Set the text color to green */
+    -fx-font-weight: bold; /* Make the text bold */
+}
+
+
+.userlabel {
+    -fx-font-weight: bold; /* Make the text bold */
+}
+
+
+.cButton {
+	 -fx-background-color: rgb(0, 128, 255); /* Green background color */
+    -fx-border-color: rgb(0, 80, 159); /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.cButton:hover {
+	 -fx-background-color: rgb(70, 163, 255); /* Green background color */
+    -fx-border-color: rgb(0, 101, 202); /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.bigbox {
+	-fx-alignment: top-left; 
+	-fx-wrap-text: true;
+}
+
+.button2 {
+    -fx-background-color: #FFA500; /* Green background color */
+    -fx-border-color: #D18700; /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.button2:hover {
+    -fx-background-color: #FFB52E; /* Green background color on hover */
+    -fx-border-color: #FFA500; /* Dark green border color on hover */
+}
+
+.label1 {
+	-fx-background-color: #4f4e4c;
+	-fx-text-fill: white;
+}
+
+.label2 {
+	 -fx-wrap-text: true;
+	-fx-padding: 10px;
+	-fx-background-color: #edeceb;
+	-fx-alignment: top-left;
+	
+}
+
+.pokerButton{
+	-fx-font-weight: bold;
+	-fx-background-color: linear-gradient(to bottom, #53a93f, #389c2e); /* Gradient color values */
+    -fx-background-radius: 5px; /* Adjust the radius to control the roundness of the button */
+    -fx-background-insets: 0; /* Remove any padding around the background */
+    -fx-text-fill: white; /* Text color */
+    -fx-border-radius: 5px; /* Rounded border */
+     -fx-translate-y: 0; /* Initial position */
+    -fx-transition: -fx-translate-y 0.45s ease;
+    -fx-font-size: 22px;
+}
+
+.pokerButton:hover{
+	-fx-background-color: linear-gradient(to bottom, #389c2e, #53a93f); 
+	-fx-translate-y: -5px;
+	-fx-font-size: 22px;
+	
+}
+
+.playPoker{
+	 -fx-alignment: center, bottom;
+	 
+	-fx-font-weight: bold;
+	-fx-background-color: #cc945c;  /* Gradient color values */
+    -fx-background-radius: 5px; /* Adjust the radius to control the roundness of the button */
+    -fx-background-insets: 0; /* Remove any padding around the background */
+    -fx-text-fill: white; /* Text color */
+    -fx-border-radius: 5px; /* Rounded border */
+    -fx-font-size: 20px;
+     
+}
+
+.playPokerName{
+	-fx-fill: white; /* Set text color to white */
+    -fx-stroke: black; 
+    -fx-stroke-width: 1;
+    
+}
+
+.cButtonRed {
+	 -fx-background-color: #D7694B; /* Green background color */
+    -fx-border-color: #88260B; /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
