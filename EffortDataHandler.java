@@ -17,6 +17,7 @@ public class EffortDataHandler {
 	
 	// keeps track of all user efforts
 	private ArrayList<Effort> userEfforts = new ArrayList<>();
+	private ArrayList<Defect> defects = new ArrayList<>();
 	
 	private ArrayList<Effort> toDeleteOnClose = new ArrayList<>();
 	
@@ -147,6 +148,35 @@ public class EffortDataHandler {
 		return null;
 	}
 	
+	
+	
+	public void addDefect(Defect newDefect) {
+		defects.add(newDefect);
+	}
+	
+	public Defect getDef(String defect) {
+		for (Defect d : defects) {
+			if (d.getDefectString().equals(defect)) {
+				return d;
+			}
+		}
+		return null;
+	}
+	
+	public void replaceDefect(Defect olddefect, Defect newDefect) {
+		int index = 0;
+		for (Defect d  : defects) {
+			if (d.getDefectString().equals(olddefect.getDefectString())) {
+				defects.set(index, newDefect);
+			}
+			index++;
+		}
+	}
+	
+	public ArrayList<Defect> getDefectArray() {
+		return defects;
+	}
+	
 	public void updateEffort(Effort oldEffort, Effort newEffort) {
 		
 		if (updatedEfforts.contains(oldEffort)) {
@@ -159,6 +189,8 @@ public class EffortDataHandler {
 		removeEffort(oldEffort);
 		userEfforts.add(newEffort);
 	}
+	
+	
 }
 
 
