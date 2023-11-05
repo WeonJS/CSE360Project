@@ -97,8 +97,9 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     	String hashedID = hash(ID);
     	String hashedPass = hash(password);
     	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
+    	
     	try {
-            String data = String.format("%s\nsessionID, %s\nsessionTopics, %s\nsessionMembers, %s\n",
+            String data = String.format("%s\nsessionID, %s\nsessionTopics, %s\nsessionMembers,$%s\n",
                     hashedPass, ID, Topics, members);
             Files.write(PokerFilePath, data.getBytes());
             System.out.print("Wrote: " + data);
@@ -149,10 +150,6 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
                 }
             }
 
-            // Now, the second lines are stored in the secondLines list
-            for (String secondLine : secondLines) {
-                System.out.println(secondLine);
-            }
 
             // If you want to store the second lines in an array
            
@@ -160,6 +157,78 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
             e.printStackTrace();
         }
 	}
+    
+    
+    public void alterMemberStorage(String ID, String Members) {
+    	String hashedID = hash(ID);
+    	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
+    	if (FileDirectory.fileExists(PokerFilePath)) {
+            try {
+                // Read the file into memory
+                List<String> pokerFileLines = Files.readAllLines(PokerFilePath);
+
+                // Find the line that starts with "sessionMembers"
+                for (int i = 0; i < pokerFileLines.size(); i++) {
+                    String line = pokerFileLines.get(i);
+                    if (line.startsWith("sessionMembers")) {
+                        // Modify the content after "sessionMembers"
+                        String modifiedContent = "sessionMembers, " + Members; // Modify as needed
+                        pokerFileLines.set(i, modifiedContent);
+                    }
+                }
+
+                // Write the modified content back to the file
+                Files.write(PokerFilePath, pokerFileLines, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+    
+    
+    
+    public void alterNameStorage(String ID, String name, String newName) {
+    	String hashedID = hash(ID);
+    	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
+    	  if (FileDirectory.fileExists(PokerFilePath)) {
+    	        try {
+    	            // Read the file into memory
+    	            List<String> pokerFileLines = Files.readAllLines(PokerFilePath);
+
+    	            // Find the line that starts with "sessionMembers"
+    	            for (int i = 0; i < pokerFileLines.size(); i++) {
+    	                String line = pokerFileLines.get(i);
+
+    	                if (line.startsWith("sessionMembers")) {
+    	                    // Split the line to work with individual name entries
+    	                    String[] members = line.split(", ");
+    	                    for (int j = 1; j < members.length; j++) {
+    	                        String memberData = members[j];
+    	                        if (memberData.startsWith(name + ":")) {
+    	                            // Modify the data for the specified name
+    	                            members[j] = newName;
+    	                        }
+    	                    }
+
+    	                    // Reconstruct the line with modified member data
+    	                    pokerFileLines.set(i, String.join(", ", members));
+    	                }
+    	            }
+
+    	            // Write the modified content back to the file
+    	            Files.write(PokerFilePath, pokerFileLines, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
+
+    	        } catch (IOException e) {
+    	            e.printStackTrace();
+    	        }
+    	    }
+        
+    }
+    
+    
+    
     
     public List<String> returnSessions(){
     	return secondLines;

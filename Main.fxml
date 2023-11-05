@@ -332,7 +332,7 @@
                                     <Font size="22.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="33.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="bName1" layoutX="33.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -362,8 +362,8 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="518.0" layoutY="469.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" styleClass="cButton" stylesheets="@login.css" text="Next Topic -&gt;" />
-                              <Button layoutX="99.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="next" layoutX="518.0" layoutY="447.0" mnemonicParsing="false" onMouseClicked="#nextButton" prefHeight="32.0" prefWidth="103.0" styleClass="cButton" stylesheets="@login.css" text="Next Topic -&gt;" />
+                              <Button fx:id="bName2" layoutX="99.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -373,7 +373,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="166.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="bName3" layoutX="166.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -383,7 +383,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="232.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="bName4" layoutX="232.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -393,7 +393,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="296.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="bName5" layoutX="296.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -403,7 +403,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="361.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="bName6" layoutX="361.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -413,7 +413,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="428.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
+                              <Button fx:id="bName7" layoutX="428.0" layoutY="447.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="51.0" styleClass="playPoker" stylesheets="@login.css" text="?" textFill="WHITE">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -428,7 +428,13 @@
                                     <Font size="10.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="203.0" layoutY="358.0" mnemonicParsing="false" styleClass="createButton" stylesheets="@login.css" text="Submit" />
+                              <Button layoutX="203.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#submit" styleClass="createButton" stylesheets="@login.css" text="Submit" />
+                              <Button fx:id="back" layoutX="518.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#backButton" prefHeight="32.0" prefWidth="103.0" styleClass="button2" stylesheets="@login.css" text="&lt;- Previous " />
+                              <Text layoutX="278.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Always submit before you continue" wrappingWidth="163.740234375">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </Pane>
                      </children>

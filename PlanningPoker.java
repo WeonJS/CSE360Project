@@ -56,13 +56,30 @@ public class PlanningPoker {
 	}
 	
 	public void addMember(String concat) {
-		if(temp2[2] == "temp") {
+		String useTopics = temp2[1];
+		String[] topicsArray = useTopics.split(",\\s*");
+		
+		for (int i = 0; i < topicsArray.length; i++) {
+            concat = concat + ":0";
+		}
+
+		String members = getMembers();
+		char firstChar = members.charAt(0);
+		
+		if(firstChar == '$') {
 			temp2[2] = concat;
 		}
 		else {
 		String temp = temp2[2] + ", " + concat;
 		temp2[2] = temp;
 		}
+		
+		String toAlter = temp2[2];
+		String ID = temp2[0];
+		dh.alterMemberStorage(ID, toAlter);
+		
+		
+		
 	}
 	
 	
@@ -96,7 +113,7 @@ public class PlanningPoker {
 	        }
 	        else {
 	            // Add the new ID, Password and populate Topics List
-	        	String addMem = "temp";
+	        	String addMem = "$temp";
 	        	dh.addSession(newID, newPassword, topics, addMem);
 	        	return "Session created";
 	        }

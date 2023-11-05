@@ -108,7 +108,7 @@
     -fx-background-insets: 0; /* Remove any padding around the background */
     -fx-text-fill: white; /* Text color */
     -fx-border-radius: 5px; /* Rounded border */
-    -fx-font-size: 20px;
+    -fx-font-size: 14px;
      
 }
 
