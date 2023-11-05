@@ -305,7 +305,7 @@ public class Controller implements Initializable{
 	    
 	}
 	@FXML
-	private void startEffort(Event e) {
+	void startEffort(Event e) {
 		if(!effortInProgress) {
 			effortInProgress = true;
 			startTime = LocalDateTime.now();
@@ -316,7 +316,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	private void endEffort(Event e) {
+	void endEffort(Event e) {
 		boolean cleanInput = sanitizeCreateEffortData();
 		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
@@ -887,7 +887,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	private void editEffort(Event e) {
+	void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
@@ -913,6 +913,7 @@ public class Controller implements Initializable{
 			//edit effort in file directory
 			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 
+
 			//repopulate combobox with updated information
 			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		    ArrayList<String> displayData = new ArrayList<String>();
@@ -920,6 +921,7 @@ public class Controller implements Initializable{
 		    	displayData.add(i.getStartTime().toString());
 		    }
 		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+
 			
 			
 		}
@@ -939,7 +941,7 @@ public class Controller implements Initializable{
 	}
 	
 	
-	private boolean sanitizeEditEffort() {
+	boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
@@ -959,7 +961,7 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	private boolean sanitizeUserInput() {
+	boolean sanitizeUserInput() {
 		final int MAX_DATE_LENGTH = 10;
 		final int MAX_TIME_LENGTH = 8;
 		String dateValue = editDate.getText();
@@ -974,12 +976,13 @@ public class Controller implements Initializable{
 		}
 		
 		//gonna cook this rn
-		String datePatternRegex = "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
-		String timePatternRegex = "^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
+		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
+			System.out.print("FAIL HERE");
 			return false;
 		}
 		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -1007,6 +1010,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
+
 	void createDefect(Event e) {
 		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
 		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
@@ -1057,6 +1061,7 @@ public class Controller implements Initializable{
 				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 			}
 		}
+
 	}
 	
 	@FXML
