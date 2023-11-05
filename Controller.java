@@ -394,6 +394,7 @@ public class Controller implements Initializable{
 			testSubmit = 0;
 			allDone = 0;
 			back.setVisible(false);
+			next.setVisible(true);
 
 			for (String originalString : memberArr) {
 	            // Use a regular expression to match and remove all trailing ":0" sequences
