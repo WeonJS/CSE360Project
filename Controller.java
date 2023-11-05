@@ -393,6 +393,7 @@ public class Controller implements Initializable{
 			topicIndex = 0;
 			testSubmit = 0;
 			allDone = 0;
+			back.setVisible(false);
 
 			for (String originalString : memberArr) {
 	            // Use a regular expression to match and remove all trailing ":0" sequences
