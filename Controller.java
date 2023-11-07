@@ -405,20 +405,20 @@ public class Controller implements Initializable{
 	            }
 	        }
 			
-			name1left.setText("name");
-	    	name1.setText("name");
-	    	name2left.setText("name");
-	    	name2.setText("name");
-	    	name3left.setText("name");
-	    	name3.setText("name");
-	    	name4left.setText("name");
-	    	name4.setText("name");
-	    	name5left.setText("name");
-	    	name5.setText("name");
-	    	name6left.setText("name");
-	    	name6.setText("name");
-	    	name7left.setText("name");
-	    	name7.setText("name");
+			name1left.setText("....");
+	    	name1.setText("...");
+	    	name2left.setText("....");
+	    	name2.setText("...");
+	    	name3left.setText("....");
+	    	name3.setText("...");
+	    	name4left.setText("....");
+	    	name4.setText("...");
+	    	name5left.setText("....");
+	    	name5.setText("...");
+	    	name6left.setText("....");
+	    	name6.setText("...");
+	    	name7left.setText("....");
+	    	name7.setText("...");
 			
 			for (int i = 0; i < memberArr.length && i < 7; i++) {
 			   
