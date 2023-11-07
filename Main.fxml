@@ -14,11 +14,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<<<<<<< HEAD
-<Pane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
-=======
+
 <Pane prefHeight="588.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
->>>>>>> 6dbe1d07fd85a459c94f2496fa8fbedabc9adbb2
    <children>
       <TabPane fx:id="loggedInView" prefHeight="578.0" prefWidth="720.0">
          <tabs>
@@ -441,16 +438,6 @@
             </Tab>
          </tabs>
       </TabPane>
-<<<<<<< HEAD
-      <Pane fx:id="createAccountView" layoutX="-11.0" layoutY="4.0" prefHeight="429.0" prefWidth="600.0" visible="false">
-         <children>
-            <Label layoutX="204.0" layoutY="189.0" prefHeight="17.0" prefWidth="192.0" styleClass="userlabel" stylesheets="@login.css" text="Password" />
-            <TextField fx:id="usernameField" layoutX="201.0" layoutY="158.0" prefHeight="25.0" prefWidth="226.0" promptText="Username..." />
-            <TextField fx:id="passwordField" layoutX="202.0" layoutY="229.0" prefHeight="25.0" prefWidth="226.0" promptText="Password..." />
-            <Button layoutX="201.0" layoutY="274.0" mnemonicParsing="false" onMouseClicked="#createLogin" prefHeight="29.0" prefWidth="226.0" styleClass="cButton" stylesheets="@login.css" text="Create Account" />
-            <Button id="createButton" layoutX="286.0" layoutY="332.0" mnemonicParsing="false" onAction="#changeToLoginView" onMouseClicked="#changeToLoginView" styleClass="createButton" stylesheets="@login.css" text="Return to Login." textAlignment="CENTER" />
-            <Text layoutX="202.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Account">
-=======
       <Pane fx:id="createAccountView" layoutX="-11.0" layoutY="4.0" prefHeight="578.0" prefWidth="720.0" visible="false">
          <children>
             <Label layoutX="248.0" layoutY="236.0" prefHeight="17.0" prefWidth="192.0" styleClass="userlabel" stylesheets="@login.css" text="Password" />
@@ -459,7 +446,6 @@
             <Button layoutX="245.0" layoutY="321.0" mnemonicParsing="false" onMouseClicked="#createLogin" prefHeight="29.0" prefWidth="226.0" styleClass="cButton" stylesheets="@login.css" text="Create Account" />
             <Button id="createButton" layoutX="330.0" layoutY="379.0" mnemonicParsing="false" onMouseClicked="#changeToLoginView" styleClass="createButton" stylesheets="@login.css" text="Return to Login." textAlignment="CENTER" />
             <Text layoutX="246.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Account">
->>>>>>> 6dbe1d07fd85a459c94f2496fa8fbedabc9adbb2
                <font>
                   <Font size="24.0" />
                </font>
@@ -479,16 +465,6 @@
             <Text fx:id="loginMessage" layoutX="147.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="336.91015625" />
          </children>
       </Pane>
-<<<<<<< HEAD
-      <Pane fx:id="loginView" layoutY="-10.0" prefHeight="429.0" prefWidth="600.0">
-         <children>
-            <Label layoutX="204.0" layoutY="206.0" prefHeight="17.0" prefWidth="192.0" styleClass="userlabel" stylesheets="@login.css" text="Password" />
-            <TextField fx:id="usernameField2" layoutX="197.0" layoutY="169.0" prefHeight="25.0" prefWidth="226.0" promptText="Username..." />
-            <TextField fx:id="passwordField2" layoutX="197.0" layoutY="228.0" prefHeight="25.0" prefWidth="226.0" promptText="Password..." />
-            <Button id="button1" fx:id="logbtn1" layoutX="201.0" layoutY="274.0" mnemonicParsing="false" onMouseClicked="#attemptLogin" prefHeight="29.0" prefWidth="226.0" styleClass="button1" stylesheets="@login.css" text="Log In" />
-            <Button id="createButton" layoutX="314.0" layoutY="336.0" mnemonicParsing="false" onMouseClicked="#changeToCreateView" styleClass="createButton" stylesheets="@login.css" text="Create an account." textAlignment="CENTER" />
-            <Text layoutX="204.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EffortLogger">
-=======
       <Pane fx:id="loginView" layoutY="-11.0" prefHeight="595.0" prefWidth="720.0" visible="false">
          <children>
             <Label layoutX="247.0" layoutY="264.0" prefHeight="17.0" prefWidth="192.0" styleClass="userlabel" stylesheets="@login.css" text="Password" />
@@ -496,7 +472,6 @@
             <Button id="button1" fx:id="logbtn1" layoutX="244.0" layoutY="332.0" mnemonicParsing="false" onMouseClicked="#attemptLogin" prefHeight="29.0" prefWidth="226.0" styleClass="button1" stylesheets="@login.css" text="Log In" />
             <Button id="createButton" layoutX="357.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#changeToCreateView" styleClass="createButton" stylesheets="@login.css" text="Create an account." textAlignment="CENTER" />
             <Text layoutX="247.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EffortLogger">
->>>>>>> 6dbe1d07fd85a459c94f2496fa8fbedabc9adbb2
                <font>
                   <Font size="35.0" />
                </font>
