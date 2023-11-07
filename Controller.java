@@ -172,6 +172,25 @@ public class Controller implements Initializable{
     private Button button9;
     @FXML
     private Button button10;
+    @FXML
+    private Button bName1;
+    @FXML
+    private Button bName2;
+    @FXML
+    private Button bName3;
+    @FXML
+    private Button bName4;
+    @FXML
+    private Button bName5;
+    @FXML
+    private Button bName6;
+    @FXML
+    private Button bName7;
+    @FXML
+    private Button next;
+    @FXML
+    private Button back;
+    
     
 
 	
@@ -281,11 +300,12 @@ public class Controller implements Initializable{
 	    pokerSecondView.setVisible(false);
 	    pokerFirstView.setVisible(true);
 	    pokerViewPane.setVisible(false);
+	    back.setVisible(false);
 	    
 	    
 	}
 	@FXML
-	private void startEffort(Event e) {
+	void startEffort(Event e) {
 		if(!effortInProgress) {
 			effortInProgress = true;
 			startTime = LocalDateTime.now();
@@ -296,7 +316,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	private void endEffort(Event e) {
+	void endEffort(Event e) {
 		boolean cleanInput = sanitizeCreateEffortData();
 		if(effortInProgress && cleanInput) {
 			effortInProgress = false;
@@ -348,6 +368,9 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	int topicIndex = 0;
+	int testSubmit = 0;
+	int allDone = 0;
 	
 	@FXML
 	private void attemptJoin() {
@@ -366,47 +389,295 @@ public class Controller implements Initializable{
 			String[] topicsArr = topics.split(",\\s*");
 			String memberList = planningPoker.getMembers();
 			String[] memberArr = memberList.split(",\\s*");
+			ArrayList<String> newArray = new ArrayList<>();
+			topicIndex = 0;
+			testSubmit = 0;
+			allDone = 0;
+			back.setVisible(false);
+			next.setVisible(true);
+
+			for (String originalString : memberArr) {
+	            // Use a regular expression to match and remove all trailing ":0" sequences
+	            String modifiedString = originalString.replaceAll(":[0-9]+", "");
+
+	            if (!modifiedString.isEmpty()) {
+	                newArray.add(modifiedString);
+	            }
+	        }
+			
+			name1left.setText("....");
+	    	name1.setText("...");
+	    	name2left.setText("....");
+	    	name2.setText("...");
+	    	name3left.setText("....");
+	    	name3.setText("...");
+	    	name4left.setText("....");
+	    	name4.setText("...");
+	    	name5left.setText("....");
+	    	name5.setText("...");
+	    	name6left.setText("....");
+	    	name6.setText("...");
+	    	name7left.setText("....");
+	    	name7.setText("...");
 			
 			for (int i = 0; i < memberArr.length && i < 7; i++) {
 			   
 			    if (i == 0) {
-			    	name1left.setText(memberArr[i]);
-			    	name1.setText(memberArr[i]);
+			    	name1left.setText(newArray.get(i));
+			    	name1.setText(newArray.get(i));
 			    }
 			    if (i== 1) {
-			    	name2left.setText(memberArr[i]);
-			    	name2.setText(memberArr[i]);
+			    	name2left.setText(newArray.get(i));
+			    	name2.setText(newArray.get(i));
 			    }
 			    if (i== 2) {
-			    	name3left.setText(memberArr[i]);
-			    	name3.setText(memberArr[i]);
+			    	name3left.setText(newArray.get(i));
+			    	name3.setText(newArray.get(i));
 			    }
 			    if (i== 3) {
-			    	name4left.setText(memberArr[i]);
-			    	name4.setText(memberArr[i]);
+			    	name4left.setText(newArray.get(i));
+			    	name4.setText(newArray.get(i));
 			    }
 			    if (i== 4) {
-			    	name5left.setText(memberArr[i]);
-			    	name5.setText(memberArr[i]);
+			    	name5left.setText(newArray.get(i));
+			    	name5.setText(newArray.get(i));
 			    }
 			    if (i== 5) {
-			    	name6left.setText(memberArr[i]);
-			    	name6.setText(memberArr[i]);
+			    	name6left.setText(newArray.get(i));
+			    	name6.setText(newArray.get(i));
 			    }
 			    if (i== 6) {
-			    	name7left.setText(memberArr[i]);
-			    	name7.setText(memberArr[i]);
+			    	name7left.setText(newArray.get(i));
+			    	name7.setText(newArray.get(i));
 			    }
 			}
 			
 			currentTopicText.setText(topicsArr[0]);
-			
-			
+			bName1.setText("?");
+			bName2.setText("?");
+			bName3.setText("?");
+			bName4.setText("?");
+			bName5.setText("?");
+			bName6.setText("?");
+			bName7.setText("?");
+			yourVoteText.setText("#");
+			sessionAvgText.setText("?");
 			
 		} else {
 			createMessage2.setText("Invalid Combination");
+			
 		}
 	}
+	
+	
+	@FXML
+	private void nextButton() {
+		
+		if(allDone == 1) {
+			testSubmit = 1;
+		}
+		
+		if(testSubmit == 0) {
+			return;
+		}
+		
+		
+		String ID = activeSessions.getValue();
+		PlanningPoker planningPoker = new PlanningPoker();
+		planningPoker.getInfo(ID);
+		String topics = planningPoker.getTopics();
+		String members = planningPoker.getMembers();
+		String[] topicsArr = topics.split(",\\s*");
+		String[] memberArr = members.split(",\\s*");
+		currentTopicText.setText(topicsArr[topicIndex]);
+		planningPoker.getInfo(ID);
+		members = planningPoker.getMembers();
+		memberArr = members.split(",\\s*");
+		
+		if (topicsArr.length - 2 == topicIndex) {
+			next.setVisible(false);
+			
+		}
+		
+		topicIndex++;
+		
+		if(topicIndex == topicsArr.length-1) {
+			allDone = 1;
+		}
+		
+		if (topicIndex >= 0 && allDone == 1) {
+			back.setVisible(true);
+		}
+		else {
+			back.setVisible(false);
+		}
+		
+		currentTopicText.setText(topicsArr[topicIndex]);
+		
+		if(allDone == 0) {
+		
+		
+		bName1.setText("?");
+		bName2.setText("?");
+		bName3.setText("?");
+		bName4.setText("?");
+		bName5.setText("?");
+		bName6.setText("?");
+		bName7.setText("?");
+		yourVoteText.setText("?");
+		sessionAvgText.setText("?");
+		testSubmit = 0;
+		
+		}
+		
+		if(allDone == 1) {
+			planningPoker.getInfo(ID);
+			members = planningPoker.getMembers();
+			memberArr = members.split(",\\s*");
+			
+			String[] newArray = new String[memberArr.length];
+			
+			for (int i = 0; i < memberArr.length; i++) {
+				String[] tempArr = memberArr[i].split(":");
+				newArray[i] = tempArr[topicIndex+1];
+			}
+			
+			int avg = 0;
+			int toDivide = 0;
+			for (int i = 0; i < memberArr.length && i < 7; i++) {
+				   
+			    if (i == 0 && newArray[i] != "0") {
+			    	bName1.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			    if (i== 1 && newArray[i] != "0") {
+			    	bName2.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			    if (i== 2 && newArray[i] != "0") {
+			    	bName3.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			    if (i== 3 && newArray[i] != "0") {
+			    	bName4.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			    if (i== 4 && newArray[i] != "0") {
+			    	bName5.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			    if (i== 5 && newArray[i] != "0") {
+			    	bName6.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			    if (i== 6 && newArray[i] != "0") {
+			    	bName7.setText(newArray[i]);
+			    	int tempNum = Integer.parseInt(newArray[i]);
+			    	avg += tempNum;
+			    	toDivide++;
+			    }
+			}
+			
+			avg = avg / toDivide;
+			sessionAvgText.setText(String.valueOf(avg));
+			yourVoteText.setText("#");
+		
+		}
+		
+	}
+	
+	@FXML private void backButton() {
+		next.setVisible(true);
+		topicIndex--;
+		if(topicIndex == 0) {
+			next.setVisible(true);
+			back.setVisible(false);
+		}
+		String ID = activeSessions.getValue();
+		PlanningPoker planningPoker = new PlanningPoker();
+		planningPoker.getInfo(ID);
+		String topics = planningPoker.getTopics();
+		String members = planningPoker.getMembers();
+		String[] topicsArr = topics.split(",\\s*");
+		String[] memberArr = members.split(",\\s*");
+		currentTopicText.setText(topicsArr[topicIndex]);
+		planningPoker.getInfo(ID);
+		members = planningPoker.getMembers();
+		memberArr = members.split(",\\s*");
+		
+		String[] newArray = new String[memberArr.length];
+		
+		for (int i = 0; i < memberArr.length; i++) {
+			String[] tempArr = memberArr[i].split(":");
+			newArray[i] = tempArr[topicIndex+1];
+		}
+		
+		int avg = 0;
+		int toDivide = 0;
+		for (int i = 0; i < memberArr.length && i < 7; i++) {
+			   
+		    if (i == 0 && newArray[i] != "0") {
+		    	bName1.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 1 && newArray[i] != "0") {
+		    	bName2.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 2 && newArray[i] != "0") {
+		    	bName3.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 3 && newArray[i] != "0") {
+		    	bName4.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 4 && newArray[i] != "0") {
+		    	bName5.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 5 && newArray[i] != "0") {
+		    	bName6.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 6 && newArray[i] != "0") {
+		    	bName7.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		}
+		
+		avg = avg / toDivide;
+		sessionAvgText.setText(String.valueOf(avg));
+		yourVoteText.setText("#");
+	
+	}
+	
 	
 	
 	@FXML
@@ -416,9 +687,112 @@ public class Controller implements Initializable{
 		String topics = topicsField.getText();
 		PlanningPoker planningPoker = new PlanningPoker();
 		String msg = planningPoker.attemptCreateSession(ID, password, topics, "temp");
+		if (msg == "Session created") {
 		activeSessions.getItems().add(ID);
 		createMessage.setText(msg);
+		}
 	}
+	
+	
+	@FXML
+	private void submit() {
+		testSubmit = 1;
+		String ID = activeSessions.getValue();
+		PlanningPoker planningPoker = new PlanningPoker();
+		PokerDataHandler dh = new PokerDataHandler();
+		planningPoker.getInfo(ID);
+		String topics = planningPoker.getTopics();
+		String members = planningPoker.getMembers();
+		String[] topicsArr = topics.split(",\\s*");
+		String[] memberArr = members.split(",\\s*");
+		String currTopic = currentTopicText.getText();
+		String lastElement = "";
+		
+		
+		if (memberArr.length > 0) {
+		    lastElement = memberArr[memberArr.length - 1];
+		}
+		
+		String[] nameInfo = lastElement.split(":");	
+		nameInfo[topicIndex+1] = yourVoteText.getText();
+		if(yourVoteText.getText() == "#") {
+			return;
+		}
+		
+		
+		
+		String newToSet = String.join(":", nameInfo);
+		
+		//function to store new name info in system.
+		dh.alterNameStorage(ID, nameInfo[0], newToSet);
+		
+		//get all information again
+		planningPoker.getInfo(ID);
+		members = planningPoker.getMembers();
+		memberArr = members.split(",\\s*");
+		
+		String[] newArray = new String[memberArr.length];
+		
+		for (int i = 0; i < memberArr.length; i++) {
+			String[] tempArr = memberArr[i].split(":");
+			newArray[i] = tempArr[topicIndex+1];
+		}
+		
+		int avg = 0;
+		int toDivide = 0;
+		
+		for (int i = 0; i < memberArr.length && i < 7; i++) {
+			   
+		    if (i == 0 && newArray[i] != "0") {
+		    	bName1.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 1 && newArray[i] != "0") {
+		    	bName2.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 2 && newArray[i] != "0") {
+		    	bName3.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 3 && newArray[i] != "0") {
+		    	bName4.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 4 && newArray[i] != "0") {
+		    	bName5.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 5 && newArray[i] != "0") {
+		    	bName6.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		    if (i== 6 && newArray[i] != "0") {
+		    	bName7.setText(newArray[i]);
+		    	int tempNum = Integer.parseInt(newArray[i]);
+		    	avg += tempNum;
+		    	toDivide++;
+		    }
+		}
+		
+		avg = avg / toDivide;
+		sessionAvgText.setText(String.valueOf(avg));
+	
+	}
+	
+	
 	
 	@FXML
 	private void changeToCreateView() {
@@ -441,6 +815,7 @@ public class Controller implements Initializable{
 		
 		pokerFirstView.setVisible(true);
 		pokerViewPane.setVisible(false);
+		topicIndex = 0;
 	
     }
 	
@@ -514,7 +889,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	private void editEffort(Event e) {
+	void editEffort(Event e) {
 		if(sanitizeEditEffort()) {
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
@@ -540,6 +915,7 @@ public class Controller implements Initializable{
 			//edit effort in file directory
 			EffortLogger.getInstance().getEffortDataHandler().updateEffort(oldEffort, editedEffort);
 
+
 			//repopulate combobox with updated information
 			ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		    ArrayList<String> displayData = new ArrayList<String>();
@@ -547,6 +923,7 @@ public class Controller implements Initializable{
 		    	displayData.add(i.getStartTime().toString());
 		    }
 		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+
 			
 			
 		}
@@ -566,7 +943,7 @@ public class Controller implements Initializable{
 	}
 	
 	
-	private boolean sanitizeEditEffort() {
+	boolean sanitizeEditEffort() {
 		if(effortCatComboBox2.getValue() == null ||
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
@@ -586,7 +963,7 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	private boolean sanitizeUserInput() {
+	boolean sanitizeUserInput() {
 		final int MAX_DATE_LENGTH = 10;
 		final int MAX_TIME_LENGTH = 8;
 		String dateValue = editDate.getText();
@@ -601,12 +978,13 @@ public class Controller implements Initializable{
 		}
 		
 		//gonna cook this rn
-		String datePatternRegex = "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
-		String timePatternRegex = "^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
+		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
+			System.out.print("FAIL HERE");
 			return false;
 		}
 		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
@@ -634,6 +1012,7 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
+
 	void createDefect(Event e) {
 		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
 		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
@@ -684,6 +1063,7 @@ public class Controller implements Initializable{
 				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 			}
 		}
+
 	}
 	
 	@FXML
