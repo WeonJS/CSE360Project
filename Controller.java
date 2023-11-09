@@ -190,14 +190,38 @@ public class Controller implements Initializable{
     private Button next;
     @FXML
     private Button back;
+    //----------------------SEARCH EFFORT----------------------------
+    @FXML
+    private Label searchStartLabel;
+    @FXML
+    private Label searchEndTime;
+    @FXML
+    private Label searchDuration;
+    @FXML
+    private Label searchLifeCycleStep;
+    @FXML
+    private Label searchProjectType;
+    @FXML
+    private Label searchEffortCategory;
+    @FXML
+    private Label searchDeliveryType;
+    @FXML
+    private ComboBox<String> searchProjectTypeComboBox;
+    @FXML
+    private ComboBox<String> searchEffortCatComboBox;
+    @FXML
+    private ComboBox<String> searchLifeCycleComboBox;
+    @FXML
+    private ComboBox<String> searchDeliveryTypeComboBox;
+    
+    
+    
     
     
 
 	
 	private boolean effortInProgress = false;
 
-	
-	//private String loggedUser = "jmattoka"; 
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
@@ -301,6 +325,38 @@ public class Controller implements Initializable{
 	    pokerFirstView.setVisible(true);
 	    pokerViewPane.setVisible(false);
 	    back.setVisible(false);
+	    
+	    //-----------SEARCH----------
+	    searchProjectTypeComboBox.setItems(FXCollections.observableArrayList("Development Project", "Business Project"));
+	    searchLifeCycleComboBox.setItems(FXCollections.observableArrayList(
+	    		"Problem Understanding",
+	    		"Conceptual Design Plan",
+	    		"Requirements",
+	    		"Concetpual Design",
+	    		"Conceptual Design Review",
+	    		"Detailed Design Plan",
+	    		"Detailed Design/Prototype",
+	    		"Detailed Design Review",
+	    		"Implementation Plan",
+	    		"Test Case Generation",
+	    		"Solution Specification",
+	    		"Solution Review",
+	    		"Solution Implementation",
+	    		"Unit/System Test",
+	    		"Reflection",
+	    		"Repository Update"));
+	    searchEffortCatComboBox.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
+	    searchDeliveryTypeComboBox.setItems(FXCollections.observableArrayList(
+	    		"Conceptual Design",
+	    		"Detailed Design",
+	    		"Test Cases",
+	    		"Solution",
+	    		"Reflection",
+	    		"Outline",
+	    		"Draft Report",
+	    		"User Defined",
+	    		"Other"));
+	    
 	    
 	    
 	}
