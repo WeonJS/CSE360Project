@@ -2,19 +2,15 @@ package CSE360Project;
 
 import java.util.regex.Pattern;
 
-import javax.swing.filechooser.FileSystemView;
-
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
 import java.util.List;
+
 
 
 // Nichoals Lorenzini

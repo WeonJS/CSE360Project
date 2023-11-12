@@ -1,18 +1,11 @@
 package CSE360Project;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FileDirectory {
 
@@ -29,6 +22,7 @@ public class FileDirectory {
     }
     
     public static boolean fileExists(Path p) {
+    	System.out.println("Does "+p+" exist? " + Files.exists(p));
     	if (Files.exists(p)) {
 			return true;
 		}

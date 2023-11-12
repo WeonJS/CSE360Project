@@ -17,7 +17,7 @@
 <Pane prefHeight="588.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
    <children>
 
-      <TabPane fx:id="loggedInView" prefHeight="578.0" prefWidth="720.0">
+      <TabPane fx:id="loggedInView" onMouseClicked="#populateSearchEffortList" prefHeight="578.0" prefWidth="720.0">
 
          <tabs>
             <Tab closable="false" style="-fx-border-color: #29910B;" text="Create Effort">
@@ -493,11 +493,11 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab style="-fx-border-color: #FFC0CB;" text="Search Effort">
+            <Tab fx:id="searchEffortTabButton" style="-fx-border-color: #FFC0CB;" text="Search Effort">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="400.0" layoutY="36.0" prefHeight="473.0" prefWidth="291.0" />
+                        <ListView fx:id="effortList" layoutX="400.0" layoutY="36.0" onMouseClicked="#getSearchEffortData" prefHeight="473.0" prefWidth="291.0" />
                         <Label layoutX="19.0" layoutY="265.0" prefHeight="28.0" prefWidth="66.0" text="Start Time: " />
                         <Label layoutX="22.0" layoutY="302.0" prefHeight="28.0" prefWidth="60.0" text="End Time: " />
                         <Label layoutX="23.0" layoutY="337.0" prefHeight="28.0" prefWidth="58.0" text="Duration: " />
@@ -516,10 +516,10 @@
                         <Label layoutX="198.0" layoutY="50.0" prefHeight="28.0" prefWidth="97.0" text="Effort Category: " />
                         <Label layoutX="19.0" layoutY="125.0" prefHeight="28.0" prefWidth="88.0" text="Life Cycle Step: " />
                         <Label layoutX="198.0" layoutY="125.0" prefHeight="28.0" prefWidth="131.0" text="Deliverable Type: " />
-                        <ComboBox fx:id="searchProjectTypeComboBox" layoutX="15.0" layoutY="78.0" prefWidth="150.0" promptText="Select..." />
-                        <ComboBox fx:id="searchEffortCatComboBox" layoutX="189.0" layoutY="78.0" prefWidth="150.0" promptText="Select..." />
-                        <ComboBox fx:id="searchLifeCycleComboBox" layoutX="15.0" layoutY="153.0" prefWidth="150.0" promptText="Select..." />
-                        <ComboBox fx:id="searchDeliveryTypeComboBox" layoutX="189.0" layoutY="153.0" prefWidth="150.0" promptText="Select..." />
+                        <ComboBox fx:id="searchProjectTypeComboBox" layoutX="15.0" layoutY="78.0" onAction="#filterEffort" prefWidth="150.0" promptText="Select..." />
+                        <ComboBox fx:id="searchEffortCatComboBox" layoutX="189.0" layoutY="78.0" onAction="#filterEffort" prefWidth="150.0" promptText="Select..." />
+                        <ComboBox fx:id="searchLifeCycleComboBox" layoutX="15.0" layoutY="153.0" onAction="#filterEffort" prefWidth="150.0" promptText="Select..." />
+                        <ComboBox fx:id="searchDeliveryTypeComboBox" layoutX="189.0" layoutY="153.0" onAction="#filterEffort" prefWidth="150.0" promptText="Select..." />
                         <Label alignment="CENTER" layoutX="10.0" layoutY="4.0" prefHeight="41.0" prefWidth="390.0" text="FILTERS">
                            <font>
                               <Font size="28.0" />
@@ -530,6 +530,7 @@
                               <Font size="28.0" />
                            </font>
                         </Label>
+                        <Button layoutX="14.0" layoutY="199.0" mnemonicParsing="false" onMouseClicked="#clearFilters" prefHeight="26.0" prefWidth="325.0" text="Clear" />
                      </children>
                   </AnchorPane>
               </content>

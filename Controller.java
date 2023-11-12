@@ -22,10 +22,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Tab;
+
 import java.util.List;
 
 public class Controller implements Initializable{
 
+	private String currentTab = "Create Effort";
+	
 	@FXML
 	private ComboBox<String> projectComboBox;
 	@FXML
@@ -213,9 +217,10 @@ public class Controller implements Initializable{
     private ComboBox<String> searchLifeCycleComboBox;
     @FXML
     private ComboBox<String> searchDeliveryTypeComboBox;
-    
-    
-    
+    @FXML
+    private ListView<String> effortList;
+    @FXML
+    private Tab searchEffortTabButton;
     
     
 
@@ -357,9 +362,25 @@ public class Controller implements Initializable{
 	    		"User Defined",
 	    		"Other"));
 	    
-	    
-	    
 	}
+	
+	@FXML
+	private void populateSearchEffortList() {
+		if (loggedInView.getSelectionModel().getSelectedItem().getText().equals("Search Effort") && !currentTab.equals("Search Effort")) {
+			currentTab = loggedInView.getSelectionModel().getSelectedItem().getText();
+		} else {
+			return;
+		}
+			
+		
+		effortList.getItems().clear();
+		ArrayList<Effort> efforts = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		for (Effort e : efforts) {
+			effortList.getItems().add(e.getStartTime().toString());
+		}
+	}
+	
+	
 	@FXML
 	void startEffort(Event e) {
 		if(!effortInProgress) {
@@ -1142,6 +1163,58 @@ public class Controller implements Initializable{
 			return false;
 		}
 		return true;
+	}
+	
+	@FXML
+	void getSearchEffortData(Event e) {
+		
+		if (effortList.getSelectionModel().getSelectedItem() == null)
+			return;
+		
+		LocalDateTime selectedEffortIdentifier = LocalDateTime.parse(effortList.getSelectionModel().getSelectedItem());
+		//call data handler to find effort data
+		Effort selectedEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(selectedEffortIdentifier);
+		//populate labels 
+		searchStartLabel.setText(selectedEffort.getStartTime().toString());
+		searchEndTime.setText(selectedEffort.getEndTime().toString());
+		searchDuration.setText("" + selectedEffort.getDuration());
+		searchLifeCycleStep.setText(selectedEffort.getLifeCycleStep());
+		searchProjectType.setText(selectedEffort.getProjectType());
+		searchEffortCategory.setText(selectedEffort.getEffortCategory());
+		searchDeliveryType.setText(selectedEffort.getDeliverableType());
+	}
+	
+	@FXML
+	void clearFilters(Event e) {
+		searchProjectTypeComboBox.getSelectionModel().clearSelection();
+	    searchEffortCatComboBox.getSelectionModel().clearSelection();
+	    searchLifeCycleComboBox.getSelectionModel().clearSelection();
+	    searchDeliveryTypeComboBox.getSelectionModel().clearSelection();
+	    populateSearchEffortList();
+	}
+	@FXML
+	void filterEffort() {
+		ArrayList<Effort> efforts = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		
+		String projectType = searchProjectTypeComboBox.getSelectionModel().getSelectedItem();
+		String effortCategory = searchEffortCatComboBox.getSelectionModel().getSelectedItem();
+		String lifeCycle = searchLifeCycleComboBox.getSelectionModel().getSelectedItem();
+		String deliverable = searchDeliveryTypeComboBox.getSelectionModel().getSelectedItem();
+		
+		effortList.getItems().clear();
+		for (Effort e : efforts) {
+			if ((e.getProjectType().equals(projectType) || projectType == null) && 
+					(e.getEffortCategory().equals(effortCategory) || effortCategory == null) &&
+					(e.getLifeCycleStep().equals(lifeCycle) || lifeCycle == null) &&
+					(e.getDeliverableType().equals(deliverable) || deliverable == null)) {
+				
+				effortList.getItems().add(e.getStartTime().toString());
+				
+			}
+		}
+		
+		
+		
 	}
 }	
 	
