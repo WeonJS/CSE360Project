@@ -1,19 +1,5 @@
 package CSE360Project;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-
 // Nicholas Lorenzini 
 
 public class Login {
@@ -66,8 +52,8 @@ public class Login {
     public String attemptCreateAccount(String newUsername, String newPassword) {
   
         // Check if the new username already exists
-        if (dh.existingUsername(newUsername) ) {
-            return "Username exists. Login Enabled";
+        if (dh.existingUsername(newUsername)) {
+            return "Account " + newUsername + " already exists. Please log in.";
         }
         
         //check to see if username is valid input

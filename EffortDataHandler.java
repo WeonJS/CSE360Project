@@ -5,7 +5,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -97,11 +96,8 @@ public class EffortDataHandler {
 			directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
 				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
-
 				if (deletedStartTimes.contains(fileName)) {
-					
 					FileDirectory.deleteFile(userDirectoryPath);
-
 				}
 			}
 		} catch (IOException e) {
@@ -149,7 +145,6 @@ public class EffortDataHandler {
 				return e;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -193,7 +188,6 @@ public class EffortDataHandler {
 		
 		removeEffort(oldEffort);
 		userEfforts.add(newEffort);
-		
 	}
 	
 	
