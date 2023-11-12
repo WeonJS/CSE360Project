@@ -89,7 +89,7 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     
     public boolean existingUsername(String ID) {
     	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hash(ID));
-		return FileDirectory.fileExists(PokerFilePath);
+		return FileDirectory.filePathExists(PokerFilePath);
     }
     
     //called when creating new acc...
@@ -114,7 +114,7 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     public String getPokerInfo(String ID) {
     	String hashedID = hash(ID);
     	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
-    	 if (FileDirectory.fileExists(PokerFilePath)) {
+    	 if (FileDirectory.filePathExists(PokerFilePath)) {
              try {
                  List<String> pokerFileLines = Files.readAllLines(PokerFilePath);
                  
@@ -162,7 +162,7 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     public void alterMemberStorage(String ID, String Members) {
     	String hashedID = hash(ID);
     	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
-    	if (FileDirectory.fileExists(PokerFilePath)) {
+    	if (FileDirectory.filePathExists(PokerFilePath)) {
             try {
                 // Read the file into memory
                 List<String> pokerFileLines = Files.readAllLines(PokerFilePath);
@@ -192,7 +192,7 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     public void alterNameStorage(String ID, String name, String newName) {
     	String hashedID = hash(ID);
     	Path PokerFilePath = Paths.get(PokerDataPath.toString(), hashedID);
-    	  if (FileDirectory.fileExists(PokerFilePath)) {
+    	  if (FileDirectory.filePathExists(PokerFilePath)) {
     	        try {
     	            // Read the file into memory
     	            List<String> pokerFileLines = Files.readAllLines(PokerFilePath);
@@ -241,7 +241,7 @@ public static String hash(String rawID) { //i NEED THE HASHED USERNAME ohion got
     	Path userPokerPath = Paths.get(PokerDataPath.toString(), hashedID);
     	
     	// match the login details to the file
-    	if (FileDirectory.fileExists(userPokerPath)) {
+    	if (FileDirectory.filePathExists(userPokerPath)) {
     		String storedPassword;
     		List<String> pokerFileLines = FileDirectory.getFileLines(userPokerPath);
 

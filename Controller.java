@@ -1118,46 +1118,49 @@ public class Controller implements Initializable{
 	}	
 	
 	@FXML
-	void updateDefect(Event e) {
-		if (sanitizeUpdateDefect()) {
-			if (defectEntry.getText() != null) {
-				String injected;
-				String removed;
-				String category;
-				String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
-				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDefect(selectDefectCombo.getValue());
-				if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
-					injected = "";
-				}
-				else {
-					injected = stepsInjected.getSelectionModel().getSelectedItem();
-				}
-				if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
-					removed = "";
-				}
-				else {
-					removed = stepsRemoved.getSelectionModel().getSelectedItem();
-				}
-				if (defectCat.getSelectionModel().getSelectedItem() == null) {
-					category = "";
-				}
-				else {
-					category = defectCat.getSelectionModel().getSelectedItem();
-				}
-				
-				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category, userName);
-				
-				EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
-				ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-				ArrayList<String> defectStrings = new ArrayList<>();
-				for (Defect d : defects) {
-					defectStrings.add(d.getDefectString());
-				}
-				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
-				
-			}
+	private void updateDefect(Event e) {
+		if (!sanitizeUpdateDefect() || defectEntry.getText() == null) {
+			return;
 		}
-
+		
+		String injected;
+		String removed;
+		String category;
+		String status;
+		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+		Defect oldDefect = null;
+		if (FileDirectory.fileExistsInDirectoryPath(EffortLogger.getInstance().getDataPathDirectory(), selectDefectCombo.getValue())) {
+			 oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDefect(selectDefectCombo.getValue());
+		}
+		
+		if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
+			injected = "";
+		}
+		else {
+			injected = stepsInjected.getSelectionModel().getSelectedItem();
+		}
+		if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
+			removed = "";
+		}
+		else {
+			removed = stepsRemoved.getSelectionModel().getSelectedItem();
+		}
+		if (defectCat.getSelectionModel().getSelectedItem() == null) {
+			category = "";
+		}
+		else {
+			category = defectCat.getSelectionModel().getSelectedItem();
+		}
+		
+		Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), status, injected, removed, category, userName);
+		
+		EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
+		ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		ArrayList<String> defectStrings = new ArrayList<>();
+		for (Defect d : defects) {
+			defectStrings.add(d.getDefectString());
+		}
+		selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 	}
 	
 	@FXML
@@ -1198,6 +1201,12 @@ public class Controller implements Initializable{
 		searchProjectType.setText(selectedEffort.getProjectType());
 		searchEffortCategory.setText(selectedEffort.getEffortCategory());
 		searchDeliveryType.setText(selectedEffort.getDeliverableType());
+	}
+	
+	@FXML
+	private void deleteDefectButtonHandler() {
+		String defectName = selectDefectCombo.getSelectionModel().getSelectedItem();
+		EffortLogger.getInstance().getEffortDataHandler().removeDefect(defectName);
 	}
 	
 	@FXML

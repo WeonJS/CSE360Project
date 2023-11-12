@@ -4,6 +4,7 @@ package CSE360Project;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class FileDirectory {
     	return false;
     }
     
-    public static boolean fileExists(Path p) {
+    public static boolean fileExistsInDirectoryPath(Path p, String filename) {
+    	return Files.exists(Paths.get(p.toString() + filename));
+    }
+    
+    public static boolean filePathExists(Path p) {
     	System.out.println("Does "+p+" exist? " + Files.exists(p));
     	if (Files.exists(p)) {
 			return true;
