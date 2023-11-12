@@ -190,14 +190,40 @@ public class Controller implements Initializable{
     private Button next;
     @FXML
     private Button back;
+    //----------------------SEARCH EFFORT----------------------------
+    @FXML
+    private Label searchStartLabel;
+    @FXML
+    private Label searchEndTime;
+    @FXML
+    private Label searchDuration;
+    @FXML
+    private Label searchLifeCycleStep;
+    @FXML
+    private Label searchProjectType;
+    @FXML
+    private Label searchEffortCategory;
+    @FXML
+    private Label searchDeliveryType;
+    @FXML
+    private ComboBox<String> searchProjectTypeComboBox;
+    @FXML
+    private ComboBox<String> searchEffortCatComboBox;
+    @FXML
+    private ComboBox<String> searchLifeCycleComboBox;
+    @FXML
+    private ComboBox<String> searchDeliveryTypeComboBox;
+    @FXML
+    private ListView<String> effortList;
+    
+    
+    
     
     
 
 	
 	private boolean effortInProgress = false;
 
-	
-	//private String loggedUser = "jmattoka"; 
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
@@ -302,6 +328,38 @@ public class Controller implements Initializable{
 	    pokerViewPane.setVisible(false);
 	    back.setVisible(false);
 	    
+	    //-----------SEARCH----------
+	    searchProjectTypeComboBox.setItems(FXCollections.observableArrayList("Development Project", "Business Project"));
+	    searchLifeCycleComboBox.setItems(FXCollections.observableArrayList(
+	    		"Problem Understanding",
+	    		"Conceptual Design Plan",
+	    		"Requirements",
+	    		"Concetpual Design",
+	    		"Conceptual Design Review",
+	    		"Detailed Design Plan",
+	    		"Detailed Design/Prototype",
+	    		"Detailed Design Review",
+	    		"Implementation Plan",
+	    		"Test Case Generation",
+	    		"Solution Specification",
+	    		"Solution Review",
+	    		"Solution Implementation",
+	    		"Unit/System Test",
+	    		"Reflection",
+	    		"Repository Update"));
+	    searchEffortCatComboBox.setItems(FXCollections.observableArrayList("Plans", "Deliverables", "Interruptions", "Defects", "Others"));
+	    searchDeliveryTypeComboBox.setItems(FXCollections.observableArrayList(
+	    		"Conceptual Design",
+	    		"Detailed Design",
+	    		"Test Cases",
+	    		"Solution",
+	    		"Reflection",
+	    		"Outline",
+	    		"Draft Report",
+	    		"User Defined",
+	    		"Other"));
+	    
+	    effortList.setItems(FXCollections.observableArrayList("LOL"));
 	    
 	}
 	@FXML
@@ -1079,6 +1137,41 @@ public class Controller implements Initializable{
 			return false;
 		}
 		return true;
+	}
+	
+	@FXML
+	void getSearchEffortData(Event e) {
+		String selectedEffortIdentifier = effortList.getSelectionModel().getSelectedItem();
+		searchStartLabel.setText(selectedEffortIdentifier);
+		//call data handler to find effort data
+	}
+	
+	@FXML
+	void clearFilters(Event e) {
+		searchProjectTypeComboBox.getSelectionModel().clearSelection();
+	    searchEffortCatComboBox.getSelectionModel().clearSelection();
+	    searchLifeCycleComboBox.getSelectionModel().clearSelection();
+	    searchDeliveryTypeComboBox.getSelectionModel().clearSelection();
+	    //call datahandler method to relist all effort in text view
+	}
+	@FXML
+	void filterEffort() {
+		if(searchProjectTypeComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Project type populated");
+			//call data handler to filter
+		}
+		if(searchEffortCatComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Effort cat populated");
+			//call data handler to filter
+		}
+		if(searchLifeCycleComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Life cycle populated");
+			//call data handler to filter
+		}
+		if(searchDeliveryTypeComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Delivaerable type populated");
+			//call data handler to filter
+		}
 	}
 }	
 	
