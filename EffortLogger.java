@@ -59,6 +59,7 @@ public class EffortLogger extends Application {
 				public void handle(WindowEvent we) {
 					// update/create the updated/created efforts in the file system
 					effortDataHandler.storeEfforts();
+					effortDataHandler.storeDefects();
 	          	}
 			});
 		} catch(Exception e) {

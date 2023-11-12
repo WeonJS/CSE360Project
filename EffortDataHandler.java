@@ -14,12 +14,14 @@ public class EffortDataHandler {
 	
 	// keeps track of efforts that have been altered/created by the user
 	private ArrayList<Effort> updatedEfforts = new ArrayList<>();
+	private ArrayList<Defect> updatedDefects = new ArrayList<>();
 	
 	// keeps track of all user efforts
 	private ArrayList<Effort> userEfforts = new ArrayList<>();
-	private ArrayList<Defect> defects = new ArrayList<>();
+	private ArrayList<Defect> userDefects = new ArrayList<>();
 	
-	private ArrayList<Effort> toDeleteOnClose = new ArrayList<>();
+	private ArrayList<Effort> effortsToDeleteOnClose = new ArrayList<>();
+	private ArrayList<Defect> defectsToDeleteOnClose = new ArrayList<>();
 	
 	public EffortDataHandler() {
 		directoryPath = EffortLogger.getInstance().getDataPathDirectory();
@@ -27,6 +29,7 @@ public class EffortDataHandler {
 	
 	// retrieves and decrypts all the user's efforts and stores them into userEfforts arraylist.
 	public boolean retrieveEfforts() {
+		
 		// get hashed username
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		String hashedUsername = loginSession.getHashedUser();
@@ -44,7 +47,9 @@ public class EffortDataHandler {
 			// populate array of user efforts
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
-				userEfforts.add(Effort.constructFromCSVFile(filePath));
+				if (filePath.toString().charAt(0) == 'E') {
+					userEfforts.add(Effort.constructFromCSVFile(filePath));
+				}
 			}
 			System.out.println("Loaded " + userEfforts.size() + " efforts for this user.");
     		return true;
@@ -54,6 +59,40 @@ public class EffortDataHandler {
 		
 		return false;
 	}
+	
+	// retrieves and decrypts all the user's efforts and stores them into userEfforts arraylist.
+		public boolean retrieveDefects() {
+			
+			// get hashed username
+			Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
+			String hashedUsername = loginSession.getHashedUser();
+			
+			// navigate to directory for this user's effort logs
+			Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
+			
+			try {
+				// if the effortlogger data path does not exist, make it
+				FileDirectory.createFolder(directoryPath);
+				
+				// if user doesn't have a directory, make one
+				FileDirectory.createFolder(userDirectoryPath);
+				
+				// populate array of user efforts
+				DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
+				for (Path filePath : directoryStream) {
+					if (filePath.toString().charAt(0) == 'D') {
+						userDefects.add(Defect.constructFromCSVFile(filePath));
+					}
+					
+				}
+				System.out.println("Loaded " + userDefects.size() + " defects for this user.");
+	    		return true;
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+			
+			return false;
+		}
 	
 	// stores runtime efforts of user which have been altered/created.
 	public boolean storeEfforts() {
@@ -68,7 +107,7 @@ public class EffortDataHandler {
 		// navigate to directory for this user's effort logs
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
 		
-		// store changed/created efforts
+		// store edited/created efforts
 		for (Effort effort : updatedEfforts) {
 			// uses the effort start date to uniquely identify each effort file name
 			String effortIdentifier = effort.getStartTime().toString().replaceAll(":", "_");
@@ -84,10 +123,12 @@ public class EffortDataHandler {
 			FileDirectory.writeToFile(file, effortCSV);
 		}
 		
+		
+		
 		// delete the efforts to be deleted on close
 		DirectoryStream<Path> directoryStream;
 		ArrayList<String> deletedStartTimes = new ArrayList<>();
-		for (Effort ef : toDeleteOnClose) {
+		for (Effort ef : effortsToDeleteOnClose) {
 			deletedStartTimes.add("E " + ef.getStartTime().toString().replaceAll(":", "_"));
 			System.out.println("ADDED TO BE DELETED: " + ef);
 		}
@@ -97,6 +138,57 @@ public class EffortDataHandler {
 			for (Path filePath : directoryStream) {
 				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
 				if (deletedStartTimes.contains(fileName)) {
+					FileDirectory.deleteFile(userDirectoryPath);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return true;
+	}
+	
+	public boolean storeDefects() {
+		// get hashed username
+		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
+		
+		if (loginSession == null)
+			return false;
+		
+		String hashedUsername = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+		
+		// navigate to directory for this user's effort logs
+		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
+		
+		
+		// store created/updated defects
+		for (Defect defect : updatedDefects) {
+			// uses the effort start date to uniquely identify each effort file name
+			String defectIdentifier = defect.getDefectString();
+			// "E" flag identifies that it is an effort
+			String defectFileName = "D " + defectIdentifier;
+			
+			// convert class data to CSV string
+			String effortCSV = defect.toCSVData();
+			
+			// write data to path
+			Path file = Paths.get(userDirectoryPath.toString(), defectFileName);
+			FileDirectory.writeToFile(file, effortCSV);
+		}
+		
+		// delete the efforts to be deleted on close
+		DirectoryStream<Path> directoryStream;
+		ArrayList<String> deletedDefectStrings = new ArrayList<>();
+		for (Defect defect : defectsToDeleteOnClose) {
+			deletedDefectStrings.add("D " + defect.getDefectString());
+			System.out.println("ADDED TO BE DELETED: " + defect);
+		}
+		
+		try {
+			directoryStream = Files.newDirectoryStream(userDirectoryPath);
+			for (Path filePath : directoryStream) {
+				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
+				if (deletedDefectStrings.contains(fileName)) {
 					FileDirectory.deleteFile(userDirectoryPath);
 				}
 			}
@@ -131,8 +223,20 @@ public class EffortDataHandler {
 		for (Effort effort : userEfforts) {
 			if (e.equals(effort)) {
 				System.out.println("QUEUED TO BE DELETED " + e);
-				toDeleteOnClose.add(effort);
+				effortsToDeleteOnClose.add(effort);
 				userEfforts.remove(effort);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean removeDefect(Defect d) {
+		for (Effort defect : userEfforts) {
+			if (d.equals(defect)) {
+				System.out.println("QUEUED TO BE DELETED " + d);
+				effortsToDeleteOnClose.add(defect);
+				userEfforts.remove(defect);
 				return true;
 			}
 		}
@@ -151,11 +255,11 @@ public class EffortDataHandler {
 	
 	
 	public void addDefect(Defect newDefect) {
-		defects.add(newDefect);
+		userDefects.add(newDefect);
 	}
 	
-	public Defect getDef(String defect) {
-		for (Defect d : defects) {
+	public Defect getDefect(String defect) {
+		for (Defect d : userDefects) {
 			if (d.getDefectString().equals(defect)) {
 				return d;
 			}
@@ -165,16 +269,28 @@ public class EffortDataHandler {
 	
 	public void replaceDefect(Defect olddefect, Defect newDefect) {
 		int index = 0;
-		for (Defect d  : defects) {
+		for (Defect d  : userDefects) {
 			if (d.getDefectString().equals(olddefect.getDefectString())) {
-				defects.set(index, newDefect);
+				userDefects.set(index, newDefect);
 			}
 			index++;
 		}
 	}
 	
 	public ArrayList<Defect> getDefectArray() {
-		return defects;
+		return userDefects;
+	}
+	
+	public void updateDefect(Defect oldDefect, Defect newDefect) {
+		if (updatedDefects.contains(oldDefect)) {
+			updatedDefects.remove(oldDefect);
+			updatedDefects.add(newDefect);
+		} else {
+			updatedDefects.add(newDefect);
+		}
+		
+		removeDefect(oldDefect);
+		userDefects.add(newDefect);
 	}
 	
 	public void updateEffort(Effort oldEffort, Effort newEffort) {
@@ -189,8 +305,6 @@ public class EffortDataHandler {
 		removeEffort(oldEffort);
 		userEfforts.add(newEffort);
 	}
-	
-	
 }
 
 

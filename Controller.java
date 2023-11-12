@@ -1089,9 +1089,9 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-
 	void createDefect(Event e) {
-		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
+		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ", userName);
 		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
 		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
 		ArrayList<String> defectStrings = new ArrayList<String>();
@@ -1109,7 +1109,8 @@ public class Controller implements Initializable{
 				String injected;
 				String removed;
 				String category;
-				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDef(selectDefectCombo.getValue());
+				String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDefect(selectDefectCombo.getValue());
 				if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
 					injected = "";
 				}
@@ -1129,15 +1130,16 @@ public class Controller implements Initializable{
 					category = defectCat.getSelectionModel().getSelectedItem();
 				}
 				
-				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category);
+				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category, userName);
 				
-				EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
-				ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-				ArrayList<String> defectStrings = new ArrayList<String>();
-				for (Defect d : defectArr) {
+				EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
+				ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+				ArrayList<String> defectStrings = new ArrayList<>();
+				for (Defect d : defects) {
 					defectStrings.add(d.getDefectString());
 				}
 				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+				
 			}
 		}
 
