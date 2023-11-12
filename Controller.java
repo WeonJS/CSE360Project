@@ -1141,9 +1141,17 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void getSearchEffortData(Event e) {
-		String selectedEffortIdentifier = effortList.getSelectionModel().getSelectedItem();
-		searchStartLabel.setText(selectedEffortIdentifier);
+		LocalDateTime selectedEffortIdentifier = LocalDateTime.parse(effortList.getSelectionModel().getSelectedItem());
 		//call data handler to find effort data
+		Effort selectedEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(selectedEffortIdentifier);
+		//populate labels 
+		searchStartLabel.setText(selectedEffort.getStartTime().toString());
+		searchEndTime.setText(selectedEffort.getEndTime().toString());
+		searchDuration.setText("" + selectedEffort.getDuration());
+		searchLifeCycleStep.setText(selectedEffort.getLifeCycleStep());
+		searchProjectType.setText(selectedEffort.getProjectType());
+		searchEffortCategory.setText(selectedEffort.getEffortCategory());
+		searchDeliveryType.setText(selectedEffort.getDeliverableType());
 	}
 	
 	@FXML
