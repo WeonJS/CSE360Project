@@ -16,7 +16,7 @@
 
 <Pane prefHeight="588.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
    <children>
-      <TabPane fx:id="loggedInView" onMouseClicked="#populateSearchEffortList" prefHeight="578.0" prefWidth="720.0">
+      <TabPane fx:id="loggedInView" prefHeight="578.0" prefWidth="720.0">
          <tabs>
             <Tab closable="false" style="-fx-border-color: #29910B;" text="Create Effort">
                <content>
@@ -32,7 +32,7 @@
                               <Font name="Arial" size="22.0" />
                            </font>
                         </Button>
-                        <Label layoutX="458.0" layoutY="-1.0" prefHeight="30.0" prefWidth="215.0" text="EffortLogger v. Prototype" />
+                        <Label layoutX="458.0" layoutY="-1.0" prefHeight="30.0" prefWidth="215.0" text="EffortLogger V2" />
                         <Label layoutX="114.0" layoutY="47.0" text="Project" />
                         <Label layoutX="114.0" layoutY="108.0" text="Life Cycle Step" />
                         <ComboBox fx:id="projectComboBox" layoutX="114.0" layoutY="71.0" prefWidth="150.0" promptText="Select..." />
@@ -491,7 +491,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab fx:id="searchEffortTabButton" style="-fx-border-color: #FFC0CB;" text="Search Effort">
+            <Tab style="-fx-border-color: #FFC0CB;" text="Search Effort">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
