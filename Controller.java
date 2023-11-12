@@ -28,6 +28,8 @@ import java.util.List;
 
 public class Controller implements Initializable{
 
+	private String currentTab = "Create Effort";
+	
 	@FXML
 	private ComboBox<String> projectComboBox;
 	@FXML
@@ -364,10 +366,13 @@ public class Controller implements Initializable{
 	
 	@FXML
 	private void populateSearchEffortList() {
-		if (!loggedInView.getSelectionModel().getSelectedItem().getText().equals("Search Effort"))
+		if (loggedInView.getSelectionModel().getSelectedItem().getText().equals("Search Effort") && !currentTab.equals("Search Effort")) {
+			currentTab = loggedInView.getSelectionModel().getSelectedItem().getText();
+		} else {
 			return;
+		}
+			
 		
-		System.out.println("lmao");
 		effortList.getItems().clear();
 		ArrayList<Effort> efforts = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		for (Effort e : efforts) {
@@ -1155,6 +1160,10 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void getSearchEffortData(Event e) {
+		
+		if (effortList.getSelectionModel().getSelectedItem() == null)
+			return;
+		
 		LocalDateTime selectedEffortIdentifier = LocalDateTime.parse(effortList.getSelectionModel().getSelectedItem());
 		//call data handler to find effort data
 		Effort selectedEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(selectedEffortIdentifier);
@@ -1174,26 +1183,31 @@ public class Controller implements Initializable{
 	    searchEffortCatComboBox.getSelectionModel().clearSelection();
 	    searchLifeCycleComboBox.getSelectionModel().clearSelection();
 	    searchDeliveryTypeComboBox.getSelectionModel().clearSelection();
-	    //call datahandler method to relist all effort in text view
+	    populateSearchEffortList();
 	}
 	@FXML
 	void filterEffort() {
-		if(searchProjectTypeComboBox.getSelectionModel().getSelectedItem() != null) {
-			System.out.println("Project type populated");
-			//call data handler to filter
+		ArrayList<Effort> efforts = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		
+		String projectType = searchProjectTypeComboBox.getSelectionModel().getSelectedItem();
+		String effortCategory = searchEffortCatComboBox.getSelectionModel().getSelectedItem();
+		String lifeCycle = searchLifeCycleComboBox.getSelectionModel().getSelectedItem();
+		String deliverable = searchDeliveryTypeComboBox.getSelectionModel().getSelectedItem();
+		
+		effortList.getItems().clear();
+		for (Effort e : efforts) {
+			if ((e.getProjectType().equals(projectType) || projectType == null) && 
+					(e.getEffortCategory().equals(effortCategory) || effortCategory == null) &&
+					(e.getLifeCycleStep().equals(lifeCycle) || lifeCycle == null) &&
+					(e.getDeliverableType().equals(deliverable) || deliverable == null)) {
+				
+				effortList.getItems().add(e.getStartTime().toString());
+				
+			}
 		}
-		if(searchEffortCatComboBox.getSelectionModel().getSelectedItem() != null) {
-			System.out.println("Effort cat populated");
-			//call data handler to filter
-		}
-		if(searchLifeCycleComboBox.getSelectionModel().getSelectedItem() != null) {
-			System.out.println("Life cycle populated");
-			//call data handler to filter
-		}
-		if(searchDeliveryTypeComboBox.getSelectionModel().getSelectedItem() != null) {
-			System.out.println("Delivaerable type populated");
-			//call data handler to filter
-		}
+		
+		
+		
 	}
 }	
 	
