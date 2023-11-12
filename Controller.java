@@ -213,6 +213,8 @@ public class Controller implements Initializable{
     private ComboBox<String> searchLifeCycleComboBox;
     @FXML
     private ComboBox<String> searchDeliveryTypeComboBox;
+    @FXML
+    private ListView<String> effortList;
     
     
     
@@ -357,7 +359,7 @@ public class Controller implements Initializable{
 	    		"User Defined",
 	    		"Other"));
 	    
-	    
+	    effortList.setItems(FXCollections.observableArrayList("LOL"));
 	    
 	}
 	@FXML
@@ -1135,6 +1137,41 @@ public class Controller implements Initializable{
 			return false;
 		}
 		return true;
+	}
+	
+	@FXML
+	void getSearchEffortData(Event e) {
+		String selectedEffortIdentifier = effortList.getSelectionModel().getSelectedItem();
+		searchStartLabel.setText(selectedEffortIdentifier);
+		//call data handler to find effort data
+	}
+	
+	@FXML
+	void clearFilters(Event e) {
+		searchProjectTypeComboBox.getSelectionModel().clearSelection();
+	    searchEffortCatComboBox.getSelectionModel().clearSelection();
+	    searchLifeCycleComboBox.getSelectionModel().clearSelection();
+	    searchDeliveryTypeComboBox.getSelectionModel().clearSelection();
+	    //call datahandler method to relist all effort in text view
+	}
+	@FXML
+	void filterEffort() {
+		if(searchProjectTypeComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Project type populated");
+			//call data handler to filter
+		}
+		if(searchEffortCatComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Effort cat populated");
+			//call data handler to filter
+		}
+		if(searchLifeCycleComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Life cycle populated");
+			//call data handler to filter
+		}
+		if(searchDeliveryTypeComboBox.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Delivaerable type populated");
+			//call data handler to filter
+		}
 	}
 }	
 	
