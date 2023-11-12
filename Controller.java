@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Tab;
+
 import java.util.List;
 
 public class Controller implements Initializable{
@@ -215,9 +217,8 @@ public class Controller implements Initializable{
     private ComboBox<String> searchDeliveryTypeComboBox;
     @FXML
     private ListView<String> effortList;
-    
-    
-    
+    @FXML
+    private Tab searchEffortTabButton;
     
     
 
@@ -359,9 +360,22 @@ public class Controller implements Initializable{
 	    		"User Defined",
 	    		"Other"));
 	    
-	    effortList.setItems(FXCollections.observableArrayList("LOL"));
-	    
 	}
+	
+	@FXML
+	private void populateSearchEffortList() {
+		if (!loggedInView.getSelectionModel().getSelectedItem().getText().equals("Search Effort"))
+			return;
+		
+		System.out.println("lmao");
+		effortList.getItems().clear();
+		ArrayList<Effort> efforts = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		for (Effort e : efforts) {
+			effortList.getItems().add(e.getStartTime().toString());
+		}
+	}
+	
+	
 	@FXML
 	void startEffort(Event e) {
 		if(!effortInProgress) {
