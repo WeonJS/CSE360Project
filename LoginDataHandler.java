@@ -13,9 +13,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 // Nichoals Lorenzini
 
@@ -89,6 +89,7 @@ public class LoginDataHandler {
 		return FileDirectory.fileExists(loginFilePath);
     }
     
+    //called when creating new acc...
     public boolean addUser(String username, String password) {
     	String hashedUser = hash(username);
     	String hashedPass = hash(password);
@@ -97,6 +98,7 @@ public class LoginDataHandler {
 		return FileDirectory.writeToFile(loginFilePath, hashedPass);
     }
     
+    //function called on login... validates information
     public boolean validateLogin(String username, String password) {
     	String hashedUsername = hash(username);
     	String hashedPassword = hash(password);

@@ -49,4 +49,138 @@
     -fx-font-weight: bold;
 }
 
+.bigbox {
+	-fx-alignment: top-left; 
+	-fx-wrap-text: true;
+}
+
+.button2 {
+    -fx-background-color: #FFA500; /* Green background color */
+    -fx-border-color: #D18700; /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.button2:hover {
+    -fx-background-color: #FFB52E; /* Green background color on hover */
+    -fx-border-color: #FFA500; /* Dark green border color on hover */
+}
+
+.label1 {
+	-fx-background-color: #4f4e4c;
+	-fx-text-fill: white;
+}
+
+.label2 {
+	 -fx-wrap-text: true;
+	-fx-padding: 10px;
+	-fx-background-color: #edeceb;
+	-fx-alignment: top-left;
+	
+}
+
+.pokerButton{
+	-fx-font-weight: bold;
+	-fx-background-color: #2a8c34; /* Gradient color values */
+    -fx-background-radius: 5px; /* Adjust the radius to control the roundness of the button */
+    -fx-background-insets: 0; /* Remove any padding around the background */
+    -fx-text-fill: white; /* Text color */
+   
+     -fx-translate-y: 0; /* Initial position */
+    -fx-transition: -fx-translate-y 0.45s ease;
+    -fx-font-size: 22px;
+}
+
+.pokerButton:hover{
+	-fx-background-color: #2a8c34;
+	-fx-translate-y: -5px;
+	-fx-font-size: 22px;
+	
+}
+
+.playPoker{
+	 -fx-alignment: center, bottom;
+	 
+	-fx-font-weight: bold;
+	-fx-background-color: #cc945c;  /* Gradient color values */
+    -fx-background-radius: 5px; /* Adjust the radius to control the roundness of the button */
+    -fx-background-insets: 0; /* Remove any padding around the background */
+    -fx-text-fill: white; /* Text color */
+    -fx-border-radius: 5px; /* Rounded border */
+    -fx-font-size: 14px;
+     
+}
+
+.playPokerName{
+	-fx-fill: white; /* Set text color to white */
+    -fx-stroke: black; 
+    -fx-stroke-width: 1;
+    
+}
+
+.cButtonRed {
+	 -fx-background-color: #D7694B; /* Green background color */
+    -fx-border-color: #88260B; /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: white; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.pokerButton2{
+	-fx-margin:0;
+	-fx-padding: 0;
+	-fx-font-weight: bold;
+	-fx-background-color: linear-gradient(to bottom, #53a93f, #389c2e); /* Gradient color values */
+    -fx-background-radius: 5px; /* Adjust the radius to control the roundness of the button */
+    -fx-background-insets: 0; /* Remove any padding around the background */
+    -fx-text-fill: white; /* Text color */
+    -fx-border-radius: 5px; /* Rounded border */
+     -fx-translate-y: 0; /* Initial position */
+    -fx-transition: -fx-translate-y 0.45s ease;
+    -fx-font-size: 30px;
+}
+
+.pokerButton2:hover{
+	-fx-translate-y: -5px;
+	-fx-font-size: 30px;
+	
+}
+
+
+
+.button12 {
+     -fx-background-color: #c1dcf5; /* Green background color */
+    -fx-border-color: #86c1f7; /* Dark green border color */
+    -fx-border-width: 2px; /* Border width, adjust as needed */
+    -fx-text-fill: #013361; /* Text color, to make it visible on the green background */
+    -fx-font-weight: bold;
+}
+
+.button12:hover {
+    -fx-background-color: #c1dcf5; /* Green background color on hover */
+    -fx-border-color: rgb(0,128, 64); /* Dark green border color on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
