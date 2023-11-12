@@ -1,80 +1,146 @@
 package CSE360Project;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public class Defect {
 	private String logUser;
-	private String _project;
-	private String _defectName;
-	private String _defectInfor;
+	private String project;
+	private String defectName;
+	private String defectInfor;
 	private String dStatus;
-	private String _inject;
-	private String _removed;
-	private String _category;
-	public Defect(String project, String defectName, String dInfo, String status, String inject, String removed, String category) {
-		_project = project;
-		_defectName = defectName;
-		_defectInfor = dInfo;
-		dStatus = status;
-		_inject = inject;
-		_removed = removed;
-		_category = category;
+	private String inject;
+	private String removed;
+	private String category;
+	public Defect(String _project, String _defectName, String _dInfo, String _status, String _inject, String _removed, String _category, String _logUser) {
+		logUser = _logUser;
+		project = _project;
+		defectName = _defectName;
+		defectInfor = _dInfo;
+		dStatus = _status;
+		inject = _inject;
+		removed = _removed;
+		category = _category;
 	}
 	
 	public String getProject() {
-		return _project;
+		return project;
 	}
 	
 	public String getDefectString() {
-		return _defectName;
+		return defectName;
 	}
 	
 	public String getDefectInfo() {
-		return _defectInfor;
+		return defectInfor;
 	}
 	
 	public String getDefectStatus() {
 		return dStatus;
 	}
 	
-	public String get_inject() {
-		return _inject;
+	public String getInject() {
+		return inject;
 	}
 	
-	public String get_removed() {
-		return _removed;
+	public String getRemoved() {
+		return removed;
 	}
 	
-	public String get_category() {
-		return _category;
+	public String getCategory() {
+		return category;
 	}
 	
 	public void setProject(String newProject) {
-		_project = newProject;
+		project = newProject;
 	}
 	
 	public void setDefect(String defect) {
-		_defectName = defect;
+		defectName = defect;
 	}
 	
 	public void setDefectInfo(String info) {
-		_defectInfor = info;
+		defectInfor = info;
 	}
 	
 	public void setDefectStatus(String status) {
 		dStatus = status;
 	}
 	
-	public void set_inject(String inject) {
-		_inject = inject;
+	public void setInject(String _inject) {
+		inject = _inject;
 	}
 	
-	public void set_removed(String removed) {
-		_removed = removed;
+	public void setRemoved(String _removed) {
+		removed = _removed;
 	}
 	
-	public void set_category(String category) {
-		_category = category;
+	public void setCategory(String _category) {
+		category = _category;
 	}
+	
+	public String toCSVData() {
+		String data = "";
+		
+		// add all fields as CSV listings
+		data += String.format("logUser,%s\n", logUser);
+		data += String.format("project,%s\n", project);
+		data += String.format("defectName,%s\n",defectName);
+		data += String.format("defectInfor,%s\n", defectInfor);
+		data += String.format("dStatus,%s\n", dStatus);
+		data += String.format("inject,%s\n", inject);
+		data += String.format("removed,%s\n", removed);
+		data += String.format("category,%s", category);
+		
+		return data;
+	}
+	
+	// constructs an Effort object from a csv file
+		public static Defect constructFromCSVFile(Path csvPath) {
+			String _logUser = "";
+			String _project = "";
+			String _defectName = "";
+			String _defectInfor = "";
+			String _dStatus = "";
+			String _inject = "";
+			String _removed = "";
+			String _category = "";
+			
+			try (BufferedReader reader = new BufferedReader(new FileReader(csvPath.toString()))) {
+				String line;
+				while ((line = reader.readLine()) != null) {
+					int commaIndex = line.indexOf(",");
+					String field = line.substring(0, commaIndex);
+					String value = line.substring(commaIndex + 1, line.length());
+					switch (field) {
+						case "logUser":
+							_logUser = value;
+							break;
+						case "project":
+							_project = value;
+						case "defectName":
+							_defectName = value;
+						case "defectInfor":
+							_defectInfor = value;
+						case "dStatus":
+							_dStatus = value;
+						case "inject":
+							_inject = value;
+						case "removed":
+							_removed = value;
+						case "category":
+							_category = value;
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			Defect defect = new Defect(_project, _defectName, _defectInfor, _dStatus, _inject, _removed, _category, _logUser);
+			
+			return defect;
+		}
 	
 }

@@ -1072,7 +1072,22 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	
+	@FXML
+	private void populateDefects() {
+		String project = dropDown_Defects.getSelectionModel().getSelectedItem();
+		ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		System.out.println("defects: " + defects.size());
+		ArrayList<String> defectNamesInProject = new ArrayList<>();
+		for (Defect d : defects) {
+			if (d.getProject().equals(project)) {
+				defectNamesInProject.add(d.getDefectString());
+			}
+		}
+		
+		System.out.println("POpulating with " + defectNamesInProject.size());
+		
+		selectDefectCombo.setItems(FXCollections.observableArrayList(defectNamesInProject));
+	}
 	
 	private void successfulLogin() {
 		ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
@@ -1086,9 +1101,9 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-
 	void createDefect(Event e) {
-		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
+		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ", userName);
 		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
 		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
 		ArrayList<String> defectStrings = new ArrayList<String>();
@@ -1106,7 +1121,8 @@ public class Controller implements Initializable{
 				String injected;
 				String removed;
 				String category;
-				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDef(selectDefectCombo.getValue());
+				String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDefect(selectDefectCombo.getValue());
 				if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
 					injected = "";
 				}
@@ -1126,22 +1142,23 @@ public class Controller implements Initializable{
 					category = defectCat.getSelectionModel().getSelectedItem();
 				}
 				
-				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category);
+				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category, userName);
 				
-				EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
-				ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-				ArrayList<String> defectStrings = new ArrayList<String>();
-				for (Defect d : defectArr) {
+				EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
+				ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+				ArrayList<String> defectStrings = new ArrayList<>();
+				for (Defect d : defects) {
 					defectStrings.add(d.getDefectString());
 				}
 				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+				
 			}
 		}
 
 	}
 	
 	@FXML
-	void displayMessage(Event e) {
+	private void displayMessage(Event e) {
 		saveStatus.setText("");
 		saveStatus.setText("Changes Unsaved");
 	}
@@ -1156,7 +1173,12 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void getSearchEffortData(Event e) {
+	private void clearDefectLogHandler() {
+		EffortLogger.getInstance().getEffortDataHandler().clearDefectLog(dropDown_Defects.getSelectionModel().getSelectedItem());
+	}
+	
+	@FXML
+	private void getSearchEffortData(Event e) {
 		
 		if (effortList.getSelectionModel().getSelectedItem() == null)
 			return;
@@ -1164,6 +1186,7 @@ public class Controller implements Initializable{
 		LocalDateTime selectedEffortIdentifier = LocalDateTime.parse(effortList.getSelectionModel().getSelectedItem());
 		//call data handler to find effort data
 		Effort selectedEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(selectedEffortIdentifier);
+		
 		//populate labels 
 		searchStartLabel.setText(selectedEffort.getStartTime().toString());
 		searchEndTime.setText(selectedEffort.getEndTime().toString());
