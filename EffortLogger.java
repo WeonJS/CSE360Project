@@ -57,9 +57,11 @@ public class EffortLogger extends Application {
 			primaryStage.show();
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we) {
-					// update/create the updated/created efforts in the file system
-					effortDataHandler.storeEfforts();
-					effortDataHandler.storeDefects();
+					if (loginSession.getLoginSession() != null) {
+						// update/create the updated/created efforts in the file system
+						effortDataHandler.storeEfforts();
+						effortDataHandler.storeDefects();
+					}
 	          	}
 			});
 		} catch(Exception e) {

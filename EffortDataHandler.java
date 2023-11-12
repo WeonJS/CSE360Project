@@ -47,7 +47,7 @@ public class EffortDataHandler {
 			// populate array of user efforts
 			DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
-				if (filePath.toString().charAt(0) == 'E') {
+				if (isEffortFilePath(filePath)) {
 					userEfforts.add(Effort.constructFromCSVFile(filePath));
 				}
 			}
@@ -62,13 +62,8 @@ public class EffortDataHandler {
 	
 	// retrieves and decrypts all the user's efforts and stores them into userEfforts arraylist.
 		public boolean retrieveDefects() {
-			
-			// get hashed username
-			Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
-			String hashedUsername = loginSession.getHashedUser();
-			
 			// navigate to directory for this user's effort logs
-			Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
+			Path userDirectoryPath = getUserDirectoryPath();
 			
 			try {
 				// if the effortlogger data path does not exist, make it
@@ -80,7 +75,8 @@ public class EffortDataHandler {
 				// populate array of user efforts
 				DirectoryStream<Path> directoryStream = Files.newDirectoryStream(userDirectoryPath);
 				for (Path filePath : directoryStream) {
-					if (filePath.toString().charAt(0) == 'D') {
+					if (isDefectFilePath(filePath)) {
+						System.out.println("found");
 						userDefects.add(Defect.constructFromCSVFile(filePath));
 					}
 					
@@ -96,16 +92,8 @@ public class EffortDataHandler {
 	
 	// stores runtime efforts of user which have been altered/created.
 	public boolean storeEfforts() {
-		// get hashed username
-		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
-		
-		if (loginSession == null)
-			return false;
-		
-		String hashedUsername = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
-		
 		// navigate to directory for this user's effort logs
-		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
+		Path userDirectoryPath = getUserDirectoryPath();
 		
 		// store edited/created efforts
 		for (Effort effort : updatedEfforts) {
@@ -138,7 +126,7 @@ public class EffortDataHandler {
 			for (Path filePath : directoryStream) {
 				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
 				if (deletedStartTimes.contains(fileName)) {
-					FileDirectory.deleteFile(userDirectoryPath);
+					FileDirectory.deleteFile(filePath);
 				}
 			}
 		} catch (IOException e) {
@@ -148,17 +136,22 @@ public class EffortDataHandler {
 		return true;
 	}
 	
-	public boolean storeDefects() {
-		// get hashed username
+	private Path getUserDirectoryPath() {
 		Login.LoginSession loginSession = EffortLogger.getInstance().getLogin().getLoginSession();
 		
 		if (loginSession == null)
-			return false;
+			return null;
 		
 		String hashedUsername = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
 		
 		// navigate to directory for this user's effort logs
 		Path userDirectoryPath = Paths.get(directoryPath.toString(), hashedUsername);
+		
+		return userDirectoryPath;
+	}
+	
+	public boolean storeDefects() {
+		Path userDirectoryPath = getUserDirectoryPath();
 		
 		
 		// store created/updated defects
@@ -187,9 +180,9 @@ public class EffortDataHandler {
 		try {
 			directoryStream = Files.newDirectoryStream(userDirectoryPath);
 			for (Path filePath : directoryStream) {
-				String fileName = filePath.getName(filePath.getNameCount() - 1).toString();
+				String fileName = getFileNameFromPath(filePath);
 				if (deletedDefectStrings.contains(fileName)) {
-					FileDirectory.deleteFile(userDirectoryPath);
+					FileDirectory.deleteFile(filePath);
 				}
 			}
 		} catch (IOException e) {
@@ -197,6 +190,10 @@ public class EffortDataHandler {
 		}
 		
 		return true;
+	}
+	
+	private String getFileNameFromPath(Path p) {
+		return p.getName(p.getNameCount() - 1).toString();
 	}
 	
 	public void addToUpdatedEfforts(Effort e) {
@@ -231,12 +228,12 @@ public class EffortDataHandler {
 		return false;
 	}
 	
-	public boolean removeDefect(Defect d) {
-		for (Effort defect : userEfforts) {
-			if (d.equals(defect)) {
-				System.out.println("QUEUED TO BE DELETED " + d);
-				effortsToDeleteOnClose.add(defect);
-				userEfforts.remove(defect);
+	public boolean removeDefect(String defectName) {
+		for (Defect defect : userDefects) {
+			if (defectName.equals(defect.getDefectString())) {
+				System.out.println("QUEUED TO BE DELETED " + defectName);
+				defectsToDeleteOnClose.add(defect);
+				userDefects.remove(defect);
 				return true;
 			}
 		}
@@ -289,7 +286,7 @@ public class EffortDataHandler {
 			updatedDefects.add(newDefect);
 		}
 		
-		removeDefect(oldDefect);
+		removeDefect(oldDefect.getDefectString());
 		userDefects.add(newDefect);
 	}
 	
@@ -305,35 +302,32 @@ public class EffortDataHandler {
 		removeEffort(oldEffort);
 		userEfforts.add(newEffort);
 	}
+	
+	public void clearDefectLog(String project) {
+		Path userDirectoryPath = getUserDirectoryPath();
+		
+		DirectoryStream<Path> directoryStream;
+		try {
+			directoryStream = Files.newDirectoryStream(userDirectoryPath);
+			for (Path filePath : directoryStream) {
+				if (isDefectFilePath(filePath)) {
+					Defect d = Defect.constructFromCSVFile(filePath);
+					if (d.getProject().equals(project)) {
+						removeDefect(d.getDefectString());
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean isDefectFilePath(Path p) {
+		return p.getName(p.getNameCount() - 1).toString().charAt(0) == 'D';
+	}
+	
+	private boolean isEffortFilePath(Path p) {
+		return p.getName(p.getNameCount() - 1).toString().charAt(0) == 'E';
+	}
 }
 
-
-/*
-Notes:
-- Effort file structure:
-	- Name of file: "sha512'd username of creator" + "_" + "index of effort for that user, starting at 0"
-	- Inside of file: encrypted EAS data of the original CSV file data.
-
-
-Prototype 3: DataHandler
-This prototype has the functionality of managing data as it is stored or retrieved from the file directory, as requested by a valid user. 
-
-It uses the CryptoTools to decrypt or encrypt the file being requested in order to maintain secure data management of EffortLogger.
-
-Unauthorized access to efforts which may not belong to a user. We do not want users to be able to retrieve and decrypt efforts which they did not create. 
-Given that the effort files all exist in an encrypted state in the same directory, then we need to make sure that clients cannot access and decrypt effort 
-files that are not theirs given the close proximity of all the effort files.
-
-Storage of efforts within the directory which is mapped to the user who created it. Each effort in the directory must contain details so that when a user 
-logs in, their client will retrieve all of the efforts which they own, as specified in the effort files themselves using the user�s hashed login password
-which is associated with the user who created the effort, and that hashed login password lies within the effort file.
-
-Who will be responsible for this prototype? Keon Davoudi is responsible for this prototype.
-Explain what the prototype will do. The prototype will demonstrate the DataHandler operations while taking into account the risks associated with it. It will 
-be able to encrypt and store an effort file with the creator�s login password hashed within the file, and also decrypt and retrieve an effort file only if the 
-user who created that file requests to retrieve it by comparing the current user�s hashed password and the hashed password in any given file.
-
-How will the prototype mitigate the risk? The prototype will mitigate the risk by implementing checks that the user requesting to retrieve and decrypt a file 
-is indeed the owner of that file, and otherwise will deny the request. Additionally, it will encrypt and store effort files, and it will include the user who 
-created the effort�s password in the file as a hashed line within the file.
-*/
