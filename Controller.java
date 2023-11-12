@@ -415,16 +415,21 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void createDefect(Event e) {
-		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
-		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
-		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-		ArrayList<String> defectStrings = new ArrayList<String>();
-		for (Defect d : defectArr) {
-			defectStrings.add(d.getDefectString());
+		if (dropDown_Defects.getValue() != null) {
+			Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
+			EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
+			ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+			ArrayList<String> defectStrings = new ArrayList<String>();
+			for (Defect d : defectArr) {
+				defectStrings.add(d.getDefectString());
+			}
+			selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+			defectStatus.setText(def.getDefectStatus());
 		}
-		selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
-		defectStatus.setText(def.getDefectStatus());
-	}	
+		saveStatus.setText("");
+		saveStatus.setText("Project not selected");
+	}
+		
 	
 	@FXML
 	void updateDefect(Event e) {
@@ -462,6 +467,8 @@ public class Controller implements Initializable{
 					defectStrings.add(d.getDefectString());
 				}
 				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+				saveStatus.setText("");
+				saveStatus.setText("Changes Saved");
 			}
 		}
 	}

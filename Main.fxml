@@ -15,7 +15,7 @@
 
 <Pane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CSE360Project.Controller">
    <children>
-      <TabPane fx:id="loggedInView" visible="false">
+      <TabPane fx:id="loggedInView">
          <tabs>
             <Tab text="Create Effort">
                <content>
@@ -134,7 +134,7 @@
             </Tab>
          </tabs>
       </TabPane>
-      <Pane fx:id="createAccountView" layoutX="-11.0" layoutY="4.0" prefHeight="429.0" prefWidth="600.0">
+      <Pane fx:id="createAccountView" layoutX="-11.0" layoutY="4.0" prefHeight="429.0" prefWidth="600.0" visible="false">
          <children>
             <Label layoutX="204.0" layoutY="189.0" prefHeight="17.0" prefWidth="192.0" styleClass="userlabel" stylesheets="@login.css" text="Password" />
             <TextField fx:id="usernameField" layoutX="201.0" layoutY="158.0" prefHeight="25.0" prefWidth="226.0" promptText="Username..." />
