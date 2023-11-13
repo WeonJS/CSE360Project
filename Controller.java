@@ -380,53 +380,6 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	
-	@FXML
-	void startEffort(Event e) {
-		if(!effortInProgress) {
-			effortInProgress = true;
-			startTime = LocalDateTime.now();
-			successLabel.setText("Effort Started at " + startTime);
-		}
-		else
-			errorLabel.setText("ERROR: Effort Already Started");
-	}
-	
-	@FXML
-	void endEffort(Event e) {
-		boolean cleanInput = sanitizeCreateEffortData();
-		if(effortInProgress && cleanInput) {
-			effortInProgress = false;
-			endTime = LocalDateTime.now();
-			errorLabel.setText("");
-			successLabel.setText("Effort ended at " + endTime);
-			//CREATE THE OBJECT
-			String loggedUser = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser(); //identifier of effort creator
-			System.out.print(loggedUser);
-			Effort newEffort = new Effort(loggedUser, startTime, endTime, lifeCycleComboBox.getValue(), 
-										  projectComboBox.getValue(), effortCatComboBox.getValue(), 
-										  deliverableComboBox.getValue());
-			
-			// add the new effort to the updated effort list
-			EffortLogger.getInstance().getEffortDataHandler().addToUpdatedEfforts(newEffort);
-			EffortLogger.getInstance().getEffortDataHandler().addToUserEfforts(newEffort);
-			
-		    ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
-		    ArrayList<String> displayData = new ArrayList<String>();
-		    for(Effort i: userEffort) {
-		    	displayData.add(i.getStartTime().toString());
-		    }
-		    
-		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
-		}
-		else {
-			if(cleanInput) {
-				successLabel.setText("");
-				errorLabel.setText("ERROR: No effort started");
-			}
-		}
-	}
-	
 	@FXML
 	private void attemptLogin() {
 		String username = usernameField2.getText();
@@ -964,10 +917,55 @@ public class Controller implements Initializable{
 		String msg = login.attemptCreateAccount(username, password);
 		loginMessage.setText(msg);
 	}
+//------------EFFORT CREATION AND EDITING----------
+	@FXML
+	void startEffort(Event e) {
+		if(!effortInProgress) {				//check if effort is already in progress
+			effortInProgress = true;
+			startTime = LocalDateTime.now();
+			successLabel.setText("Effort Started at " + startTime);
+		}
+		else
+			errorLabel.setText("ERROR: Effort Already Started");
+	}
 	
 	@FXML
+	void endEffort(Event e) {
+		boolean cleanInput = sanitizeCreateEffortData();	//sanitize effort, then create object
+		if(effortInProgress && cleanInput) {
+			effortInProgress = false;
+			endTime = LocalDateTime.now();
+			errorLabel.setText("");
+			successLabel.setText("Effort ended at " + endTime);
+			//CREATE THE OBJECT
+			String loggedUser = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser(); //identifier of effort creator
+			System.out.print(loggedUser);
+			Effort newEffort = new Effort(loggedUser, startTime, endTime, lifeCycleComboBox.getValue(), 
+										  projectComboBox.getValue(), effortCatComboBox.getValue(), 
+										  deliverableComboBox.getValue());
+			
+			// add the new effort to the updated effort list
+			EffortLogger.getInstance().getEffortDataHandler().addToUpdatedEfforts(newEffort);
+			EffortLogger.getInstance().getEffortDataHandler().addToUserEfforts(newEffort);
+			
+		    ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
+		    ArrayList<String> displayData = new ArrayList<String>();
+		    for(Effort i: userEffort) {
+		    	displayData.add(i.getStartTime().toString());
+		    }
+		    
+		    editEffortComboBox.setItems(FXCollections.observableArrayList(displayData));
+		}
+		else {
+			if(cleanInput) {
+				successLabel.setText("");
+				errorLabel.setText("ERROR: No effort started");
+			}
+		}
+	}
+	@FXML
 	void editEffort(Event e) {
-		if(sanitizeEditEffort()) {
+		if(sanitizeEditEffort()) {	//sanitize user input
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
 			String startTime = editEffortComboBox.getValue();				//find the effort object by its start time
@@ -982,7 +980,7 @@ public class Controller implements Initializable{
 			String updatedLifeCycleStep = lifeCycleComboBox2.getValue();
 			String updatedEffortCat = effortCatComboBox2.getValue();
 			
-			Effort editedEffort = new Effort(oldEffort.getUserID(), 
+			Effort editedEffort = new Effort(oldEffort.getUserID(), 		//create editted effort object, send to file directory
 											  newStartTime, 
 											  newEndTime, 
 											  updatedLifeCycleStep,
@@ -1007,7 +1005,7 @@ public class Controller implements Initializable{
 	}
 	
 	private boolean sanitizeCreateEffortData() {
-		if(projectComboBox.getValue() == null || 
+		if(projectComboBox.getValue() == null || 				//empty combobox checks
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 
 		   deliverableComboBox.getValue() == null) 
@@ -1021,7 +1019,7 @@ public class Controller implements Initializable{
 	
 	
 	boolean sanitizeEditEffort() {
-		if(effortCatComboBox2.getValue() == null ||
+		if(effortCatComboBox2.getValue() == null ||		//empty combobox checks
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
 		   editDate.getText() == null ||
@@ -1054,17 +1052,16 @@ public class Controller implements Initializable{
 			return false;
 		}
 		
-		//gonna cook this rn
+		//pattern matching the date and times to make sure it is correct format
 		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
 		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
-			System.out.print("FAIL HERE");
 			return false;
 		}
-		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+		matcher = timePattern.matcher(startValue); 
 		if(!matcher.matches())
 			return false;
 		
