@@ -1213,6 +1213,7 @@ public class Controller implements Initializable{
 	private void deleteDefectButtonHandler() {
 		String defectName = selectDefectCombo.getSelectionModel().getSelectedItem();
 		EffortLogger.getInstance().getEffortDataHandler().removeDefect(defectName);
+		populateDefects();
 	}
 	
 	@FXML
