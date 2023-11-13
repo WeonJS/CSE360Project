@@ -945,8 +945,7 @@ public class Controller implements Initializable{
 										  deliverableComboBox.getValue());
 			
 			// add the new effort to the updated effort list
-			EffortLogger.getInstance().getEffortDataHandler().addToUpdatedEfforts(newEffort);
-			EffortLogger.getInstance().getEffortDataHandler().addToUserEfforts(newEffort);
+			EffortLogger.getInstance().getEffortDataHandler().createEffort(newEffort);
 			
 		    ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
 		    ArrayList<String> displayData = new ArrayList<String>();
@@ -1104,7 +1103,7 @@ public class Controller implements Initializable{
 	void createDefect(Event e) {
 		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
         Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ", userName);
-        EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
+        EffortLogger.getInstance().getEffortDataHandler().createDefect(def);
         ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
         ArrayList<String> defectStrings = new ArrayList<String>();
         for (Defect d : defectArr) {
@@ -1151,9 +1150,17 @@ public class Controller implements Initializable{
 			category = defectCat.getSelectionModel().getSelectedItem();
 		}
 		
-		Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), status, injected, removed, category, userName);
+		Defect newDef;
+		if (oldDefect == null) {
+			newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), "Open", injected, removed, category, userName);
+			EffortLogger.getInstance().getEffortDataHandler().createDefect(newDef);
+		} else {
+			newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category, userName);
+			EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
+		}
 		
-		EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
+		
+		
 		ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
 		ArrayList<String> defectStrings = new ArrayList<>();
 		for (Defect d : defects) {

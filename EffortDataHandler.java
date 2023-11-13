@@ -196,11 +196,16 @@ public class EffortDataHandler {
 		return p.getName(p.getNameCount() - 1).toString();
 	}
 	
-	public void addToUpdatedEfforts(Effort e) {
+	public void createEffort(Effort e) {
+		addToUserEfforts(e);
+		addToUpdatedEfforts(e);
+	}
+	
+	private void addToUpdatedEfforts(Effort e) {
 		updatedEfforts.add(e);
 	}
 	
-	public void addToUserEfforts(Effort e) {
+	private void addToUserEfforts(Effort e) {
 		userEfforts.add(e);
 	}
 	
@@ -249,9 +254,17 @@ public class EffortDataHandler {
 		return null;
 	}
 	
+	public void createDefect(Defect d) {
+		addToUpdatedDefects(d);
+		addToUserDefects(d);
+	}
 	
 	
-	public void addDefect(Defect newDefect) {
+	private void addToUpdatedDefects(Defect newDefect) {
+		updatedDefects.add(newDefect);
+	}
+	
+	private void addToUserDefects(Defect newDefect) {
 		userDefects.add(newDefect);
 	}
 	
