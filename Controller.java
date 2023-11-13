@@ -1102,8 +1102,11 @@ public class Controller implements Initializable{
 			selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
 			defectStatus.setText(def.getDefectStatus());
 		}
-		saveStatus.setText("");
-		saveStatus.setText("Project not selected");
+		else {
+			saveStatus.setText("");
+			saveStatus.setText("Project not selected");
+		}
+		
 	}
 		
 	
@@ -1138,6 +1141,7 @@ public class Controller implements Initializable{
 				
 				EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
 				ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+				System.out.print(defectArr.size());
 				ArrayList<String> defectStrings = new ArrayList<String>();
 				for (Defect d : defectArr) {
 					defectStrings.add(d.getDefectString());
@@ -1215,6 +1219,27 @@ public class Controller implements Initializable{
 		
 		
 		
+	}
+	
+	@FXML
+	void reopenDefect(Event e) {
+		String currDefect = selectDefectCombo.getSelectionModel().getSelectedItem();
+		Defect defectToChange = EffortLogger.getInstance().getEffortDataHandler().getDef(currDefect);
+		defectToChange.setDefectStatus("Open");
+		System.out.println(defectToChange.getDefectStatus());
+		defectStatus.setText(defectToChange.getDefectStatus());
+	}
+	
+	@FXML
+	void closeDefect(Event e) {
+		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		System.out.print(defectArr.size());
+		String currDefect = selectDefectCombo.getSelectionModel().getSelectedItem();
+		Defect defectToChange = EffortLogger.getInstance().getEffortDataHandler().getDef(currDefect);
+		defectToChange.setDefectStatus("Closed");
+		System.out.println(defectToChange.getDefectStatus());
+		defectStatus.setText("");
+		defectStatus.setText("Closed");
 	}
 }	
 	
