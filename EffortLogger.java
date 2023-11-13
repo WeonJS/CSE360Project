@@ -25,7 +25,7 @@ public class EffortLogger extends Application {
 	private String documentsPath;
 	private String effortLoggerRootDirectory;
 	private String effortDataPath;
-		
+	
 	@Override
 	public void start(Stage primaryStage) {
 		if(System.getProperty("os.name").equals("Mac OS X")) {
