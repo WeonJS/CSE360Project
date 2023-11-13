@@ -1105,20 +1105,16 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void createDefect(Event e) {
-		if (dropDown_Defects.getValue() != null) {
-			String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
-			Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ", userName);
-			EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
-			ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-			ArrayList<String> defectStrings = new ArrayList<String>();
-			for (Defect d : defectArr) {
-				defectStrings.add(d.getDefectString());
-			}
-		}
-		else {
-			saveStatus.setText("");
-			saveStatus.setText("Project not selected");
-		}
+		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+        Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ", userName);
+        EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
+        ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+        ArrayList<String> defectStrings = new ArrayList<String>();
+        for (Defect d : defectArr) {
+            defectStrings.add(d.getDefectString());
+        }
+        selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+        defectStatus.setText(def.getDefectStatus());
 		
 	}
 		
