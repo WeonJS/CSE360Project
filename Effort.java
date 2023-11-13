@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-
 public class Effort {
 	private String lifeCycleStep;
 	private String projectType;
@@ -179,4 +178,3 @@ public class Effort {
 		return effort;
 	}
 }
-

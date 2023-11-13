@@ -187,33 +187,33 @@
 }
 
 .play-button {
-    -fx-background-color: linear-gradient(to bottom, #C1FEBE, #00E495); /* Green background color */
-    -fx-background-radius: 36%; /* Rounded edges */
-    -fx-border-radius: 45%; /* Rounded edges */
-    -fx-border-color: #27ae60; /* Darker green border color */
-    -fx-border-width: 2; /* Border width */
+    -fx-background-color: #e6e9eb; /* Green background color */
+    -fx-background-radius: 30%; /* Rounded edges */
+    -fx-border-radius: 50%; /* Rounded edges */
+    -fx-border-color: #a0d9a9; /* Darker green border color */
+    -fx-border-width: 0; /* Border width */
     /* Padding to make the button larger */
     -fx-cursor: hand; /* Change cursor on hover */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0); /* Shadow effect */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.38), 8, 0, 0, 0); /* Shadow effect */
 }
 
 .play-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #C1FEBE, #5CEF00); /* Lighter green background color on hover */
+    -fx-background-color: linear-gradient(to bottom, #8ee6c4, #52e3ab); /* Lighter green background color on hover */
 }
 
 .stop-button{
-	 -fx-background-color: linear-gradient(to bottom, #FFBB8C, #DE5B00); /* Green background color */
-    -fx-background-radius: 35%; /* Rounded edges */
-    -fx-border-radius: 45%; /* Rounded edges */
-    -fx-border-color: #C61A09; /* Darker green border color */
-    -fx-border-width: 2; /* Border width */
+	 -fx-background-color: #e6e9eb; /* Green background color */
+    -fx-background-radius: 30%; /* Rounded edges */
+    -fx-border-radius: 100%; /* Rounded edges */
+    -fx-border-color: #d9ac9e; /* Darker green border color */
+    -fx-border-width: 0; /* Border width */
      /* Padding to make the button larger */
     -fx-cursor: hand; /* Change cursor on hover */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.38), 8, 0, 0, 0);
 }
 
 .stop-button:hover{
-	-fx-background-color: linear-gradient(to bottom, #FFBB8C, #FD7300);
+	-fx-background-color: linear-gradient(to bottom, #FFBB8C, #ff9970);
 }
 
 

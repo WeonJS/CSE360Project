@@ -1017,7 +1017,7 @@ public class Controller implements Initializable{
 	
 	@FXML
 	void editEffort(Event e) {
-		if(sanitizeEditEffort()) {
+		if(sanitizeEditEffort()) {	//sanitize user input
 			editSuccessLabel.setText("Effort successfully editted");
 			editErrorLabel.setText("");
 			String startTime = editEffortComboBox.getValue();				//find the effort object by its start time
@@ -1032,7 +1032,7 @@ public class Controller implements Initializable{
 			String updatedLifeCycleStep = lifeCycleComboBox2.getValue();
 			String updatedEffortCat = effortCatComboBox2.getValue();
 			
-			Effort editedEffort = new Effort(oldEffort.getUserID(), 
+			Effort editedEffort = new Effort(oldEffort.getUserID(), 		//create editted effort object, send to file directory
 											  newStartTime, 
 											  newEndTime, 
 											  updatedLifeCycleStep,
@@ -1057,7 +1057,7 @@ public class Controller implements Initializable{
 	}
 	
 	private boolean sanitizeCreateEffortData() {
-		if(projectComboBox.getValue() == null || 
+		if(projectComboBox.getValue() == null || 				//empty combobox checks
 		   effortCatComboBox.getValue() == null ||
 		   lifeCycleComboBox.getValue() == null || 
 		   deliverableComboBox.getValue() == null) 
@@ -1071,7 +1071,7 @@ public class Controller implements Initializable{
 	
 	
 	boolean sanitizeEditEffort() {
-		if(effortCatComboBox2.getValue() == null ||
+		if(effortCatComboBox2.getValue() == null ||		//empty combobox checks
 		   lifeCycleComboBox2.getValue() == null ||
 		   editEffortComboBox.getValue() == null ||
 		   editDate.getText() == null ||
@@ -1104,17 +1104,16 @@ public class Controller implements Initializable{
 			return false;
 		}
 		
-		//gonna cook this rn
+		//pattern matching the date and times to make sure it is correct format
 		String datePatternRegex = "\\d{4}-\\d{2}-\\d{2}";
 		String timePatternRegex = "\\d{2}:\\d{2}:\\d{2}";
 		Pattern datePattern = Pattern.compile(datePatternRegex);
 		Pattern timePattern = Pattern.compile(timePatternRegex);
 		Matcher matcher = datePattern.matcher(dateValue);
 		if(!matcher.matches()) {			//authenticate data
-			System.out.print("FAIL HERE");
 			return false;
 		}
-		matcher = timePattern.matcher(startValue); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+		matcher = timePattern.matcher(startValue); 
 		if(!matcher.matches())
 			return false;
 		
@@ -1125,7 +1124,22 @@ public class Controller implements Initializable{
 		return true;
 	}
 	
-	
+	@FXML
+	private void populateDefects() {
+		String project = dropDown_Defects.getSelectionModel().getSelectedItem();
+		ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		System.out.println("defects: " + defects.size());
+		ArrayList<String> defectNamesInProject = new ArrayList<>();
+		for (Defect d : defects) {
+			if (d.getProject().equals(project)) {
+				defectNamesInProject.add(d.getDefectString());
+			}
+		}
+		
+		System.out.println("POpulating with " + defectNamesInProject.size());
+		
+		selectDefectCombo.setItems(FXCollections.observableArrayList(defectNamesInProject));
+	}
 	
 	private void successfulLogin() {
 		ArrayList<Effort> userEffort = EffortLogger.getInstance().getEffortDataHandler().getUserEffortArray();
@@ -1139,62 +1153,80 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-
 	void createDefect(Event e) {
-		Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ");
-		EffortLogger.getInstance().getEffortDataHandler().addDefect(def);
-		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-		ArrayList<String> defectStrings = new ArrayList<String>();
-		for (Defect d : defectArr) {
+		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+        Defect def = new Defect(dropDown_Defects.getValue(), "-new defect-", defectInfo.getText(), "Open", " ", " ", " ", userName);
+        EffortLogger.getInstance().getEffortDataHandler().createDefect(def);
+        ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+        ArrayList<String> defectStrings = new ArrayList<String>();
+        for (Defect d : defectArr) {
+            defectStrings.add(d.getDefectString());
+        }
+        selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+        defectStatus.setText(def.getDefectStatus());
+		
+	}
+		
+	
+	@FXML
+	private void updateDefect(Event e) {
+		if (!sanitizeUpdateDefect() || defectEntry.getText() == null) {
+			return;
+		}
+		
+		String injected;
+		String removed;
+		String category;
+		String status;
+		String userName = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser();
+		Defect oldDefect = null;
+		if (FileDirectory.fileExistsInDirectoryPath(EffortLogger.getInstance().getDataPathDirectory(), selectDefectCombo.getValue())) {
+			 oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDefect(selectDefectCombo.getValue());
+		}
+		
+		if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
+			injected = "";
+		}
+		else {
+			injected = stepsInjected.getSelectionModel().getSelectedItem();
+		}
+		if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
+			removed = "";
+		}
+		else {
+			removed = stepsRemoved.getSelectionModel().getSelectedItem();
+		}
+		if (defectCat.getSelectionModel().getSelectedItem() == null) {
+			category = "";
+		}
+		else {
+			category = defectCat.getSelectionModel().getSelectedItem();
+		}
+		
+		Defect newDef;
+		if (oldDefect == null) {
+			newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), "Open", injected, removed, category, userName);
+			EffortLogger.getInstance().getEffortDataHandler().createDefect(newDef);
+		} else {
+			newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category, userName);
+			EffortLogger.getInstance().getEffortDataHandler().updateDefect(oldDefect, newDef);
+		}
+		
+		
+		
+		ArrayList<Defect> defects = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		ArrayList<String> defectStrings = new ArrayList<>();
+		for (Defect d : defects) {
 			defectStrings.add(d.getDefectString());
 		}
 		selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
-		defectStatus.setText(def.getDefectStatus());
-	}	
-	
-	@FXML
-	void updateDefect(Event e) {
-		if (sanitizeUpdateDefect()) {
-			if (defectEntry.getText() != null) {
-				String injected;
-				String removed;
-				String category;
-				Defect oldDefect = EffortLogger.getInstance().getEffortDataHandler().getDef(selectDefectCombo.getValue());
-				if (stepsInjected.getSelectionModel().getSelectedItem() == null) {
-					injected = "";
-				}
-				else {
-					injected = stepsInjected.getSelectionModel().getSelectedItem();
-				}
-				if (stepsRemoved.getSelectionModel().getSelectedItem() == null) {
-					removed = "";
-				}
-				else {
-					removed = stepsRemoved.getSelectionModel().getSelectedItem();
-				}
-				if (defectCat.getSelectionModel().getSelectedItem() == null) {
-					category = "";
-				}
-				else {
-					category = defectCat.getSelectionModel().getSelectedItem();
-				}
-				
-				Defect newDef = new Defect(dropDown_Defects.getValue(), defectEntry.getText(), defectInfo.getText(), oldDefect.getDefectStatus(), injected, removed, category);
-				
-				EffortLogger.getInstance().getEffortDataHandler().replaceDefect(oldDefect, newDef);
-				ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
-				ArrayList<String> defectStrings = new ArrayList<String>();
-				for (Defect d : defectArr) {
-					defectStrings.add(d.getDefectString());
-				}
-				selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
-			}
-		}
-
+		EffortLogger.getInstance().getEffortDataHandler().removeDefect(selectDefectCombo.getSelectionModel().getSelectedItem());
+		saveStatus.setText("");
+		saveStatus.setText("Changes Saved");
 	}
 	
 	@FXML
-	void displayMessage(Event e) {
+	private void displayMessage(Event e) {
 		saveStatus.setText("");
 		saveStatus.setText("Changes Unsaved");
 	}
@@ -1209,7 +1241,12 @@ public class Controller implements Initializable{
 	}
 	
 	@FXML
-	void getSearchEffortData(Event e) {
+	private void clearDefectLogHandler() {
+		EffortLogger.getInstance().getEffortDataHandler().clearDefectLog(dropDown_Defects.getSelectionModel().getSelectedItem());
+	}
+	
+	@FXML
+	private void getSearchEffortData(Event e) {
 		
 		if (effortList.getSelectionModel().getSelectedItem() == null)
 			return;
@@ -1217,6 +1254,7 @@ public class Controller implements Initializable{
 		LocalDateTime selectedEffortIdentifier = LocalDateTime.parse(effortList.getSelectionModel().getSelectedItem());
 		//call data handler to find effort data
 		Effort selectedEffort = EffortLogger.getInstance().getEffortDataHandler().getEffort(selectedEffortIdentifier);
+		
 		//populate labels 
 		searchStartLabel.setText(selectedEffort.getStartTime().toString());
 		searchEndTime.setText(selectedEffort.getEndTime().toString());
@@ -1225,6 +1263,13 @@ public class Controller implements Initializable{
 		searchProjectType.setText(selectedEffort.getProjectType());
 		searchEffortCategory.setText(selectedEffort.getEffortCategory());
 		searchDeliveryType.setText(selectedEffort.getDeliverableType());
+	}
+	
+	@FXML
+	private void deleteDefectButtonHandler() {
+		String defectName = selectDefectCombo.getSelectionModel().getSelectedItem();
+		EffortLogger.getInstance().getEffortDataHandler().removeDefect(defectName);
+		populateDefects();
 	}
 	
 	@FXML
@@ -1260,7 +1305,26 @@ public class Controller implements Initializable{
 		
 	}
 	
+	@FXML
+	void reopenDefect(Event e) {
+		String currDefect = selectDefectCombo.getSelectionModel().getSelectedItem();
+		Defect defectToChange = EffortLogger.getInstance().getEffortDataHandler().getDefect(currDefect);
+		defectToChange.setDefectStatus("Open");
+		System.out.println(defectToChange.getDefectStatus());
+		defectStatus.setText(defectToChange.getDefectStatus());
+	}
 	
+	@FXML
+	void closeDefect(Event e) {
+		ArrayList<Defect> defectArr = EffortLogger.getInstance().getEffortDataHandler().getDefectArray();
+		System.out.print(defectArr.size());
+		String currDefect = selectDefectCombo.getSelectionModel().getSelectedItem();
+		Defect defectToChange = EffortLogger.getInstance().getEffortDataHandler().getDefect(currDefect);
+		defectToChange.setDefectStatus("Closed");
+		System.out.println(defectToChange.getDefectStatus());
+		defectStatus.setText("");
+		defectStatus.setText("Closed");
+	}
 	
 	
 	@FXML

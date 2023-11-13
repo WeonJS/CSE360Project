@@ -41,6 +41,7 @@ public class Login {
         if (isValidLogin) {
             loginSession = new LoginSession(username, password);
             EffortLogger.getInstance().getEffortDataHandler().retrieveEfforts();
+            EffortLogger.getInstance().getEffortDataHandler().retrieveDefects();
             EffortLogger.getInstance().getPokerDataHandler().retrieveSessions();
             return true;
         } else {

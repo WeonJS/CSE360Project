@@ -82,7 +82,7 @@ public class LoginDataHandler {
     
     public boolean existingUsername(String username) {
     	Path loginFilePath = Paths.get(loginDataPath.toString(), hash(username));
-		return FileDirectory.fileExists(loginFilePath);
+		return FileDirectory.filePathExists(loginFilePath);
     }
     
     //called when creating new acc...
@@ -101,7 +101,7 @@ public class LoginDataHandler {
     	Path userLoginPath = Paths.get(loginDataPath.toString(), hashedUsername);
     	
     	// match the login details to the file
-    	if (FileDirectory.fileExists(userLoginPath)) {
+    	if (FileDirectory.filePathExists(userLoginPath)) {
     		String storedPassword;
     		List<String> loginFileLines = FileDirectory.getFileLines(userLoginPath);
     		if (loginFileLines.size() > 0) {
