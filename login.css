@@ -159,8 +159,63 @@
 
 .button12:hover {
     -fx-background-color: #c1dcf5; /* Green background color on hover */
-    -fx-border-color: rgb(0,128, 64); /* Dark green border color on hover */
+    -fx-border-color: blue; /* Dark green border color on hover */
 }
+
+
+
+.round-box {
+    -fx-background-radius: 100%;
+    -fx-border-radius: 100%;
+    -fx-border-width: 10px; /* Increase border width to make it thicker */
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to bottom, #3498db, #1abc9c);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.40), 10, 0, 0, 0); /* Add shadow effect inside the border */
+}
+
+.timer-field {
+    -fx-background-color: transparent; /* Set background color to transparent */
+    -fx-font-size: 36; /* Set font size to 30 */
+    -fx-font-weight: bold; /* Set font weight to bold */
+}
+
+.combo-timer{
+	-fx-background-color: white;
+    -fx-background-radius: 10; /* Adjust the radius as needed for rounded corners */
+    -fx-text-fill: #3498db; /* Blue text color */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0); /* Shadow effect */
+}
+
+.play-button {
+    -fx-background-color: linear-gradient(to bottom, #C1FEBE, #00E495); /* Green background color */
+    -fx-background-radius: 36%; /* Rounded edges */
+    -fx-border-radius: 45%; /* Rounded edges */
+    -fx-border-color: #27ae60; /* Darker green border color */
+    -fx-border-width: 2; /* Border width */
+    /* Padding to make the button larger */
+    -fx-cursor: hand; /* Change cursor on hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0); /* Shadow effect */
+}
+
+.play-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #C1FEBE, #5CEF00); /* Lighter green background color on hover */
+}
+
+.stop-button{
+	 -fx-background-color: linear-gradient(to bottom, #FFBB8C, #DE5B00); /* Green background color */
+    -fx-background-radius: 35%; /* Rounded edges */
+    -fx-border-radius: 45%; /* Rounded edges */
+    -fx-border-color: #C61A09; /* Darker green border color */
+    -fx-border-width: 2; /* Border width */
+     /* Padding to make the button larger */
+    -fx-cursor: hand; /* Change cursor on hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
+
+.stop-button:hover{
+	-fx-background-color: linear-gradient(to bottom, #FFBB8C, #FD7300);
+}
+
 
 
 

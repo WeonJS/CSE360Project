@@ -24,6 +24,20 @@ import javafx.scene.text.Text;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.scene.image.ImageView;
+
+
+
 import java.util.List;
 
 public class Controller implements Initializable{
@@ -194,6 +208,29 @@ public class Controller implements Initializable{
     private Button next;
     @FXML
     private Button back;
+    
+   //---------------------TIMER---------------------------------------
+    
+    @FXML
+    private TextField hoursField;
+    @FXML
+    private TextField minutesField;
+    @FXML
+    private TextField secondsField;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private Button playButton;
+    
+    private int secondsElapsed = 0;
+    
+    /*
+     hoursField.setText("0");
+     minutesField.setText("0");
+     secondsField.setText("0");
+     */
+  
+    
     //----------------------SEARCH EFFORT----------------------------
     @FXML
     private Label searchStartLabel;
@@ -331,6 +368,8 @@ public class Controller implements Initializable{
 	    pokerViewPane.setVisible(false);
 	    back.setVisible(false);
 	    
+	    stopButton.setVisible(false);
+	    
 	    //-----------SEARCH----------
 	    searchProjectTypeComboBox.setItems(FXCollections.observableArrayList("Development Project", "Business Project"));
 	    searchLifeCycleComboBox.setItems(FXCollections.observableArrayList(
@@ -387,6 +426,11 @@ public class Controller implements Initializable{
 			effortInProgress = true;
 			startTime = LocalDateTime.now();
 			successLabel.setText("Effort Started at " + startTime);
+			timeline.setCycleCount(Timeline.INDEFINITE);
+			playButton.setVisible(false);
+			stopButton.setVisible(true);
+			secondsElapsed = 0;
+			timeline.play();
 		}
 		else
 			errorLabel.setText("ERROR: Effort Already Started");
@@ -399,6 +443,12 @@ public class Controller implements Initializable{
 			effortInProgress = false;
 			endTime = LocalDateTime.now();
 			errorLabel.setText("");
+			timeline.stop();
+			hoursField.setText("0");
+		     minutesField.setText("0");
+		     secondsField.setText("0");
+		     playButton.setVisible(true);
+		     stopButton.setVisible(false);
 			successLabel.setText("Effort ended at " + endTime);
 			//CREATE THE OBJECT
 			String loggedUser = EffortLogger.getInstance().getLogin().getLoginSession().getHashedUser(); //identifier of effort creator
@@ -1209,5 +1259,31 @@ public class Controller implements Initializable{
 		
 		
 	}
+	
+	
+	
+	
+	@FXML
+	Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            secondsElapsed++;
+            updateFields();
+        }
+    }));
+	
+	
+	private void updateFields() {
+        Duration duration = Duration.seconds(secondsElapsed);
+
+        long hours = (long) duration.toHours();
+        long minutes = (long) (duration.toMinutes() % 60);
+        long seconds = (long) (duration.toSeconds() % 60);
+
+        hoursField.setText(String.valueOf(hours));
+        minutesField.setText(String.valueOf(minutes));
+        secondsField.setText(String.valueOf(seconds));
+    }
+	
 }	
 	
