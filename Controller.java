@@ -1167,6 +1167,7 @@ public class Controller implements Initializable{
 			defectStrings.add(d.getDefectString());
 		}
 		selectDefectCombo.setItems(FXCollections.observableArrayList(defectStrings));
+		EffortLogger.getInstance().getEffortDataHandler().removeDefect(selectDefectCombo.getSelectionModel().getSelectedItem());
 		saveStatus.setText("");
 		saveStatus.setText("Changes Saved");
 	}
